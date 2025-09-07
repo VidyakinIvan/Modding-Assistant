@@ -5,8 +5,58 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Modding_Assistant"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
-    <Grid>
-
-    </Grid>
+        WindowStyle="None"
+        Background="Transparent"
+        AllowsTransparency="True"
+        Height="600" Width="900">
+    <Border Background="#27253F"
+        CornerRadius="10">
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="50"/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+            <TextBlock Text="Mod Assistant" Grid.Column="1" Foreground="#DFFFFF" VerticalAlignment="Top"
+                       HorizontalAlignment="Center"
+                       FontSize="22"
+                       Margin="0 5 0 0"/>
+            <StackPanel Grid.Column="2" HorizontalAlignment="Right" VerticalAlignment="Top" Orientation="Horizontal">
+                <Button Height="45" Width="45" >
+                    <Button.Template>
+                        <ControlTemplate TargetType="Button">
+                            <Border x:Name="Bd" Background="Transparent">
+                                <Path Data="M0,0 M0.2,0.5 L0.8,0.5 M1,1"
+                                Stretch="Uniform" Stroke="#DFFFFF" StrokeThickness="2"/>
+                            </Border>
+                            <ControlTemplate.Triggers>
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter TargetName="Bd" Property="Background" Value="RoyalBlue"/>
+                                </Trigger>
+                            </ControlTemplate.Triggers>
+                        </ControlTemplate>
+                    </Button.Template>
+                </Button>
+                <Button Height="45" Width="45" >
+                    <Button.Template>
+                        <ControlTemplate TargetType="Button">
+                            <Border x:Name="Bd" Background="Transparent" CornerRadius="0 10 0 0">
+                                <Path Data="M0,0 M0.2,0.2 L 0.8,0.8 M0.2,0.8 L0.8,0.2 M1,1"
+                                Stretch="Uniform" Stroke="#DFFFFF" StrokeThickness="2"/>
+                            </Border>
+                            <ControlTemplate.Triggers>
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter TargetName="Bd" Property="Background" Value="Red"/>
+                                </Trigger>
+                            </ControlTemplate.Triggers>
+                        </ControlTemplate>
+                    </Button.Template>
+                </Button>
+            </StackPanel>
+        </Grid>
+    </Border>
 </Window>
