@@ -12,12 +12,26 @@ namespace Modding_Assistant.MVVM.ViewModel
     {
         private RelayCommand? minimizeCommand;
         private RelayCommand? exitCommand;
-        
+
+        public RelayCommand? MinimizeCommand
+        {
+            get
+            {
+                return minimizeCommand ??= new RelayCommand(window =>
+                {
+                    if (window is Window w)
+                    {
+                        w.WindowState = WindowState.Minimized;
+                    }
+                });
+            }
+        }
+
         public RelayCommand? ExitCommand
         {
             get
             {
-                return minimizeCommand ??= new RelayCommand(obj =>
+                return exitCommand ??= new RelayCommand(obj =>
                 {
                     Application.Current.Shutdown();
                 });
