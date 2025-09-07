@@ -11,6 +11,7 @@ namespace Modding_Assistant.MVVM.ViewModel
     internal class MainViewModel : ObservableObject
     {
         private RelayCommand? minimizeCommand;
+        private RelayCommand? moveWindowCommand;
         private RelayCommand? exitCommand;
 
         public RelayCommand? MinimizeCommand
@@ -26,7 +27,19 @@ namespace Modding_Assistant.MVVM.ViewModel
                 });
             }
         }
-
+        public RelayCommand? MoveWindowCommand
+        {
+            get
+            {
+                return moveWindowCommand ??= new RelayCommand(window =>
+                {
+                    if (window is Window w)
+                    {
+                        w.DragMove();
+                    }
+                });
+            }
+        }
         public RelayCommand? ExitCommand
         {
             get
