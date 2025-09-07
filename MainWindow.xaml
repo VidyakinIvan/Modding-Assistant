@@ -30,7 +30,8 @@
                        FontSize="22"
                        Margin="0 5 0 0"/>
             <StackPanel Grid.Column="2" HorizontalAlignment="Right" VerticalAlignment="Top" Orientation="Horizontal">
-                <Button Height="45" Width="45" >
+                <Button Height="45" Width="45" Command="{Binding MinimizeCommand}"
+                    CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=Window}}">
                     <Button.Template>
                         <ControlTemplate TargetType="Button">
                             <Border x:Name="Bd" Background="Transparent">
