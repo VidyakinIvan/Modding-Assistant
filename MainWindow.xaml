@@ -4,11 +4,15 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Modding_Assistant"
+        xmlns:viewModel="clr-namespace:Modding_Assistant.MVVM.ViewModel"
         mc:Ignorable="d"
         WindowStyle="None"
         Background="Transparent"
         AllowsTransparency="True"
         Height="600" Width="900">
+    <Window.DataContext>
+        <viewModel:MainViewModel/>
+    </Window.DataContext>
     <Border Background="#27253F"
         CornerRadius="10">
         <Grid>
@@ -41,7 +45,7 @@
                         </ControlTemplate>
                     </Button.Template>
                 </Button>
-                <Button Height="45" Width="45" >
+                <Button Height="45" Width="45" Command="{Binding ExitCommand}">
                     <Button.Template>
                         <ControlTemplate TargetType="Button">
                             <Border x:Name="Bd" Background="Transparent" CornerRadius="0 10 0 0">

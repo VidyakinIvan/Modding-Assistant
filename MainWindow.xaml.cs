@@ -1,4 +1,5 @@
-﻿using System.Text;
+﻿using Modding_Assistant.MVVM.ViewModel;
+using System.Text;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
