@@ -5,15 +5,33 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Media.Animation;
 
 namespace Modding_Assistant.MVVM.ViewModel
 {
     internal class MainViewModel : ObservableObject
     {
+        private RelayCommand? loadCommand;
         private RelayCommand? minimizeCommand;
         private RelayCommand? moveWindowCommand;
         private RelayCommand? exitCommand;
 
+        public RelayCommand? LoadCommand
+        {
+            get
+            {
+                return loadCommand ??= new RelayCommand(window =>
+                {
+                    if (window is Window w)
+                    {
+                        double left = Properties.Settings.Default.MainWindowLeft;
+                        double top = Properties.Settings.Default.MainWindowTop;
+                        w.Left = !double.IsNaN(left) ? left : (SystemParameters.WorkArea.Width - w.Width) / 2 + SystemParameters.WorkArea.Left;
+                        w.Top = !double.IsNaN(top) ? top : (SystemParameters.WorkArea.Height - w.Height) / 2 + SystemParameters.WorkArea.Top;
+                    }
+                });
+            }
+        }
         public RelayCommand? MinimizeCommand
         {
             get
