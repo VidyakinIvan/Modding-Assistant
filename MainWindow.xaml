@@ -59,7 +59,8 @@
                         </ControlTemplate>
                     </Button.Template>
                 </Button>
-                <Button Height="45" Width="45" Command="{Binding ExitCommand}">
+                <Button Height="45" Width="45" Command="{Binding ExitCommand}"
+                        CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=Window}}">
                     <Button.Template>
                         <ControlTemplate TargetType="Button">
                             <Border x:Name="Bd" Background="Transparent" CornerRadius="0 10 0 0">

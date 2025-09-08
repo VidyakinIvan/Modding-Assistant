@@ -1,6 +1,7 @@
 ﻿using Modding_Assistant.Core;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -62,8 +63,15 @@ namespace Modding_Assistant.MVVM.ViewModel
         {
             get
             {
-                return exitCommand ??= new RelayCommand(obj =>
+                return exitCommand ??= new RelayCommand(window =>
                 {
+                    if (window is Window w)
+                    {
+                        Properties.Settings.Default.MainWindowLeft = w.Left;
+                        Properties.Settings.Default.MainWindowTop = w.Top;
+                        w.Hide();
+                    }
+                    Properties.Settings.Default.Save();
                     Application.Current.Shutdown();
                 });
             }
