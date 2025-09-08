@@ -6,7 +6,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Media;
 using System.Windows.Media.Animation;
+using System.Windows.Shapes;
 
 namespace Modding_Assistant.MVVM.ViewModel
 {
@@ -14,9 +16,10 @@ namespace Modding_Assistant.MVVM.ViewModel
     {
         private RelayCommand? loadCommand;
         private RelayCommand? minimizeCommand;
+        private RelayCommand? maximizeCommand;
         private RelayCommand? moveWindowCommand;
         private RelayCommand? exitCommand;
-
+        private Geometry? maximizeButtonGeometry = Geometry.Parse("M0,0 M0.2,0.2 L0.8,0.2 L0.8,0.8 L0.2,0.8 Z M1,1");
         public RelayCommand? LoadCommand
         {
             get
@@ -42,6 +45,19 @@ namespace Modding_Assistant.MVVM.ViewModel
                     if (window is Window w)
                     {
                         w.WindowState = WindowState.Minimized;
+                    }
+                });
+            }
+        }
+        public RelayCommand? MaximizeCommand
+        {
+            get
+            {
+                return maximizeCommand ??= new RelayCommand(window =>
+                {
+                    if (window is Window w)
+                    {
+                        w.WindowState = w.WindowState == WindowState.Maximized ? WindowState.Normal : WindowState.Maximized;
                     }
                 });
             }
@@ -74,6 +90,15 @@ namespace Modding_Assistant.MVVM.ViewModel
                     Properties.Settings.Default.Save();
                     Application.Current.Shutdown();
                 });
+            }
+        }
+        public Geometry? MaximizeButtonGeometry
+        {
+            get => maximizeButtonGeometry;
+            set
+            {
+                maximizeButtonGeometry = value;
+                OnPropertyChanged();
             }
         }
     }

@@ -65,7 +65,7 @@
                     <Button.Template>
                         <ControlTemplate TargetType="Button">
                             <Border x:Name="Bd" Background="Transparent">
-                                <Path Data="M0,0 M0.2,0.2 L0.8,0.2 L0.8,0.8 L0.2,0.8 Z M1,1"
+                                <Path Data="{Binding MaximizeButtonGeometry}"
                                 Stretch="Uniform" Stroke="#DFFFFF" StrokeThickness="2"/>
                             </Border>
                             <ControlTemplate.Triggers>
