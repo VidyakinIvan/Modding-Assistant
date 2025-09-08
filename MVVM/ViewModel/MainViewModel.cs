@@ -1,4 +1,5 @@
-﻿using Modding_Assistant.Core;
+﻿using Microsoft.EntityFrameworkCore;
+using Modding_Assistant.Core;
 using Modding_Assistant.MVVM.Model;
 using System;
 using System.Collections.Generic;
@@ -17,6 +18,7 @@ namespace Modding_Assistant.MVVM.ViewModel
 {
     internal class MainViewModel : ObservableObject
     {
+        private readonly ModContext db = new();
         private RelayCommand? loadCommand;
         private RelayCommand? minimizeCommand;
         private RelayCommand? maximizeCommand;
@@ -25,19 +27,8 @@ namespace Modding_Assistant.MVVM.ViewModel
         private Geometry maximizeButtonGeometry = Geometry.Parse("M0,0 M0.2,0.2 L0.8,0.2 L0.8,0.8 L0.2,0.8 Z M1,1");
         public MainViewModel()
         {
-            ModList = [];
-            ModList.Add(new ModModel()
-            {
-                Id = 0,
-                Name = "Example Mod",
-                Version = "1.0.0",
-                InstallInstructions = "Download with Mo2",
-                Url = "https://example.com",
-                Dependencies = ["Dependency1", "Dependency2"],
-                ModRawName = "ExampleMod.zip",
-                Description = "This is an example mod used to demonstrate the Modding Assistant.",
-                PotentialIssues = "None known."
-            });
+            db.Mods.Load();
+            ModList = db.Mods.Local.ToObservableCollection();
         }
         public ObservableCollection<ModModel> ModList { get; set; }
         public RelayCommand? LoadCommand
