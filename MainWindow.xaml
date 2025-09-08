@@ -5,6 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Modding_Assistant"
         xmlns:viewModel="clr-namespace:Modding_Assistant.MVVM.ViewModel"
+        xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
         mc:Ignorable="d"
         WindowStyle="None"
         Background="Transparent"
@@ -13,8 +14,20 @@
     <Window.DataContext>
         <viewModel:MainViewModel/>
     </Window.DataContext>
+    <i:Interaction.Triggers>
+        <i:EventTrigger EventName="Loaded">
+            <i:InvokeCommandAction Command="{Binding LoadCommand}"
+                                   CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=Window}}"/>
+        </i:EventTrigger>
+    </i:Interaction.Triggers>
     <Border Background="#27253F"
-        CornerRadius="10">
+            CornerRadius="10">
+        <i:Interaction.Triggers>
+            <i:EventTrigger EventName="MouseLeftButtonDown">
+                <i:InvokeCommandAction Command="{Binding MoveWindowCommand}"
+                                       CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=Window}}"/>
+            </i:EventTrigger>
+        </i:Interaction.Triggers>
         <Grid>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition/>
@@ -28,7 +41,8 @@
             <TextBlock Text="Mod Assistant" Grid.Column="1" Foreground="#DFFFFF" VerticalAlignment="Top"
                        HorizontalAlignment="Center"
                        FontSize="22"
-                       Margin="0 5 0 0"/>
+                       Margin="0 5 0 0"
+                       IsHitTestVisible="False"/>
             <StackPanel Grid.Column="2" HorizontalAlignment="Right" VerticalAlignment="Top" Orientation="Horizontal">
                 <Button Height="45" Width="45" Command="{Binding MinimizeCommand}"
                     CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=Window}}">
@@ -46,7 +60,8 @@
                         </ControlTemplate>
                     </Button.Template>
                 </Button>
-                <Button Height="45" Width="45" Command="{Binding ExitCommand}">
+                <Button Height="45" Width="45" Command="{Binding ExitCommand}"
+                        CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=Window}}">
                     <Button.Template>
                         <ControlTemplate TargetType="Button">
                             <Border x:Name="Bd" Background="Transparent" CornerRadius="0 10 0 0">
