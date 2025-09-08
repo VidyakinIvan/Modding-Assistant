@@ -46,5 +46,17 @@ namespace Modding_Assistant.Properties {
                 this["MainWindowTop"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool MainWindowFullScreen {
+            get {
+                return ((bool)(this["MainWindowFullScreen"]));
+            }
+            set {
+                this["MainWindowFullScreen"] = value;
+            }
+        }
     }
 }
