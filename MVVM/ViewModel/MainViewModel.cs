@@ -57,7 +57,16 @@ namespace Modding_Assistant.MVVM.ViewModel
                 {
                     if (window is Window w)
                     {
-                        w.WindowState = w.WindowState == WindowState.Maximized ? WindowState.Normal : WindowState.Maximized;
+                        if (w.WindowState == WindowState.Maximized)
+                        {
+                            MaximizeButtonGeometry = Geometry.Parse("M0,0 M0.2,0.2 L0.8,0.2 L0.8,0.8 L0.2,0.8 Z M1,1");
+                            w.WindowState = WindowState.Normal;
+                        }
+                        else
+                        {
+                            MaximizeButtonGeometry = Geometry.Parse("M0,0 M0.6,0.4 L0.6,0.8 L0.2,0.8 L0.2,0.4 Z M0.8,0.2 L0.8,0.6 L0.4,0.6 L0.4,0.2 Z M1,1");
+                            w.WindowState = WindowState.Maximized;
+                        }
                     }
                 });
             }
