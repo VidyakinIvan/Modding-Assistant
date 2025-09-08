@@ -3,10 +3,10 @@
   <Profiles />
   <Settings>
     <Setting Name="MainWindowLeft" Type="System.Double" Scope="User">
-      <Value Profile="(Default)">0</Value>
+      <Value Profile="(Default)">NaN</Value>
     </Setting>
     <Setting Name="MainWindowTop" Type="System.Double" Scope="User">
-      <Value Profile="(Default)">0</Value>
+      <Value Profile="(Default)">NaN</Value>
     </Setting>
   </Settings>
 </SettingsFile>

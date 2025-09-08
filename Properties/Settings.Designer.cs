@@ -25,7 +25,7 @@ namespace Modding_Assistant.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        [global::System.Configuration.DefaultSettingValueAttribute("NaN")]
         public double MainWindowLeft {
             get {
                 return ((double)(this["MainWindowLeft"]));
@@ -37,7 +37,7 @@ namespace Modding_Assistant.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        [global::System.Configuration.DefaultSettingValueAttribute("NaN")]
         public double MainWindowTop {
             get {
                 return ((double)(this["MainWindowTop"]));

@@ -27,8 +27,8 @@ namespace Modding_Assistant.MVVM.ViewModel
                     {
                         double left = Properties.Settings.Default.MainWindowLeft;
                         double top = Properties.Settings.Default.MainWindowTop;
-                        w.Left = !double.IsNaN(left) ? left : (SystemParameters.WorkArea.Width - w.Width) / 2 + SystemParameters.WorkArea.Left;
-                        w.Top = !double.IsNaN(top) ? top : (SystemParameters.WorkArea.Height - w.Height) / 2 + SystemParameters.WorkArea.Top;
+                        w.Left = !double.IsNaN(left) ? left : (SystemParameters.WorkArea.Width - w.Width) / 4;
+                        w.Top = !double.IsNaN(top) ? top : (SystemParameters.WorkArea.Height - w.Height) / 2;
                     }
                 });
             }
