@@ -41,9 +41,28 @@
             <TextBlock Text="Mod Assistant" Grid.Column="1" Foreground="#DFFFFF" VerticalAlignment="Top"
                        HorizontalAlignment="Center"
                        FontSize="22"
-                       Margin="0 5 0 0"
-                       IsHitTestVisible="False"/>
+                       IsHitTestVisible="False">
+                <TextBlock.Style>
+                    <Style TargetType="TextBlock">
+                        <Setter Property="Margin" Value="0 5 0 0"/> 
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding RelativeSource={RelativeSource AncestorType=Window}, Path=WindowState}" Value="Maximized">
+                                <Setter Property="Margin" Value="0 10 0 0"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </TextBlock.Style>
+            </TextBlock>
             <StackPanel Grid.Column="2" HorizontalAlignment="Right" VerticalAlignment="Top" Orientation="Horizontal">
+                <StackPanel.Style>
+                    <Style TargetType="StackPanel">
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding RelativeSource={RelativeSource AncestorType=Window}, Path=WindowState}" Value="Maximized">
+                                <Setter Property="Margin" Value="0 5 5 0"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </StackPanel.Style>
                 <Button Height="45" Width="45" Command="{Binding MinimizeCommand}"
                     CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=Window}}">
                     <Button.Template>
