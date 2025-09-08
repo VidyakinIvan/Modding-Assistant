@@ -30,8 +30,11 @@ namespace Modding_Assistant.MVVM.ViewModel
                     {
                         double left = Properties.Settings.Default.MainWindowLeft;
                         double top = Properties.Settings.Default.MainWindowTop;
+                        bool fullscreen = Properties.Settings.Default.MainWindowFullScreen;
                         w.Left = !double.IsNaN(left) ? left : (SystemParameters.WorkArea.Width - w.Width) / 4;
                         w.Top = !double.IsNaN(top) ? top : (SystemParameters.WorkArea.Height - w.Height) / 2;
+                        if (fullscreen)
+                            MaximizeCommand.Execute(w);
                     }
                 });
             }
@@ -94,6 +97,7 @@ namespace Modding_Assistant.MVVM.ViewModel
                     {
                         Properties.Settings.Default.MainWindowLeft = w.Left;
                         Properties.Settings.Default.MainWindowTop = w.Top;
+                        Properties.Settings.Default.MainWindowFullScreen = w.WindowState == WindowState.Maximized;
                         w.Hide();
                     }
                     Properties.Settings.Default.Save();
