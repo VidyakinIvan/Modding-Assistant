@@ -1,11 +1,14 @@
 ﻿using Modding_Assistant.Core;
+using Modding_Assistant.MVVM.Model;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Shapes;
@@ -20,6 +23,23 @@ namespace Modding_Assistant.MVVM.ViewModel
         private RelayCommand? moveWindowCommand;
         private RelayCommand? exitCommand;
         private Geometry maximizeButtonGeometry = Geometry.Parse("M0,0 M0.2,0.2 L0.8,0.2 L0.8,0.8 L0.2,0.8 Z M1,1");
+        public MainViewModel()
+        {
+            ModList = [];
+            ModList.Add(new ModModel()
+            {
+                Id = 0,
+                Name = "Example Mod",
+                Version = "1.0.0",
+                InstallInstructions = "Download with Mo2",
+                Url = "https://example.com",
+                Dependencies = ["Dependency1", "Dependency2"],
+                ModRawName = "ExampleMod.zip",
+                Description = "This is an example mod used to demonstrate the Modding Assistant.",
+                PotentialIssues = "None known."
+            });
+        }
+        public ObservableCollection<ModModel> ModList { get; set; }
         public RelayCommand? LoadCommand
         {
             get

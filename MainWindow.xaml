@@ -14,6 +14,13 @@
     <Window.DataContext>
         <viewModel:MainViewModel/>
     </Window.DataContext>
+    <Window.Resources>
+        <Style x:Key="CenterTextColumnStyle" TargetType="TextBlock">
+            <Setter Property="HorizontalAlignment" Value="Center"/>
+            <Setter Property="TextAlignment" Value="Center"/>
+            <Setter Property="TextTrimming" Value="CharacterEllipsis"/>
+        </Style>
+    </Window.Resources>
     <i:Interaction.Triggers>
         <i:EventTrigger EventName="Loaded">
             <i:InvokeCommandAction Command="{Binding LoadCommand}"
@@ -112,6 +119,58 @@
                     </Button.Template>
                 </Button>
             </StackPanel>
+            <DataGrid Grid.ColumnSpan="3" Grid.Row="1" ItemsSource="{Binding ModList}" AutoGenerateColumns="False"
+                      HeadersVisibility="Column" RowHeaderWidth="0">
+                <DataGrid.ColumnHeaderStyle>
+                    <Style TargetType="DataGridColumnHeader">
+                        <Setter Property="Background" Value="#3C3A55"/>
+                        <Setter Property="Foreground" Value="#DFFFFF"/>
+                        <Setter Property="FontWeight" Value="Bold"/>
+                        <Setter Property="FontSize" Value="14"/>
+                        <Setter Property="Height" Value="40"/>
+                        <Setter Property="HorizontalContentAlignment" Value="Center"/>
+                    </Style>
+                </DataGrid.ColumnHeaderStyle>
+                <DataGrid.CellStyle>
+                    <Style TargetType="DataGridCell">
+                        <Setter Property="Background" Value="#27253F"/>
+                        <Setter Property="Foreground" Value="#DFFFFF"/>
+                        <Setter Property="FontSize" Value="14"/>
+                        <Setter Property="Height" Value="30"/>
+                        <Style.Triggers>
+                            <Trigger Property="IsSelected" Value="True">
+                                <Setter Property="Background" Value="#4B4A6E"/>
+                            </Trigger>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" Value="#3C3A55"/>
+                            </Trigger>
+                        </Style.Triggers>
+                    </Style>
+                </DataGrid.CellStyle>
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="Id" Binding="{Binding Id}" Width="*" ElementStyle="{StaticResource CenterTextColumnStyle}"/>
+                    <DataGridTextColumn Header="Name" Binding="{Binding Name}" Width="4*" ElementStyle="{StaticResource CenterTextColumnStyle}"/>
+                    <DataGridTextColumn Header="Version" Binding="{Binding Version}" Width="2*" ElementStyle="{StaticResource CenterTextColumnStyle}"/>
+                    <DataGridTextColumn Header="InstallInstructions" Binding="{Binding InstallInstructions}" Width="6*" ElementStyle="{StaticResource CenterTextColumnStyle}"/>
+                    <DataGridTextColumn Header="Url" Binding="{Binding Url}" Width="6*" ElementStyle="{StaticResource CenterTextColumnStyle}"/>
+                    <DataGridTextColumn Header="Dependencies" Binding="{Binding Dependencies}" Width="2*" ElementStyle="{StaticResource CenterTextColumnStyle}"/>
+                    <DataGridTextColumn Header="ModRawName" Binding="{Binding ModRawName}" Width="4*" ElementStyle="{StaticResource CenterTextColumnStyle}"/>
+                    <DataGridTextColumn Header="LastUpdated" Binding="{Binding LastUpdated}" Width="2*" ElementStyle="{StaticResource CenterTextColumnStyle}"/>
+                    <DataGridTextColumn Header="Description" Binding="{Binding Description}" Width="6*" ElementStyle="{StaticResource CenterTextColumnStyle}"/>
+                    <DataGridTextColumn Header="PotentialIssues" Binding="{Binding PotentialIssues}" Width="6*" ElementStyle="{StaticResource CenterTextColumnStyle}"/>
+                </DataGrid.Columns>
+                <DataGrid.Style>
+                    <Style TargetType="DataGrid">
+                        <Setter Property="Margin" Value="30 10 30 25"/>
+                        <Setter Property="Background" Value="#27253F"/>
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding RelativeSource={RelativeSource AncestorType=Window}, Path=WindowState}" Value="Maximized">
+                                <Setter Property="Margin" Value="75 10 75 50"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </DataGrid.Style>
+            </DataGrid>
         </Grid>
     </Border>
 </Window>
