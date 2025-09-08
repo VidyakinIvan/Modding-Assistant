@@ -19,7 +19,7 @@ namespace Modding_Assistant.MVVM.ViewModel
         private RelayCommand? maximizeCommand;
         private RelayCommand? moveWindowCommand;
         private RelayCommand? exitCommand;
-        private Geometry? maximizeButtonGeometry = Geometry.Parse("M0,0 M0.2,0.2 L0.8,0.2 L0.8,0.8 L0.2,0.8 Z M1,1");
+        private Geometry maximizeButtonGeometry = Geometry.Parse("M0,0 M0.2,0.2 L0.8,0.2 L0.8,0.8 L0.2,0.8 Z M1,1");
         public RelayCommand? LoadCommand
         {
             get
@@ -39,7 +39,7 @@ namespace Modding_Assistant.MVVM.ViewModel
                 });
             }
         }
-        public RelayCommand? MinimizeCommand
+        public RelayCommand MinimizeCommand
         {
             get
             {
@@ -52,7 +52,7 @@ namespace Modding_Assistant.MVVM.ViewModel
                 });
             }
         }
-        public RelayCommand? MaximizeCommand
+        public RelayCommand MaximizeCommand
         {
             get
             {
@@ -74,7 +74,7 @@ namespace Modding_Assistant.MVVM.ViewModel
                 });
             }
         }
-        public RelayCommand? MoveWindowCommand
+        public RelayCommand MoveWindowCommand
         {
             get
             {
@@ -87,7 +87,7 @@ namespace Modding_Assistant.MVVM.ViewModel
                 });
             }
         }
-        public RelayCommand? ExitCommand
+        public RelayCommand ExitCommand
         {
             get
             {
@@ -105,7 +105,7 @@ namespace Modding_Assistant.MVVM.ViewModel
                 });
             }
         }
-        public Geometry? MaximizeButtonGeometry
+        public Geometry MaximizeButtonGeometry
         {
             get => maximizeButtonGeometry;
             set
