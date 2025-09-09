@@ -11,9 +11,6 @@
         Background="Transparent"
         AllowsTransparency="True"
         Height="600" Width="900">
-    <Window.DataContext>
-        <viewModel:MainViewModel/>
-    </Window.DataContext>
     <Window.Resources>
         <Style x:Key="CenterTextColumnStyle" TargetType="TextBlock">
             <Setter Property="HorizontalAlignment" Value="Center"/>

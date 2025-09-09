@@ -1,4 +1,5 @@
-﻿using Modding_Assistant.MVVM.ViewModel;
+﻿using Modding_Assistant.MVVM.View;
+using Modding_Assistant.MVVM.ViewModel;
 using System.Text;
 using System.Windows;
 using System.Windows.Controls;
@@ -20,6 +21,9 @@ namespace Modding_Assistant
         public MainWindow()
         {
             InitializeComponent();
+            var moveDialog = new MoveModView();
+            var mainViewModel = new MainViewModel(moveDialog);
+            DataContext = mainViewModel;
         }
     }
 }

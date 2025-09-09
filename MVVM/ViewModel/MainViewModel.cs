@@ -22,17 +22,20 @@ namespace Modding_Assistant.MVVM.ViewModel
     internal class MainViewModel : ObservableObject
     {
         private readonly ModContext db = new();
+        private IMoveDialog moveDialog;
         private RelayCommand? loadCommand;
+        private RelayCommand? moveAfterCommand;
         private RelayCommand? deleteCommand;
         private RelayCommand? minimizeCommand;
         private RelayCommand? maximizeCommand;
         private RelayCommand? moveWindowCommand;
         private RelayCommand? exitCommand;
         private Geometry maximizeButtonGeometry = Geometry.Parse("M0,0 M0.2,0.2 L0.8,0.2 L0.8,0.8 L0.2,0.8 Z M1,1");
-        public MainViewModel()
+        public MainViewModel(IMoveDialog moveDialog)
         {
             db.Mods.Load();
             ModList = db.Mods.Local.ToObservableCollection();
+            this.moveDialog = moveDialog;
         }
         public ObservableCollection<ModModel> ModList { get; set; }
         public RelayCommand? LoadCommand
@@ -50,6 +53,23 @@ namespace Modding_Assistant.MVVM.ViewModel
                         w.Top = !double.IsNaN(top) ? top : (SystemParameters.WorkArea.Height - w.Height) / 2;
                         if (fullscreen)
                             MaximizeCommand.Execute(w);
+                    }
+                });
+            }
+        }
+        public RelayCommand MoveAfterCommand
+        {
+            get
+            {
+                return moveAfterCommand ??= new RelayCommand(selectedMods =>
+                {
+                    if (selectedMods is IList mods)
+                    {
+                        if (moveDialog.ShowMoveDialog())
+                        {
+                            CollectionViewSource.GetDefaultView(ModList)?.Refresh();
+                            db.SaveChanges();
+                        }
                     }
                 });
             }
