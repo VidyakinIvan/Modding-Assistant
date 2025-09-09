@@ -30,6 +30,7 @@
             <MenuItem Header="Delete" Command="{Binding DeleteCommand}" 
                       CommandParameter="{Binding PlacementTarget.SelectedItems, RelativeSource={RelativeSource AncestorType=ContextMenu}}"/>
         </ContextMenu>
+        <local:RowIndexConverter x:Key="RowIndexConverter"/>
     </Window.Resources>
     <i:Interaction.Triggers>
         <i:EventTrigger EventName="Loaded">
@@ -159,7 +160,14 @@
                     </Style>
                 </DataGrid.CellStyle>
                 <DataGrid.Columns>
-                    <DataGridTextColumn Header="Id" Binding="{Binding Id}" Width="*" ElementStyle="{StaticResource CenterTextColumnStyle}"/>
+                    <DataGridTextColumn Header="№" IsReadOnly="True" Width="*" ElementStyle="{StaticResource CenterTextColumnStyle}">
+                        <DataGridTextColumn.Binding>
+                            <MultiBinding Converter="{StaticResource RowIndexConverter}">
+                                <Binding RelativeSource="{RelativeSource AncestorType=DataGrid}"/>
+                                <Binding/>
+                            </MultiBinding>
+                        </DataGridTextColumn.Binding>
+                    </DataGridTextColumn>
                     <DataGridTextColumn Header="Name" Binding="{Binding Name}" Width="4*" ElementStyle="{StaticResource CenterTextColumnStyle}"/>
                     <DataGridTextColumn Header="Version" Binding="{Binding Version}" Width="2*" ElementStyle="{StaticResource CenterTextColumnStyle}"/>
                     <DataGridTextColumn Header="InstallInstructions" Binding="{Binding InstallInstructions}" Width="6*" ElementStyle="{StaticResource CenterTextColumnStyle}"/>
