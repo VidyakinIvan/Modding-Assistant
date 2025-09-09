@@ -2,6 +2,7 @@
 using Modding_Assistant.Core;
 using Modding_Assistant.MVVM.Model;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
@@ -20,6 +21,7 @@ namespace Modding_Assistant.MVVM.ViewModel
     {
         private readonly ModContext db = new();
         private RelayCommand? loadCommand;
+        private RelayCommand? deleteCommand;
         private RelayCommand? minimizeCommand;
         private RelayCommand? maximizeCommand;
         private RelayCommand? moveWindowCommand;
@@ -46,6 +48,21 @@ namespace Modding_Assistant.MVVM.ViewModel
                         w.Top = !double.IsNaN(top) ? top : (SystemParameters.WorkArea.Height - w.Height) / 2;
                         if (fullscreen)
                             MaximizeCommand.Execute(w);
+                    }
+                });
+            }
+        }
+        public RelayCommand DeleteCommand
+        {
+            get
+            {
+                return deleteCommand ??= new RelayCommand(selectedMods =>
+                {
+                    if (selectedMods is IList mods)
+                    {
+                        foreach (var mod in mods.OfType<ModModel>().ToList())
+                            db.Mods.Remove(mod);
+                        db.SaveChanges();
                     }
                 });
             }
@@ -112,6 +129,7 @@ namespace Modding_Assistant.MVVM.ViewModel
                         w.Hide();
                     }
                     Properties.Settings.Default.Save();
+                    db.SaveChanges();
                     Application.Current.Shutdown();
                 });
             }

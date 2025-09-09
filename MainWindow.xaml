@@ -20,6 +20,16 @@
             <Setter Property="TextAlignment" Value="Center"/>
             <Setter Property="TextTrimming" Value="CharacterEllipsis"/>
         </Style>
+        <ContextMenu x:Key="DataGridContextMenu">
+            <MenuItem Header="Copy Cell" Command="ApplicationCommands.Copy"/>
+            <MenuItem Header="Select All" Command="ApplicationCommands.SelectAll"/>
+            <MenuItem Header="Refresh" Command="{Binding LoadCommand}"
+                      CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=Window}}"/>
+            <MenuItem Header="Move After..." Command="{Binding MoveAfterCommand}" 
+                      CommandParameter="{Binding PlacementTarget.SelectedItems, RelativeSource={RelativeSource AncestorType=ContextMenu}}"/>
+            <MenuItem Header="Delete" Command="{Binding DeleteCommand}" 
+                      CommandParameter="{Binding PlacementTarget.SelectedItems, RelativeSource={RelativeSource AncestorType=ContextMenu}}"/>
+        </ContextMenu>
     </Window.Resources>
     <i:Interaction.Triggers>
         <i:EventTrigger EventName="Loaded">
@@ -120,7 +130,8 @@
                 </Button>
             </StackPanel>
             <DataGrid Grid.ColumnSpan="3" Grid.Row="1" ItemsSource="{Binding ModList}" AutoGenerateColumns="False"
-                      HeadersVisibility="Column" RowHeaderWidth="0">
+                      HeadersVisibility="Column" RowHeaderWidth="0" ContextMenu="{StaticResource DataGridContextMenu}"
+                      SelectionMode="Extended">
                 <DataGrid.ColumnHeaderStyle>
                     <Style TargetType="DataGridColumnHeader">
                         <Setter Property="Background" Value="#3C3A55"/>
