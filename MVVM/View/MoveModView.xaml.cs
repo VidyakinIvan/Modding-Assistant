@@ -1,4 +1,5 @@
 ﻿using Modding_Assistant.Core;
+using Modding_Assistant.MVVM.ViewModel;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,23 +19,28 @@ namespace Modding_Assistant.MVVM.View
     /// <summary>
     /// Interaction logic for MoveModView.xaml
     /// </summary>
-    public partial class MoveModView : Window, IMoveDialog
+    public partial class MoveModView : Window
     {
-        private bool moveDialogResult = false;
         public MoveModView()
         {
             InitializeComponent();
         }
-
-        public bool MoveDialogResult { 
-            get => moveDialogResult; 
-            set => moveDialogResult = value; 
-        }
-
-        public bool ShowMoveDialog()
+        public int? ModNumber
         {
-            ShowDialog();
-            return MoveDialogResult;
+            get
+            {
+                if (DataContext is MoveModViewModel vm)
+                    return vm.ModNumber;
+                else
+                    return null;
+            }
+            set
+            {
+                if (DataContext is MoveModViewModel vm)
+                {
+                    vm.ModNumber = value;
+                }
+            }
         }
     }
 }

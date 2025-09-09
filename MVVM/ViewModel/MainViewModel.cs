@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Modding_Assistant.Core;
 using Modding_Assistant.MVVM.Model;
+using Modding_Assistant.MVVM.Services;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -22,7 +23,7 @@ namespace Modding_Assistant.MVVM.ViewModel
     internal class MainViewModel : ObservableObject
     {
         private readonly ModContext db = new();
-        private IMoveDialog moveDialog;
+        private IMoveModDialogService moveModDialogService;
         private RelayCommand? loadCommand;
         private RelayCommand? moveAfterCommand;
         private RelayCommand? deleteCommand;
@@ -31,11 +32,11 @@ namespace Modding_Assistant.MVVM.ViewModel
         private RelayCommand? moveWindowCommand;
         private RelayCommand? exitCommand;
         private Geometry maximizeButtonGeometry = Geometry.Parse("M0,0 M0.2,0.2 L0.8,0.2 L0.8,0.8 L0.2,0.8 Z M1,1");
-        public MainViewModel(IMoveDialog moveDialog)
+        public MainViewModel(IMoveModDialogService moveModDialogService)
         {
             db.Mods.Load();
             ModList = db.Mods.Local.ToObservableCollection();
-            this.moveDialog = moveDialog;
+            this.moveModDialogService = moveModDialogService;
         }
         public ObservableCollection<ModModel> ModList { get; set; }
         public RelayCommand? LoadCommand
@@ -65,7 +66,9 @@ namespace Modding_Assistant.MVVM.ViewModel
                 {
                     if (selectedMods is IList mods)
                     {
-                        if (moveDialog.ShowMoveDialog())
+                        int? result = moveModDialogService.ShowNumberDialog();
+                        Debug.WriteLine(result is null);
+                        if (result.HasValue)
                         {
                             CollectionViewSource.GetDefaultView(ModList)?.Refresh();
                             db.SaveChanges();
