@@ -22,7 +22,7 @@
             <MenuItem Header="Select All" Command="ApplicationCommands.SelectAll"/>
             <MenuItem Header="Refresh" Command="{Binding LoadCommand}"
                       CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=Window}}"/>
-            <MenuItem Header="Move After..." Command="{Binding MoveAfterCommand}" 
+            <MenuItem Header="Move to..." Command="{Binding MoveBeforeCommand}" 
                       CommandParameter="{Binding PlacementTarget.SelectedItems, RelativeSource={RelativeSource AncestorType=ContextMenu}}"/>
             <MenuItem Header="Delete" Command="{Binding DeleteCommand}" 
                       CommandParameter="{Binding PlacementTarget.SelectedItems, RelativeSource={RelativeSource AncestorType=ContextMenu}}"/>

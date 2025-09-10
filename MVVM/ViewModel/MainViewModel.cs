@@ -25,7 +25,7 @@ namespace Modding_Assistant.MVVM.ViewModel
         private readonly ModContext db = new();
         private IMoveModDialogService moveModDialogService;
         private RelayCommand? loadCommand;
-        private RelayCommand? moveAfterCommand;
+        private RelayCommand? moveBeforeCommand;
         private RelayCommand? deleteCommand;
         private RelayCommand? minimizeCommand;
         private RelayCommand? maximizeCommand;
@@ -68,11 +68,11 @@ namespace Modding_Assistant.MVVM.ViewModel
                 });
             }
         }
-        public RelayCommand MoveAfterCommand
+        public RelayCommand MoveBeforeCommand
         {
             get
             {
-                return moveAfterCommand ??= new RelayCommand(selectedMods =>
+                return moveBeforeCommand ??= new RelayCommand(selectedMods =>
                 {
                     if (selectedMods is IList mods && mods.Count > 0)
                     {
@@ -84,7 +84,9 @@ namespace Modding_Assistant.MVVM.ViewModel
                                 if (mod is ModModel m && ModList.Contains(m))
                                 {
                                     int oldIndex = ModList.IndexOf(m);
-                                    int newIndex = Math.Min(result.Value, ModList.Count);
+                                    int newIndex = Math.Min(result.Value - 1, ModList.Count);
+                                    if (oldIndex < newIndex)
+                                        newIndex--;
                                     if (oldIndex != newIndex)
                                     {
                                         ModList.Move(oldIndex, newIndex);
