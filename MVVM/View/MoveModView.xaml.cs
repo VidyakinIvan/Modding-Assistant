@@ -2,6 +2,7 @@
 using Modding_Assistant.MVVM.ViewModel;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -24,6 +25,14 @@ namespace Modding_Assistant.MVVM.View
         public MoveModView()
         {
             InitializeComponent();
+            DataContextChanged += (s, e) =>
+            {
+                if (e.NewValue is MoveModViewModel vmNew)
+                {
+                    vmNew.RequestOk += () => { DialogResult = true; Hide(); };
+                    vmNew.RequestClose += () => Hide();
+                }
+            };
         }
         public int? ModNumber
         {

@@ -49,7 +49,7 @@ namespace Modding_Assistant.MVVM.ViewModel
             this.moveModDialogService = moveModDialogService;
         }
         public ObservableCollection<ModModel> ModList { get; set; }
-        public RelayCommand? LoadCommand
+        public RelayCommand LoadCommand
         {
             get
             {

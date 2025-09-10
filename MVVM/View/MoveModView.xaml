@@ -58,11 +58,22 @@
                     Width="80"
                     Margin="0,0,8,0"
                     IsDefault="True"
-                    Background="#3A3F4B"
-                    Foreground="#F3F3F3"
-                    BorderBrush="#23272E"
-                    Padding="6,2" Command="{Binding OKCommand}"
-                        CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=Window}}"/>
+                    Padding="6,2"
+                    Command="{Binding OKCommand}"
+                    CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=Window}}">
+                <Button.Style>
+                    <Style TargetType="Button">
+                        <Setter Property="Background" Value="#3A3F4B"/>
+                        <Setter Property="Foreground" Value="#F3F3F3"/>
+                        <Setter Property="BorderBrush" Value="#23272E"/>
+                        <Style.Triggers>
+                            <Trigger Property="IsEnabled" Value="False">
+                                <Setter Property="Opacity" Value="0.2"/>
+                            </Trigger>
+                        </Style.Triggers>
+                    </Style>
+                </Button.Style>
+            </Button>
             <Button Content="Cancel"
                     Width="80"
                     IsCancel="True"
