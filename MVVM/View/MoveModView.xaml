@@ -4,6 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:viewModel="clr-namespace:Modding_Assistant.MVVM.ViewModel"
+        xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
         mc:Ignorable="d"
         Title="Move after..." Height="180" Width="450"
         WindowStartupLocation="CenterOwner"
@@ -12,6 +13,12 @@
         Foreground="#F3F3F3"
         FontSize="14"
          WindowStyle="None">
+    <i:Interaction.Triggers>
+        <i:EventTrigger EventName="MouseLeftButtonDown">
+        <i:InvokeCommandAction Command="{Binding MoveWindowCommand}"
+                                       CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=Window}}"/>
+        </i:EventTrigger>
+    </i:Interaction.Triggers>
     <Grid Margin="16">
         <Grid.RowDefinitions>
             <RowDefinition/>

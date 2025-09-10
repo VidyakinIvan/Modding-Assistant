@@ -20,7 +20,20 @@ namespace Modding_Assistant.MVVM.ViewModel
 
         private RelayCommand? okCommand;
         private RelayCommand? closeCommand;
-
+        private RelayCommand? moveWindowCommand;
+        public RelayCommand MoveWindowCommand
+        {
+            get
+            {
+                return moveWindowCommand ??= new RelayCommand(window =>
+                {
+                    if (window is Window w)
+                    {
+                        w.DragMove();
+                    }
+                });
+            }
+        }
         public RelayCommand? OKCommand
         {
             get
