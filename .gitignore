@@ -55,3 +55,6 @@ nunit-*.xml
 
 #Visual Studio files
 .vs/
+
+#Entity Framework Core
+/*modding_assistant.db*
