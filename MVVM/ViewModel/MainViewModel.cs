@@ -155,6 +155,10 @@ namespace Modding_Assistant.MVVM.ViewModel
                         w.Hide();
                     }
                     Properties.Settings.Default.Save();
+                    for (int i = 0; i < ModList.Count; i++)
+                    {
+                        ModList[i].Order = i + 1;
+                    }
                     db.SaveChanges();
                     Application.Current.Shutdown();
                 });

@@ -10,6 +10,7 @@ namespace Modding_Assistant.MVVM.Model
     internal class ModModel : ObservableObject
     {
         public int Id { get; set; }
+        public int Order { get; set; }
         public string Name { get; set; } = "Unknown";
         public string Version { get; set; } = "0.0.0";
         public string InstallInstructions { get; set; } = "No installation instructions available.";
