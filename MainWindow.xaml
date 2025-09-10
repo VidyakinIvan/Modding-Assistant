@@ -138,6 +138,14 @@
                         <Setter Property="FontSize" Value="14"/>
                         <Setter Property="Height" Value="40"/>
                         <Setter Property="HorizontalContentAlignment" Value="Center"/>
+                        <Setter Property="ContentTemplate">
+                            <Setter.Value>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding}" 
+                                               TextTrimming="CharacterEllipsis"/>
+                                </DataTemplate>
+                            </Setter.Value>
+                        </Setter>
                     </Style>
                 </DataGrid.ColumnHeaderStyle>
                 <DataGrid.CellStyle>
