@@ -35,9 +35,17 @@ namespace Modding_Assistant.MVVM.ViewModel
         public MainViewModel(IMoveModDialogService moveModDialogService)
         {
             db.Mods.Load();
-            ModList = new ObservableCollection<ModModel>(
-                db.Mods.Local.OrderBy(m => m.Order)
-            );
+            ModList = db.Mods.Local.ToObservableCollection();
+            var sorted = ModList.OrderBy(m => m.Order).ToList();
+            for (int i = 0; i < sorted.Count; i++)
+            {
+                if (!Equals(ModList[i], sorted[i]))
+                {
+                    int sortedIndex = ModList.IndexOf(sorted[i]);
+                    if (sortedIndex >= 0)
+                        ModList.Move(sortedIndex, i);
+                }
+            }
             this.moveModDialogService = moveModDialogService;
         }
         public ObservableCollection<ModModel> ModList { get; set; }
