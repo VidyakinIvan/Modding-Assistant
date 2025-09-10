@@ -35,7 +35,9 @@ namespace Modding_Assistant.MVVM.ViewModel
         public MainViewModel(IMoveModDialogService moveModDialogService)
         {
             db.Mods.Load();
-            ModList = db.Mods.Local.ToObservableCollection();
+            ModList = new ObservableCollection<ModModel>(
+                db.Mods.Local.OrderBy(m => m.Order)
+            );
             this.moveModDialogService = moveModDialogService;
         }
         public ObservableCollection<ModModel> ModList { get; set; }
