@@ -66,12 +66,23 @@ namespace Modding_Assistant.MVVM.ViewModel
             {
                 return moveAfterCommand ??= new RelayCommand(selectedMods =>
                 {
-                    if (selectedMods is IList mods)
+                    if (selectedMods is IList mods && mods.Count > 0)
                     {
                         int? result = moveModDialogService.ShowNumberDialog();
-                        Debug.WriteLine(result is null);
                         if (result.HasValue)
                         {
+                            foreach (var mod in mods)
+                            {
+                                if (mod is ModModel m && ModList.Contains(m))
+                                {
+                                    int oldIndex = ModList.IndexOf(m);
+                                    int newIndex = Math.Min(result.Value, ModList.Count);
+                                    if (oldIndex != newIndex)
+                                    {
+                                        ModList.Move(oldIndex, newIndex);
+                                    }
+                                }
+                            }
                             CollectionViewSource.GetDefaultView(ModList)?.Refresh();
                             db.SaveChanges();
                         }
