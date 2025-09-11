@@ -23,7 +23,7 @@ namespace Modding_Assistant
         {
             InitializeComponent();
             var moveDialog = new MoveModView();
-            var mainViewModel = new MainViewModel(new MoveDialogService(this));
+            var mainViewModel = new MainViewModel(new MainWindowService(this), new SettingsService(), new MoveDialogService(this));
             DataContext = mainViewModel;
         }
     }

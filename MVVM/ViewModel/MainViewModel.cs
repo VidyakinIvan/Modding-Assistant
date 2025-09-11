@@ -23,7 +23,9 @@ namespace Modding_Assistant.MVVM.ViewModel
     internal class MainViewModel : ObservableObject
     {
         private readonly ModContext db = new();
-        private IMoveModDialogService moveModDialogService;
+        private readonly IMainWindowService _mainWindowService;
+        private readonly ISettingsService _settingsService;
+        private readonly IMoveModDialogService _moveModDialogService;
         private RelayCommand? loadCommand;
         private RelayCommand? moveBeforeCommand;
         private RelayCommand? deleteCommand;
@@ -31,9 +33,12 @@ namespace Modding_Assistant.MVVM.ViewModel
         private RelayCommand? maximizeCommand;
         private RelayCommand? moveWindowCommand;
         private RelayCommand? exitCommand;
-        private Geometry maximizeButtonGeometry = Geometry.Parse("M0,0 M0.2,0.2 L0.8,0.2 L0.8,0.8 L0.2,0.8 Z M1,1");
-        public MainViewModel(IMoveModDialogService moveModDialogService)
+        private Geometry _maximizeButtonGeometry = Geometry.Parse("M0,0 M0.2,0.2 L0.8,0.2 L0.8,0.8 L0.2,0.8 Z M1,1");
+        public MainViewModel(IMainWindowService mainWindowService, ISettingsService settingsService, IMoveModDialogService moveModDialogService)
         {
+            _mainWindowService = mainWindowService;
+            _settingsService = settingsService;
+            _moveModDialogService = moveModDialogService;
             db.Mods.Load();
             ModList = db.Mods.Local.ToObservableCollection();
             var sorted = ModList.OrderBy(m => m.Order).ToList();
@@ -46,25 +51,22 @@ namespace Modding_Assistant.MVVM.ViewModel
                         ModList.Move(sortedIndex, i);
                 }
             }
-            this.moveModDialogService = moveModDialogService;
+            if (_mainWindowService is MainWindowService ws)
+            {
+                UpdateMaximizeButtonGeometry(_mainWindowService.WindowState);
+            }
         }
         public ObservableCollection<ModModel> ModList { get; set; }
         public RelayCommand LoadCommand
         {
             get
             {
-                return loadCommand ??= new RelayCommand(window =>
+                return loadCommand ??= new RelayCommand(_ =>
                 {
-                    if (window is Window w)
-                    {
-                        double left = Properties.Settings.Default.MainWindowLeft;
-                        double top = Properties.Settings.Default.MainWindowTop;
-                        bool fullscreen = Properties.Settings.Default.MainWindowFullScreen;
-                        w.Left = !double.IsNaN(left) ? left : (SystemParameters.WorkArea.Width - w.Width) / 4;
-                        w.Top = !double.IsNaN(top) ? top : (SystemParameters.WorkArea.Height - w.Height) / 2;
-                        if (fullscreen)
-                            MaximizeCommand.Execute(w);
-                    }
+                    _mainWindowService.Left = !double.IsNaN(_settingsService.MainWindowLeft) ? _settingsService.MainWindowLeft : (SystemParameters.WorkArea.Width - _mainWindowService.Width) / 4;
+                    _mainWindowService.Top = !double.IsNaN(_settingsService.MainWindowTop) ? _settingsService.MainWindowTop : (SystemParameters.WorkArea.Height - _mainWindowService.Height) / 2;
+                    if (_settingsService.MainWindowFullScreen)
+                        MaximizeCommand.Execute(null);
                 });
             }
         }
@@ -76,7 +78,7 @@ namespace Modding_Assistant.MVVM.ViewModel
                 {
                     if (selectedMods is IList mods && mods.Count > 0)
                     {
-                        int? result = moveModDialogService.ShowNumberDialog();
+                        int? result = _moveModDialogService.ShowNumberDialog();
                         if (result.HasValue)
                         {
                             foreach (var mod in mods)
@@ -120,12 +122,9 @@ namespace Modding_Assistant.MVVM.ViewModel
         {
             get
             {
-                return minimizeCommand ??= new RelayCommand(window =>
+                return minimizeCommand ??= new RelayCommand(_ =>
                 {
-                    if (window is Window w)
-                    {
-                        w.WindowState = WindowState.Minimized;
-                    }
+                    _mainWindowService.Minimize();
                 });
             }
         }
@@ -133,20 +132,17 @@ namespace Modding_Assistant.MVVM.ViewModel
         {
             get
             {
-                return maximizeCommand ??= new RelayCommand(window =>
+                return maximizeCommand ??= new RelayCommand(_ =>
                 {
-                    if (window is Window w)
+                    if (_mainWindowService.WindowState == WindowState.Maximized)
                     {
-                        if (w.WindowState == WindowState.Maximized)
-                        {
-                            MaximizeButtonGeometry = Geometry.Parse("M0,0 M0.2,0.2 L0.8,0.2 L0.8,0.8 L0.2,0.8 Z M1,1");
-                            w.WindowState = WindowState.Normal;
-                        }
-                        else
-                        {
-                            MaximizeButtonGeometry = Geometry.Parse("M0,0 M0.6,0.4 L0.6,0.8 L0.2,0.8 L0.2,0.4 Z M0.8,0.2 L0.8,0.6 L0.4,0.6 L0.4,0.2 Z M1,1");
-                            w.WindowState = WindowState.Maximized;
-                        }
+                        _mainWindowService.Restore();
+                        MaximizeButtonGeometry = Geometry.Parse("M0,0 M0.2,0.2 L0.8,0.2 L0.8,0.8 L0.2,0.8 Z M1,1");
+                    }
+                    else
+                    {
+                        _mainWindowService.Maximize();
+                        MaximizeButtonGeometry = Geometry.Parse("M0,0 M0.6,0.4 L0.6,0.8 L0.2,0.8 L0.2,0.4 Z M0.8,0.2 L0.8,0.6 L0.4,0.6 L0.4,0.2 Z M1,1");
                     }
                 });
             }
@@ -155,12 +151,9 @@ namespace Modding_Assistant.MVVM.ViewModel
         {
             get
             {
-                return moveWindowCommand ??= new RelayCommand(window =>
+                return moveWindowCommand ??= new RelayCommand(_ =>
                 {
-                    if (window is Window w)
-                    {
-                        w.DragMove();
-                    }
+                    _mainWindowService.DragMove();
                 });
             }
         }
@@ -168,16 +161,13 @@ namespace Modding_Assistant.MVVM.ViewModel
         {
             get
             {
-                return exitCommand ??= new RelayCommand(window =>
+                return exitCommand ??= new RelayCommand(_ =>
                 {
-                    if (window is Window w)
-                    {
-                        Properties.Settings.Default.MainWindowLeft = w.Left;
-                        Properties.Settings.Default.MainWindowTop = w.Top;
-                        Properties.Settings.Default.MainWindowFullScreen = w.WindowState == WindowState.Maximized;
-                        w.Hide();
-                    }
-                    Properties.Settings.Default.Save();
+                    _settingsService.MainWindowLeft = _mainWindowService.Left;
+                    _settingsService.MainWindowTop = _mainWindowService.Top;
+                    _settingsService.MainWindowFullScreen = _mainWindowService.WindowState == WindowState.Maximized;
+                    _mainWindowService.Hide();
+                    _settingsService.Save();
                     for (int i = 0; i < ModList.Count; i++)
                     {
                         ModList[i].Order = i + 1;
@@ -189,11 +179,22 @@ namespace Modding_Assistant.MVVM.ViewModel
         }
         public Geometry MaximizeButtonGeometry
         {
-            get => maximizeButtonGeometry;
+            get => _maximizeButtonGeometry;
             set
             {
-                maximizeButtonGeometry = value;
+                _maximizeButtonGeometry = value;
                 OnPropertyChanged();
+            }
+        }
+        private void UpdateMaximizeButtonGeometry(WindowState state)
+        {
+            if (state == WindowState.Maximized)
+            {
+                MaximizeButtonGeometry = Geometry.Parse("M0,0 M0.6,0.4 L0.6,0.8 L0.2,0.8 L0.2,0.4 Z M0.8,0.2 L0.8,0.6 L0.4,0.6 L0.4,0.2 Z M1,1");
+            }
+            else
+            {
+                MaximizeButtonGeometry = Geometry.Parse("M0,0 M0.2,0.2 L0.8,0.2 L0.8,0.8 L0.2,0.8 Z M1,1");
             }
         }
     }
