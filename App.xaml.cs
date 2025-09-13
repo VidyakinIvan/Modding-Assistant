@@ -4,8 +4,9 @@ using System.Windows;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Modding_Assistant.MVVM.Model;
-using Modding_Assistant.MVVM.Services;
-using Modding_Assistant.MVVM.View;
+using Modding_Assistant.MVVM.Services.Implementations;
+using Modding_Assistant.MVVM.Services.Interfaces;
+using Modding_Assistant.MVVM.View.Windows;
 using Modding_Assistant.MVVM.ViewModel;
 
 namespace Modding_Assistant

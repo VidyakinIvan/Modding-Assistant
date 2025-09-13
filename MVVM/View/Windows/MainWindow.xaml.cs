@@ -12,7 +12,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace Modding_Assistant
+namespace Modding_Assistant.MVVM.View.Windows
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml

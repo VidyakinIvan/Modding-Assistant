@@ -3,7 +3,7 @@ using System.Globalization;
 using System.Windows.Controls;
 using System.Windows.Data;
 
-namespace Modding_Assistant
+namespace Modding_Assistant.MVVM.View.Converters
 {
     public class RowIndexConverter : IMultiValueConverter
     {

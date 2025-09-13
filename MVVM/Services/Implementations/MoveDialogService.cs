@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
-using Modding_Assistant.MVVM.View;
+using Modding_Assistant.MVVM.Services.Interfaces;
+using Modding_Assistant.MVVM.View.Windows;
 using Modding_Assistant.MVVM.ViewModel;
 using System;
 using System.Collections.Generic;
@@ -8,7 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 
-namespace Modding_Assistant.MVVM.Services
+namespace Modding_Assistant.MVVM.Services.Implementations
 {
     public class MoveDialogService : IMoveModDialogService
     {

@@ -15,7 +15,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 
-namespace Modding_Assistant.MVVM.View
+namespace Modding_Assistant.MVVM.View.Windows
 {
     /// <summary>
     /// Interaction logic for MoveModView.xaml
