@@ -1,12 +1,4 @@
 ﻿using Modding_Assistant.Core;
-using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Security.Permissions;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
 
 namespace Modding_Assistant.MVVM.ViewModel
 {
@@ -16,7 +8,12 @@ namespace Modding_Assistant.MVVM.ViewModel
         public int? ModNumber
         {
             get => modNumber;
-            set { modNumber = value; OnPropertyChanged(); }
+            set
+            {
+                modNumber = value;
+                OnPropertyChanged();
+                OKCommand.RaiseCanExecuteChanged();
+            }
         }
         public event Action? RequestOk;
         public event Action? RequestClose;
