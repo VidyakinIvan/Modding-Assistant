@@ -22,8 +22,8 @@ namespace Modding_Assistant
                 {
                     services.AddSingleton<MainWindow>();
                     services.AddSingleton<MainViewModel>();
-                    services.AddSingleton<MoveModView>();
-                    services.AddSingleton<MoveModViewModel>();
+                    services.AddTransient<MoveModView>();
+                    services.AddTransient<MoveModViewModel>();
                     services.AddSingleton<ISettingsService, SettingsService>();
                     services.AddSingleton<IMoveModDialogService, MoveDialogService>();
 
