@@ -2,7 +2,7 @@
 
 namespace Modding_Assistant.MVVM.Model
 {
-    class ModContext : DbContext
+    public class ModContext : DbContext
     {
         public DbSet<ModModel> Mods { get; set; }
         public ModContext() => Database.EnsureCreated();

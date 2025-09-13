@@ -1,19 +1,19 @@
 ﻿using Modding_Assistant.MVVM.ViewModel;
 using System.Windows;
 
-namespace Modding_Assistant.MVVM.View.Windows
+namespace Modding_Assistant.MVVM.View.Dialogs
 {
     /// <summary>
     /// Interaction logic for MoveModView.xaml
     /// </summary>
-    public partial class MoveModView : Window
+    public partial class MoveModsDialog : Window
     {
-        public MoveModView()
+        public MoveModsDialog()
         {
             InitializeComponent();
             DataContextChanged += (s, e) =>
             {
-                if (e.NewValue is MoveModViewModel vm)
+                if (e.NewValue is MoveModsViewModel vm)
                 {
                     vm.RequestOk += OnRequestOk;
                     vm.RequestClose += OnRequestClose;
@@ -36,14 +36,14 @@ namespace Modding_Assistant.MVVM.View.Windows
         {
             get
             {
-                if (DataContext is MoveModViewModel vm)
+                if (DataContext is MoveModsViewModel vm)
                     return vm.ModNumber;
                 else
                     return null;
             }
             set
             {
-                if (DataContext is MoveModViewModel vm)
+                if (DataContext is MoveModsViewModel vm)
                 {
                     vm.ModNumber = value;
                 }
