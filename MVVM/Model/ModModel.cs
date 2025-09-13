@@ -2,7 +2,7 @@
 
 namespace Modding_Assistant.MVVM.Model
 {
-    internal class ModModel : ObservableObject
+    public class ModModel : ObservableObject
     {
         public int Id { get; set; }
         public int Order { get; set; }

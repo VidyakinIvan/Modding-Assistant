@@ -11,7 +11,7 @@ using System.Windows.Media;
 
 namespace Modding_Assistant.MVVM.ViewModel
 {
-    internal class MainViewModel : ObservableObject
+    public class MainViewModel : ObservableObject
     {
         private readonly ModContext _db;
         private readonly IMainWindowService _mainWindowService;
