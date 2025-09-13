@@ -5,6 +5,7 @@ using Modding_Assistant.MVVM.Model;
 using Modding_Assistant.MVVM.Services.Implementations;
 using Modding_Assistant.MVVM.Services.Interfaces;
 using Modding_Assistant.MVVM.View.Windows;
+using Modding_Assistant.MVVM.View.Dialogs;
 using Modding_Assistant.MVVM.ViewModel;
 
 namespace Modding_Assistant
@@ -22,10 +23,10 @@ namespace Modding_Assistant
                 {
                     services.AddSingleton<MainWindow>();
                     services.AddSingleton<MainViewModel>();
-                    services.AddTransient<MoveModView>();
-                    services.AddTransient<MoveModViewModel>();
+                    services.AddTransient<MoveModsDialog>();
+                    services.AddTransient<MoveModsViewModel>();
                     services.AddSingleton<ISettingsService, SettingsService>();
-                    services.AddSingleton<IMoveModDialogService, MoveDialogService>();
+                    services.AddSingleton<IMoveModsDialogService, MoveModsDialogService>();
 
                     services.AddSingleton<IMainWindowService>(provider =>
                     {

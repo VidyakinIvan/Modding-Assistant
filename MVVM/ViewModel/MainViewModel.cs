@@ -16,7 +16,7 @@ namespace Modding_Assistant.MVVM.ViewModel
         private readonly ModContext _db;
         private readonly IMainWindowService _mainWindowService;
         private readonly ISettingsService _settingsService;
-        private readonly IMoveModDialogService _moveModDialogService;
+        private readonly IMoveModsDialogService _moveModsDialogService;
         private RelayCommand? loadCommand;
         private RelayCommand? moveBeforeCommand;
         private RelayCommand? deleteCommand;
@@ -25,12 +25,12 @@ namespace Modding_Assistant.MVVM.ViewModel
         private RelayCommand? moveWindowCommand;
         private RelayCommand? exitCommand;
         private Geometry _maximizeButtonGeometry = Geometry.Parse("M0,0 M0.2,0.2 L0.8,0.2 L0.8,0.8 L0.2,0.8 Z M1,1");
-        public MainViewModel(ModContext db, IMainWindowService mainWindowService, ISettingsService settingsService, IMoveModDialogService moveModDialogService)
+        public MainViewModel(ModContext db, IMainWindowService mainWindowService, ISettingsService settingsService, IMoveModsDialogService moveModsDialogService)
         {
             _db = db;
             _mainWindowService = mainWindowService;
             _settingsService = settingsService;
-            _moveModDialogService = moveModDialogService;
+            _moveModsDialogService = moveModsDialogService;
             _db.Mods.Load();
             ModList = db.Mods.Local.ToObservableCollection();
             var sorted = ModList.OrderBy(m => m.Order).ToList();
@@ -70,7 +70,7 @@ namespace Modding_Assistant.MVVM.ViewModel
                 {
                     if (selectedMods is IList mods && mods.Count > 0)
                     {
-                        int? result = _moveModDialogService.ShowNumberDialog();
+                        int? result = _moveModsDialogService.ShowNumberDialog();
                         if (result.HasValue)
                         {
                             foreach (var mod in mods)

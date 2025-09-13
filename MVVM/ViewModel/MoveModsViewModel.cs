@@ -2,7 +2,7 @@
 
 namespace Modding_Assistant.MVVM.ViewModel
 {
-    public class MoveModViewModel : ObservableObject
+    public class MoveModsViewModel : ObservableObject
     {
         private int? modNumber;
         public int? ModNumber
@@ -21,7 +21,7 @@ namespace Modding_Assistant.MVVM.ViewModel
         public RelayCommand OKCommand { get; }
         public RelayCommand CloseCommand { get; }
 
-        public MoveModViewModel()
+        public MoveModsViewModel()
         {
             OKCommand = new RelayCommand(
                 _ => RequestOk?.Invoke(),
