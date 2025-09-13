@@ -22,7 +22,7 @@ namespace Modding_Assistant.MVVM.ViewModel
 {
     internal class MainViewModel : ObservableObject
     {
-        private readonly ModContext db = new();
+        private readonly ModContext _db;
         private readonly IMainWindowService _mainWindowService;
         private readonly ISettingsService _settingsService;
         private readonly IMoveModDialogService _moveModDialogService;
@@ -34,12 +34,13 @@ namespace Modding_Assistant.MVVM.ViewModel
         private RelayCommand? moveWindowCommand;
         private RelayCommand? exitCommand;
         private Geometry _maximizeButtonGeometry = Geometry.Parse("M0,0 M0.2,0.2 L0.8,0.2 L0.8,0.8 L0.2,0.8 Z M1,1");
-        public MainViewModel(IMainWindowService mainWindowService, ISettingsService settingsService, IMoveModDialogService moveModDialogService)
+        public MainViewModel(ModContext db, IMainWindowService mainWindowService, ISettingsService settingsService, IMoveModDialogService moveModDialogService)
         {
+            _db = db;
             _mainWindowService = mainWindowService;
             _settingsService = settingsService;
             _moveModDialogService = moveModDialogService;
-            db.Mods.Load();
+            _db.Mods.Load();
             ModList = db.Mods.Local.ToObservableCollection();
             var sorted = ModList.OrderBy(m => m.Order).ToList();
             for (int i = 0; i < sorted.Count; i++)
@@ -96,7 +97,7 @@ namespace Modding_Assistant.MVVM.ViewModel
                                 }
                             }
                             CollectionViewSource.GetDefaultView(ModList)?.Refresh();
-                            db.SaveChanges();
+                            _db.SaveChanges();
                         }
                     }
                 });
@@ -111,8 +112,8 @@ namespace Modding_Assistant.MVVM.ViewModel
                     if (selectedMods is IList mods)
                     {
                         foreach (var mod in mods.OfType<ModModel>().ToList())
-                            db.Mods.Remove(mod);
-                        db.SaveChanges();
+                            _db.Mods.Remove(mod);
+                        _db.SaveChanges();
                         CollectionViewSource.GetDefaultView(ModList)?.Refresh();
                     }
                 });
@@ -172,7 +173,7 @@ namespace Modding_Assistant.MVVM.ViewModel
                     {
                         ModList[i].Order = i + 1;
                     }
-                    db.SaveChanges();
+                    _db.SaveChanges();
                     Application.Current.Shutdown();
                 });
             }

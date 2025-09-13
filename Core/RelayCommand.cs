@@ -7,7 +7,7 @@ using System.Windows.Input;
 
 namespace Modding_Assistant.Core
 {
-    class RelayCommand(Action<object?> execute, Func<object?, bool>? canExecute = null) : ICommand
+    public class RelayCommand(Action<object?> execute, Func<object?, bool>? canExecute = null) : ICommand
     {
         private readonly Action<object?> execute = execute;
         private readonly Func<object?, bool>? canExecute = canExecute;
@@ -22,7 +22,6 @@ namespace Modding_Assistant.Core
         {
             return this.canExecute == null || this.canExecute(parameter);
         }
-
         public void Execute(object? parameter)
         {
             this.execute(parameter);

@@ -10,7 +10,7 @@ using System.Windows;
 
 namespace Modding_Assistant.MVVM.ViewModel
 {
-    internal class MoveModViewModel : ObservableObject
+    public class MoveModViewModel : ObservableObject
     {
         private int? modNumber;
         public int? ModNumber

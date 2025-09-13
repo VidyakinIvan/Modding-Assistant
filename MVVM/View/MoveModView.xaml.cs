@@ -22,17 +22,12 @@ namespace Modding_Assistant.MVVM.View
     /// </summary>
     public partial class MoveModView : Window
     {
-        public MoveModView()
+        public MoveModView(MoveModViewModel viewModel)
         {
             InitializeComponent();
-            DataContextChanged += (s, e) =>
-            {
-                if (e.NewValue is MoveModViewModel vmNew)
-                {
-                    vmNew.RequestOk += () => { DialogResult = true; Hide(); };
-                    vmNew.RequestClose += () => Hide();
-                }
-            };
+            viewModel.RequestOk += () => { DialogResult = true; Hide(); };
+            viewModel.RequestClose += () => Hide();
+            DataContext = viewModel;
         }
         public int? ModNumber
         {
