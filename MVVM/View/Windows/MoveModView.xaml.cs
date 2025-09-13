@@ -1,20 +1,7 @@
-﻿using Modding_Assistant.Core;
-using Modding_Assistant.MVVM.ViewModel;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Modding_Assistant.MVVM.ViewModel;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 
-namespace Modding_Assistant.MVVM.View
+namespace Modding_Assistant.MVVM.View.Windows
 {
     /// <summary>
     /// Interaction logic for MoveModView.xaml
@@ -24,7 +11,27 @@ namespace Modding_Assistant.MVVM.View
         public MoveModView()
         {
             InitializeComponent();
+            DataContextChanged += (s, e) =>
+            {
+                if (e.NewValue is MoveModViewModel vm)
+                {
+                    vm.RequestOk += OnRequestOk;
+                    vm.RequestClose += OnRequestClose;
+                }
+            };
         }
+
+        private void OnRequestOk()
+        {
+            DialogResult = true;
+            Close();
+        }
+
+        private void OnRequestClose()
+        {
+            Close();
+        }
+
         public int? ModNumber
         {
             get

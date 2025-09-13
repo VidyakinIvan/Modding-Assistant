@@ -2,7 +2,7 @@
 <Project ToolsVersion="Current" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup />
   <ItemGroup>
-    <Compile Update="MVVM\View\MoveModView.xaml.cs">
+    <Compile Update="MVVM\View\Windows\MoveModView.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
   </ItemGroup>
