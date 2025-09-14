@@ -18,11 +18,11 @@ jobs:
           dotnet-version: '9.0.x'
 
       - run: |
-            dotnet publish ${{ env.PROJECT_PATH }} \
-              -c Release \
-              --self-contained \
-              -r win-x64 \
-              -p:PublishSingleFile=true \
+            dotnet publish ${{ env.PROJECT_PATH }} `
+              -c Release `
+              --self-contained `
+              -r win-x64 `
+              -p:PublishSingleFile=true `
               -o ${{ env.PUBLISH_PATH }}
 
       - uses: softprops/action-gh-release@v2
