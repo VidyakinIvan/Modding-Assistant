@@ -14,29 +14,36 @@ jobs:
   deploy:
     runs-on: windows-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-dotnet@v5
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup .NET SDK
+        uses: actions/setup-dotnet@v5
         with:
           dotnet-version: '9.0.x'
 
-      - run: |
+      - name: Publish application
+        run: |
             dotnet publish ${{ env.PROJECT_PATH }} `
               -c Release `
               --self-contained `
               -r win-x64 `
               -p:PublishSingleFile=true `
               -o ${{ env.PUBLISH_PATH }}
-
-      - run: |
+              
+      - name: Prepare release files
+        run: |
             mkdir ${{ env.RELEASE_DIR }}
             copy ${{ env.PUBLISH_PATH }}\* ${{ env.RELEASE_DIR }}\
             copy LICENSE ${{ env.RELEASE_DIR }}\
             copy README.md ${{ env.RELEASE_DIR }}\
 
-      - run: |
+      - name: Create distribution archive
+        run: |
             Compress-Archive -Path ${{ env.RELEASE_DIR }} -DestinationPath ${{ env.RELEASE_DIR }}.zip
 
-      - uses: softprops/action-gh-release@v2
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
         with:
           token: ${{ secrets.MY_PAT }}
           files: ${{ env.RELEASE_DIR }}.zip
