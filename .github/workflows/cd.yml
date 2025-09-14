@@ -8,7 +8,6 @@ on:
 env:
   PROJECT_PATH: Modding-Assistant.csproj
   PUBLISH_PATH: ./publish
-  RELEASE_DIR: ${{ github.ref_name.replace('/', '-') }}
 
 jobs:
   deploy:
@@ -22,6 +21,13 @@ jobs:
         with:
           dotnet-version: '9.0.x'
 
+      - name: Extract version from tag
+        run: |
+          $tag = "${{ github.ref_name }}"
+          $version = $tag -replace "Modding-Assistant/", ""
+          echo "RELEASE_DIR=Modding-Assistant-$version" >> $env:GITHUB_ENV
+          echo "Version extracted: $version"
+          
       - name: Publish application
         run: |
             dotnet publish ${{ env.PROJECT_PATH }} `
