@@ -7,7 +7,7 @@ on:
   workflow_dispatch:
 
 env:
-  PROJECT_PATH: Modding-Assistant/Modding-Assistant.csproj
+  PROJECT_PATH: Modding-Assistant.csproj
 
 jobs:
   deploy:
