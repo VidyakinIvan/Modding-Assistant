@@ -4,7 +4,6 @@ on:
   push:
     tags:
       - "Modding-Assistant/v*"
-  workflow_dispatch:
 
 env:
   PROJECT_PATH: Modding-Assistant.csproj
@@ -18,9 +17,17 @@ jobs:
         with:
           dotnet-version: '9.0.x'
 
-      - run: dotnet publish ${{ env.PROJECT_PATH }} -c Release --self-contained -r win-x64 -p:PublishSingleFile=true
+      - run: |
+          dotnet publish ${{ env.PROJECT_PATH }} -c Release --self-contained -r win-x64 -p:PublishSingleFile=true \
+            -o ${{ env.PROJECT_PATH }}
 
       - uses: softprops/action-gh-release@v2
         with:
           token: ${{ secrets.MY_PAT }}
+          files: |
+            ${{ env.PUBLISH_PATH }}/*.exe
+            ${{ env.PUBLISH_PATH }}/*.dll
+            LICENSE
+            README.md
+          generate_release_notes: false
             
