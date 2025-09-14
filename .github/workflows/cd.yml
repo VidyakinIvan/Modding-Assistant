@@ -8,7 +8,7 @@ on:
 env:
   PROJECT_PATH: Modding-Assistant.csproj
   PUBLISH_PATH: ./publish
-  RELEASE_DIR: ${{ github.ref_name }}
+  RELEASE_DIR: ${{ github.ref_name.replace('/', '-') }}
 
 jobs:
   deploy:
