@@ -2,16 +2,10 @@
 
 namespace Modding_Assistant.Core
 {
-    public class RelayCommand : ICommand
+    public class RelayCommand(Action<object?> execute, Func<object?, bool>? canExecute = null) : ICommand
     {
-        private readonly Action<object?> execute;
-        private readonly Func<object?, bool>? canExecute;
-
-        public RelayCommand(Action<object?> execute, Func<object?, bool>? canExecute = null)
-        {
-            this.execute = execute ?? throw new ArgumentNullException(nameof(execute));
-            this.canExecute = canExecute;
-        }
+        private readonly Action<object?> execute = execute ?? throw new ArgumentNullException(nameof(execute));
+        private readonly Func<object?, bool>? canExecute = canExecute;
 
         public event EventHandler? CanExecuteChanged
         {
