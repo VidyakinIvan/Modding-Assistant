@@ -24,7 +24,6 @@ namespace Modding_Assistant.MVVM.ViewModel
         private RelayCommand? _maximizeCommand;
         private RelayCommand? _moveWindowCommand;
         private RelayCommand? _exitCommand;
-        private Geometry _maximizeButtonGeometry = Geometry.Parse("M0,0 M0.2,0.2 L0.8,0.2 L0.8,0.8 L0.2,0.8 Z M1,1");
         public MainViewModel(ModContext db, IMainWindowService mainWindowService, ISettingsService settingsService, IMoveModsDialogService moveModsDialogService)
         {
             _db = db;
@@ -42,10 +41,6 @@ namespace Modding_Assistant.MVVM.ViewModel
                     if (sortedIndex >= 0)
                         ModList.Move(sortedIndex, i);
                 }
-            }
-            if (_mainWindowService is MainWindowService ws)
-            {
-                UpdateMaximizeButtonGeometry(_mainWindowService.WindowState);
             }
         }
         public ObservableCollection<ModModel> ModList { get; set; }
@@ -127,15 +122,9 @@ namespace Modding_Assistant.MVVM.ViewModel
                 return _maximizeCommand ??= new RelayCommand(_ =>
                 {
                     if (_mainWindowService.WindowState == WindowState.Maximized)
-                    {
                         _mainWindowService.Restore();
-                        MaximizeButtonGeometry = Geometry.Parse("M0,0 M0.2,0.2 L0.8,0.2 L0.8,0.8 L0.2,0.8 Z M1,1");
-                    }
                     else
-                    {
                         _mainWindowService.Maximize();
-                        MaximizeButtonGeometry = Geometry.Parse("M0,0 M0.6,0.4 L0.6,0.8 L0.2,0.8 L0.2,0.4 Z M0.8,0.2 L0.8,0.6 L0.4,0.6 L0.4,0.2 Z M1,1");
-                    }
                 });
             }
         }
@@ -167,26 +156,6 @@ namespace Modding_Assistant.MVVM.ViewModel
                     _db.SaveChanges();
                     Application.Current.Shutdown();
                 });
-            }
-        }
-        public Geometry MaximizeButtonGeometry
-        {
-            get => _maximizeButtonGeometry;
-            set
-            {
-                _maximizeButtonGeometry = value;
-                OnPropertyChanged();
-            }
-        }
-        private void UpdateMaximizeButtonGeometry(WindowState state)
-        {
-            if (state == WindowState.Maximized)
-            {
-                MaximizeButtonGeometry = Geometry.Parse("M0,0 M0.6,0.4 L0.6,0.8 L0.2,0.8 L0.2,0.4 Z M0.8,0.2 L0.8,0.6 L0.4,0.6 L0.4,0.2 Z M1,1");
-            }
-            else
-            {
-                MaximizeButtonGeometry = Geometry.Parse("M0,0 M0.2,0.2 L0.8,0.2 L0.8,0.8 L0.2,0.8 Z M1,1");
             }
         }
     }

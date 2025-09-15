@@ -31,6 +31,8 @@
         </ContextMenu>
         <conv:RowIndexConverter x:Key="RowIndexConverter"/>
         <conv:DateOnlyToDateTimeConverter x:Key="DateOnlyToDateTimeConverter"/>
+        <Geometry x:Key="MaximizeButtonGeometry">M0,0 M0.2,0.2 L0.8,0.2 L0.8,0.8 L0.2,0.8 Z M1,1</Geometry>
+        <Geometry x:Key="RestoreButtonGeometry">M0,0 M0.3,0.3 L0.9,0.3 L0.9,0.9 L0.3,0.9 Z M0.1,0.1 L0.1,0.7 L0.7,0.7 L0.7,0.1 Z M1,1</Geometry>
     </Window.Resources>
     <i:Interaction.Triggers>
         <i:EventTrigger EventName="Loaded">
@@ -102,10 +104,13 @@
                     <Button.Template>
                         <ControlTemplate TargetType="Button">
                             <Border x:Name="Bd" Background="Transparent">
-                                <Path Data="{Binding MaximizeButtonGeometry}"
+                                <Path x:Name="IconPath" Data="{StaticResource MaximizeButtonGeometry}"
                                 Stretch="Uniform" Stroke="#DFFFFF" StrokeThickness="2"/>
                             </Border>
                             <ControlTemplate.Triggers>
+                                <DataTrigger Binding="{Binding RelativeSource={RelativeSource AncestorType=Window}, Path=WindowState}" Value="Maximized">
+                                    <Setter TargetName="IconPath" Property="Data" Value="{StaticResource RestoreButtonGeometry}"/>
+                                </DataTrigger>
                                 <Trigger Property="IsMouseOver" Value="True">
                                     <Setter TargetName="Bd" Property="Background" Value="Violet"/>
                                 </Trigger>
