@@ -8,11 +8,11 @@ namespace Modding_Assistant.MVVM.Model
         private string _version = "0.0.0";
         private string _installInstructions = "No installation instructions available.";
         private string _url = "";
-        private string[] _dependencies = [];
+        private string _dependencies = "";
         private string _modRawName = "";
         private DateOnly _lastUpdated = DateOnly.FromDateTime(DateTime.Today);
         private string _description = "No description available.";
-        private string _potentialIssues = "No known issues.";
+        private string _potentialIssues = "";
         public int Id { get; set; }
         public int Order { get; set; }
         public string Name 
@@ -35,7 +35,7 @@ namespace Modding_Assistant.MVVM.Model
             get => _url;
             set => SetProperty(ref _url, value);
         }
-        public string[] Dependencies
+        public string Dependencies
         {
             get => _dependencies;
             set => SetProperty(ref _dependencies, value);
