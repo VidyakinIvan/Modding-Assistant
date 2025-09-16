@@ -6,14 +6,9 @@ using Modding_Assistant.MVVM.View.Dialogs;
 
 namespace Modding_Assistant.MVVM.Services.Implementations
 {
-    public class MoveModsDialogService : IMoveModsDialogService
+    public class MoveModsDialogService(IServiceProvider serviceProvider) : IMoveModsDialogService
     {
-        private readonly IServiceProvider _serviceProvider;
-
-        public MoveModsDialogService(IServiceProvider serviceProvider)
-        {
-            _serviceProvider = serviceProvider;
-        }
+        private readonly IServiceProvider _serviceProvider = serviceProvider;
 
         public int? ShowNumberDialog()
         {

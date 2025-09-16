@@ -8,9 +8,8 @@ namespace Modding_Assistant.MVVM.View.Converters
     {
         public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
         {
-            var dataGrid = values[0] as DataGrid;
             var item = values[1];
-            if (dataGrid != null && item != null)
+            if (values[0] is DataGrid dataGrid && item != null)
             {
                 int index = dataGrid.Items.IndexOf(item);
                 if (index >= 0)

@@ -7,6 +7,7 @@ using Modding_Assistant.MVVM.Services.Interfaces;
 using Modding_Assistant.MVVM.View.Windows;
 using Modding_Assistant.MVVM.View.Dialogs;
 using Modding_Assistant.MVVM.ViewModel;
+using Microsoft.EntityFrameworkCore;
 
 namespace Modding_Assistant
 {
@@ -33,7 +34,8 @@ namespace Modding_Assistant
                         var mainWindow = provider.GetRequiredService<MainWindow>();
                         return new MainWindowService(mainWindow);
                     });
-                    services.AddDbContext<ModContext>();
+                    services.AddDbContext<ModContext>(options => 
+                        options.UseSqlite("Data Source=modding_assistant.db"));
                 })
                 .Build();
         }
