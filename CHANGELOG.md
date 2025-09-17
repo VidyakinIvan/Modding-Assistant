@@ -5,6 +5,14 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog],
 and this project adheres to [Semantic Versioning].
 
+## [Unreleased]
+
+### Added
+
+- Order column - control the order of mods not only in the table, but also in the actual loading.
+- Loading from file - the program will automatically suggest a convenient name, as well as remember the archive name and upload date.
+- Mods folder - set up a directory that is convenient for you to automatically transfer all selected archives with plugins.
+
 ## [1.1.0] - 2025-09-17
 
 ### Added
