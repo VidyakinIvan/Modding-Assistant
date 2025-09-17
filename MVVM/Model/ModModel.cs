@@ -4,6 +4,7 @@ namespace Modding_Assistant.MVVM.Model
 {
     public class ModModel : ObservableObject
     {
+        private int _order = 0;
         private string _name = "Unknown";
         private string _version = "0.0.0";
         private string _installInstructions = "No installation instructions available.";
@@ -14,7 +15,11 @@ namespace Modding_Assistant.MVVM.Model
         private string _description = "No description available.";
         private string _potentialIssues = "";
         public int Id { get; set; }
-        public int Order { get; set; }
+        public int Order 
+        {
+            get => _order;
+            set => SetProperty(ref _order, value);
+        }
         public string Name 
         { 
             get => _name;

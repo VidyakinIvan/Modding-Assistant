@@ -5,9 +5,11 @@ using Modding_Assistant.MVVM.Services.Implementations;
 using Modding_Assistant.MVVM.Services.Interfaces;
 using System.Collections;
 using System.Collections.ObjectModel;
+using System.Collections.Specialized;
 using System.Windows;
 using System.Windows.Data;
 using System.Windows.Media;
+using System.ComponentModel;
 
 namespace Modding_Assistant.MVVM.ViewModel
 {
@@ -32,6 +34,7 @@ namespace Modding_Assistant.MVVM.ViewModel
             _moveModsDialogService = moveModsDialogService;
             _db.Mods.Load();
             ModList = db.Mods.Local.ToObservableCollection();
+            ModList.CollectionChanged += ModList_CollectionChanged;
             var sorted = ModList.OrderBy(m => m.Order).ToList();
             for (int i = 0; i < sorted.Count; i++)
             {
@@ -40,6 +43,23 @@ namespace Modding_Assistant.MVVM.ViewModel
                     int sortedIndex = ModList.IndexOf(sorted[i]);
                     if (sortedIndex >= 0)
                         ModList.Move(sortedIndex, i);
+                }
+            }
+        }
+        private void ModList_CollectionChanged(object? sender, NotifyCollectionChangedEventArgs e)
+        {
+            if (e.Action == NotifyCollectionChangedAction.Add)
+            {
+                foreach (ModModel newMod in e.NewItems!)
+                {
+                    newMod.Order = ModList.IndexOf(newMod) + 1;
+                }
+            }
+            else if (e.Action == NotifyCollectionChangedAction.Remove)
+            {
+                for (int i = 0; i < ModList.Count; i++)
+                {
+                    ModList[i].Order = i + 1;
                 }
             }
         }
@@ -81,6 +101,14 @@ namespace Modding_Assistant.MVVM.ViewModel
                                         ModList.Move(oldIndex, newIndex);
                                     }
                                 }
+                            }
+                            var viewSource = CollectionViewSource.GetDefaultView(ModList);
+                            viewSource.SortDescriptions.Clear();
+                            viewSource.SortDescriptions.Add(new(nameof(ModModel.Order), ListSortDirection.Ascending));
+                            viewSource.Refresh();
+                            for (int i = 0; i < ModList.Count; i++)
+                            {
+                                ModList[i].Order = i + 1;
                             }
                             CollectionViewSource.GetDefaultView(ModList)?.Refresh();
                             _db.SaveChanges();
@@ -149,10 +177,6 @@ namespace Modding_Assistant.MVVM.ViewModel
                     _settingsService.MainWindowFullScreen = _mainWindowService.WindowState == WindowState.Maximized;
                     _mainWindowService.Hide();
                     _settingsService.Save();
-                    for (int i = 0; i < ModList.Count; i++)
-                    {
-                        ModList[i].Order = i + 1;
-                    }
                     _db.SaveChanges();
                     Application.Current.Shutdown();
                 });
