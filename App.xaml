@@ -4,6 +4,6 @@
              xmlns:local="clr-namespace:Modding_Assistant"
              xmlns:viewModel="clr-namespace:Modding_Assistant.MVVM.ViewModel">
     <Application.Resources>
-         
+        
     </Application.Resources>
 </Application>
