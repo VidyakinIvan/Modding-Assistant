@@ -24,8 +24,8 @@ jobs:
       - name: Extract version from tag
         run: |
           $tag = "${{ github.ref_name }}"
-          $version = $tag -replace "Modding-Assistant/", ""
-          echo "RELEASE_DIR=Modding-Assistant-$version" >> $env:GITHUB_ENV
+          $version = $tag -replace "Modding-Assistant/v", ""
+          echo "RELEASE_DIR=Modding-Assistant-v$version" >> $env:GITHUB_ENV
           echo "Version extracted: $version"
           
       - name: Publish application
@@ -43,10 +43,31 @@ jobs:
             copy ${{ env.PUBLISH_PATH }}\* ${{ env.RELEASE_DIR }}\
             copy LICENSE ${{ env.RELEASE_DIR }}\
             copy README.md ${{ env.RELEASE_DIR }}\
+            copy CHANGELOG.md $ {{ env.RELEASE_DIR }}\
 
       - name: Create distribution archive
         run: |
             Compress-Archive -Path ${{ env.RELEASE_DIR }} -DestinationPath ${{ env.RELEASE_DIR }}.zip
+
+      - name: Parse CHANGELOG and prepare release notes
+        run: |
+            $version = "${{ env.VERSION }}"
+            $changelogContent = Get-Content -Path "CHANGELOG.md" -Raw
+            $escapedVersion = [regex]::Escape($version)
+            $pattern = "(?ms)## \[$escapedVersion\].*?(?=## \[|\Z)"
+            $match = [regex]::Match($changelogContent, $pattern)
+                      
+            if ($match.Success) {
+              $releaseNotes = $match.Value.Trim()
+              Write-Host "Found release notes for version $version"
+              Set-Content -Path "release_notes.md" -Value $releaseNotes
+              echo "::set-output name=found::true"
+            } else {
+              Write-Host "Section for version $version not found in CHANGELOG.md"
+              echo "::set-output name=found::false"
+              $defaultNotes = "Release version $version. For details, see CHANGELOG.md."
+              Set-Content -Path "release_notes.md" -Value $defaultNotes
+            }
 
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v2
@@ -54,4 +75,5 @@ jobs:
           token: ${{ secrets.MY_PAT }}
           files: ${{ env.RELEASE_DIR }}.zip
           generate_release_notes: false
+          body_path: release_notes.md
             
