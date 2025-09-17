@@ -20,6 +20,7 @@ namespace Modding_Assistant.MVVM.ViewModel
         private readonly ISettingsService _settingsService;
         private readonly IMoveModsDialogService _moveModsDialogService;
         private RelayCommand? _loadCommand;
+        private RelayCommand? _fromFileCommand;
         private RelayCommand? _moveBeforeCommand;
         private RelayCommand? _deleteCommand;
         private RelayCommand? _minimizeCommand;
@@ -45,6 +46,7 @@ namespace Modding_Assistant.MVVM.ViewModel
                         ModList.Move(sortedIndex, i);
                 }
             }
+            _db.SaveChanges();
         }
         private void ModList_CollectionChanged(object? sender, NotifyCollectionChangedEventArgs e)
         {
@@ -74,6 +76,40 @@ namespace Modding_Assistant.MVVM.ViewModel
                     _mainWindowService.Top = !double.IsNaN(_settingsService.MainWindowTop) ? _settingsService.MainWindowTop : (SystemParameters.WorkArea.Height - _mainWindowService.Height) / 2;
                     if (_settingsService.MainWindowFullScreen)
                         MaximizeCommand.Execute(null);
+                });
+            }
+        }
+        private static string GetFriendlyModName(string fileName)
+        {
+            var name = System.Text.RegularExpressions.Regex.Replace(
+                fileName,
+                @"([-_ (]*\d{4,}.*$)|(\s*[\(\[]?v?\d+(\.\d+)*[\)\]]?$)",
+                string.Empty,
+                System.Text.RegularExpressions.RegexOptions.IgnoreCase
+            );
+            name = name.Replace('_', ' ').Replace('-', ' ').Trim();
+            name = System.Globalization.CultureInfo.CurrentCulture.TextInfo.ToTitleCase(name.ToLower());
+            return string.IsNullOrWhiteSpace(name) ? fileName : name;
+        }
+        public RelayCommand FromFileCommand
+        {
+            get
+            {
+                return _fromFileCommand ??= new RelayCommand(_ =>
+                {
+                    var openFileDialog = new Microsoft.Win32.OpenFileDialog
+                    {
+                        Filter = "Archive Files (*.zip;*.rar;*.7z)|*.zip;*.rar;*.7z|All Files (*.*)|*.*",
+                        Title = "Select Mod Archive"
+                    };
+                    if (openFileDialog.ShowDialog() == true)
+                    {
+                        string fileName = System.IO.Path.GetFileNameWithoutExtension(openFileDialog.FileName);
+
+                        var newMod = new ModModel { Name = GetFriendlyModName(fileName), ModRawName = fileName, LastUpdated = DateOnly.FromDateTime(DateTime.Today) };
+                        ModList.Add(newMod);
+                    }
+                    _db.SaveChanges();
                 });
             }
         }

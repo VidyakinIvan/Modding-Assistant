@@ -24,6 +24,7 @@
             <MenuItem Header="Select All" Command="ApplicationCommands.SelectAll"/>
             <MenuItem Header="Refresh" Command="{Binding LoadCommand}"
                       CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=Window}}"/>
+            <MenuItem Header="From file..." Command="{Binding FromFileCommand}"/>
             <MenuItem Header="Move to..." Command="{Binding MoveBeforeCommand}" 
                       CommandParameter="{Binding PlacementTarget.SelectedItems, RelativeSource={RelativeSource AncestorType=ContextMenu}}"/>
             <MenuItem Header="Delete" Command="{Binding DeleteCommand}" 
