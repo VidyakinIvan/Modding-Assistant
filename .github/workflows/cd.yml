@@ -26,6 +26,7 @@ jobs:
           $tag = "${{ github.ref_name }}"
           $version = $tag -replace "Modding-Assistant/v", ""
           echo "RELEASE_DIR=Modding-Assistant-v$version" >> $env:GITHUB_ENV
+          echo "VERSION=$version" >> $env:GITHUB_ENV
           echo "Version extracted: $version"
           
       - name: Publish application
