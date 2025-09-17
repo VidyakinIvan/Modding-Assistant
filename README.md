@@ -11,6 +11,8 @@ A comprehensive mod management tool designed to help gamers organize, track, and
 - **Detailed Mod Tracking**: Keep records of mod names, versions, descriptions, installation instructions, potential issues and etc
 - **Update Monitoring**: Track when mods were last updated to keep your collection current
 - **Dependency Tracking**: Record mod dependencies to avoid conflicts
+- **Loading Files**: Automatically move archives to a convenient folder with the transfer of a file, a convenient name and upload date to the program.
+- **Order control**: Keep the order of mods in the program to avoid losing sorting when the main organizer loses data.
 
 ## Download
 1. Visit the [Releases page](https://github.com/VidyakinIvan/Modding-Assistant/releases)
