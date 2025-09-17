@@ -10,6 +10,8 @@ using System.Windows;
 using System.Windows.Data;
 using System.Windows.Media;
 using System.ComponentModel;
+using System.Diagnostics;
+using System.IO;
 
 namespace Modding_Assistant.MVVM.ViewModel
 {
@@ -26,6 +28,7 @@ namespace Modding_Assistant.MVVM.ViewModel
         private RelayCommand? _minimizeCommand;
         private RelayCommand? _maximizeCommand;
         private RelayCommand? _moveWindowCommand;
+        private RelayCommand? _settingsCommand;
         private RelayCommand? _exitCommand;
         public MainViewModel(ModContext db, IMainWindowService mainWindowService, ISettingsService settingsService, IMoveModsDialogService moveModsDialogService)
         {
@@ -110,6 +113,23 @@ namespace Modding_Assistant.MVVM.ViewModel
                         ModList.Add(newMod);
                     }
                     _db.SaveChanges();
+                    string modsFolder = _settingsService.ModsFolder;
+                    if (!string.IsNullOrWhiteSpace(_settingsService.ModsFolder) && Directory.Exists(modsFolder))
+                    {
+                        string sourceFilePath = openFileDialog.FileName;
+                        if (Directory.Exists(modsFolder))
+                        {
+                            string destFilePath = Path.Combine(modsFolder, Path.GetFileName(sourceFilePath));
+                            try
+                            {
+                                File.Move(sourceFilePath, destFilePath, overwrite: true);
+                            }
+                            catch (Exception ex)
+                            {
+                                MessageBox.Show($"Failed to copy file:\n{ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                            }
+                        }
+                    }
                 });
             }
         }
@@ -199,6 +219,24 @@ namespace Modding_Assistant.MVVM.ViewModel
                 return _moveWindowCommand ??= new RelayCommand(_ =>
                 {
                     _mainWindowService.DragMove();
+                });
+            }
+        }
+        public RelayCommand SettingsCommand
+        {
+            get
+            {
+                return _settingsCommand ??= new RelayCommand(_ =>
+                {
+                    var pickFolderDialog = new Microsoft.Win32.OpenFolderDialog
+                    {
+                        Title = "Select Mod Folder"
+                    };
+                    if (pickFolderDialog.ShowDialog() == true)
+                    {
+                        string folderName = pickFolderDialog.FolderName;
+                        _settingsService.ModsFolder = pickFolderDialog.FolderName;
+                    }
                 });
             }
         }

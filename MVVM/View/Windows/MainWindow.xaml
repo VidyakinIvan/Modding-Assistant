@@ -94,7 +94,8 @@
                 <RowDefinition Height="50"/>
                 <RowDefinition/>
             </Grid.RowDefinitions>
-            <Button Grid.Row="0" HorizontalAlignment="Left" Width="30" Height="30" Padding="2" Background="Transparent" BorderThickness="0">
+            <Button Grid.Row="0" HorizontalAlignment="Left" Width="30" Height="30" Padding="2" Background="Transparent" BorderThickness="0"
+                    Command = "{Binding SettingsCommand}">
                 <Button.Style>
                     <Style TargetType="Button">
                         <Setter Property="Margin" Value="30 5 0 0"/>

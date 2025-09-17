@@ -58,5 +58,17 @@ namespace Modding_Assistant.Properties {
                 this["MainWindowFullScreen"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string ModsFolder {
+            get {
+                return ((string)(this["ModsFolder"]));
+            }
+            set {
+                this["ModsFolder"] = value;
+            }
+        }
     }
 }
