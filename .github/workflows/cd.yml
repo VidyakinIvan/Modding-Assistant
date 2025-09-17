@@ -43,7 +43,7 @@ jobs:
             copy ${{ env.PUBLISH_PATH }}\* ${{ env.RELEASE_DIR }}\
             copy LICENSE ${{ env.RELEASE_DIR }}\
             copy README.md ${{ env.RELEASE_DIR }}\
-            copy CHANGELOG.md $ {{ env.RELEASE_DIR }}\
+            copy CHANGELOG.md ${{ env.RELEASE_DIR }}\
 
       - name: Create distribution archive
         run: |
