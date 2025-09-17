@@ -22,6 +22,12 @@ namespace Modding_Assistant.MVVM.Services.Implementations
             get => Settings.Default.MainWindowFullScreen;
             set => Settings.Default.MainWindowFullScreen = value;
         }
+        
+        public string ModsFolder
+        {
+            get => Settings.Default.ModsFolder;
+            set => Settings.Default.ModsFolder = value;
+        }
 
         public void Save() => Settings.Default.Save();
     }

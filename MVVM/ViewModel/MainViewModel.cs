@@ -10,6 +10,8 @@ using System.Windows;
 using System.Windows.Data;
 using System.Windows.Media;
 using System.ComponentModel;
+using System.Diagnostics;
+using System.IO;
 
 namespace Modding_Assistant.MVVM.ViewModel
 {
@@ -20,11 +22,13 @@ namespace Modding_Assistant.MVVM.ViewModel
         private readonly ISettingsService _settingsService;
         private readonly IMoveModsDialogService _moveModsDialogService;
         private RelayCommand? _loadCommand;
+        private RelayCommand? _fromFileCommand;
         private RelayCommand? _moveBeforeCommand;
         private RelayCommand? _deleteCommand;
         private RelayCommand? _minimizeCommand;
         private RelayCommand? _maximizeCommand;
         private RelayCommand? _moveWindowCommand;
+        private RelayCommand? _settingsCommand;
         private RelayCommand? _exitCommand;
         public MainViewModel(ModContext db, IMainWindowService mainWindowService, ISettingsService settingsService, IMoveModsDialogService moveModsDialogService)
         {
@@ -45,6 +49,7 @@ namespace Modding_Assistant.MVVM.ViewModel
                         ModList.Move(sortedIndex, i);
                 }
             }
+            _db.SaveChanges();
         }
         private void ModList_CollectionChanged(object? sender, NotifyCollectionChangedEventArgs e)
         {
@@ -74,6 +79,57 @@ namespace Modding_Assistant.MVVM.ViewModel
                     _mainWindowService.Top = !double.IsNaN(_settingsService.MainWindowTop) ? _settingsService.MainWindowTop : (SystemParameters.WorkArea.Height - _mainWindowService.Height) / 2;
                     if (_settingsService.MainWindowFullScreen)
                         MaximizeCommand.Execute(null);
+                });
+            }
+        }
+        private static string GetFriendlyModName(string fileName)
+        {
+            var name = System.Text.RegularExpressions.Regex.Replace(
+                fileName,
+                @"([-_ (]*\d{4,}.*$)|(\s*[\(\[]?v?\d+(\.\d+)*[\)\]]?$)",
+                string.Empty,
+                System.Text.RegularExpressions.RegexOptions.IgnoreCase
+            );
+            name = name.Replace('_', ' ').Replace('-', ' ').Trim();
+            name = System.Globalization.CultureInfo.CurrentCulture.TextInfo.ToTitleCase(name.ToLower());
+            return string.IsNullOrWhiteSpace(name) ? fileName : name;
+        }
+        public RelayCommand FromFileCommand
+        {
+            get
+            {
+                return _fromFileCommand ??= new RelayCommand(_ =>
+                {
+                    var openFileDialog = new Microsoft.Win32.OpenFileDialog
+                    {
+                        Filter = "Archive Files (*.zip;*.rar;*.7z)|*.zip;*.rar;*.7z|All Files (*.*)|*.*",
+                        Title = "Select Mod Archive"
+                    };
+                    if (openFileDialog.ShowDialog() == true)
+                    {
+                        string fileName = System.IO.Path.GetFileNameWithoutExtension(openFileDialog.FileName);
+
+                        var newMod = new ModModel { Name = GetFriendlyModName(fileName), ModRawName = fileName, LastUpdated = DateOnly.FromDateTime(DateTime.Today) };
+                        ModList.Add(newMod);
+                    }
+                    _db.SaveChanges();
+                    string modsFolder = _settingsService.ModsFolder;
+                    if (!string.IsNullOrWhiteSpace(_settingsService.ModsFolder) && Directory.Exists(modsFolder))
+                    {
+                        string sourceFilePath = openFileDialog.FileName;
+                        if (Directory.Exists(modsFolder))
+                        {
+                            string destFilePath = Path.Combine(modsFolder, Path.GetFileName(sourceFilePath));
+                            try
+                            {
+                                File.Move(sourceFilePath, destFilePath, overwrite: true);
+                            }
+                            catch (Exception ex)
+                            {
+                                MessageBox.Show($"Failed to copy file:\n{ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                            }
+                        }
+                    }
                 });
             }
         }
@@ -163,6 +219,24 @@ namespace Modding_Assistant.MVVM.ViewModel
                 return _moveWindowCommand ??= new RelayCommand(_ =>
                 {
                     _mainWindowService.DragMove();
+                });
+            }
+        }
+        public RelayCommand SettingsCommand
+        {
+            get
+            {
+                return _settingsCommand ??= new RelayCommand(_ =>
+                {
+                    var pickFolderDialog = new Microsoft.Win32.OpenFolderDialog
+                    {
+                        Title = "Select Mod Folder"
+                    };
+                    if (pickFolderDialog.ShowDialog() == true)
+                    {
+                        string folderName = pickFolderDialog.FolderName;
+                        _settingsService.ModsFolder = pickFolderDialog.FolderName;
+                    }
                 });
             }
         }
