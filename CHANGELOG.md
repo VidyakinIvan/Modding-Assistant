@@ -5,7 +5,7 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog],
 and this project adheres to [Semantic Versioning].
 
-## [Unreleased][unreleased]
+## [Unreleased]
 
 ### Added
 
@@ -32,7 +32,7 @@ and this project adheres to [Semantic Versioning].
 
 - The architecture of the code has been improved to more accurately follow a clean architecture and protect against potential problems with data substitution.
 
-## [1.0.0][1.0.0] - 2025-09-14
+## [1.0.0] - 2025-09-14
 
 - initial release
 
