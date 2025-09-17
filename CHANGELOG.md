@@ -5,7 +5,7 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog],
 and this project adheres to [Semantic Versioning].
 
-## [Unreleased]
+## [1.1.0] - 2025-09-17
 
 ### Added
 
@@ -41,5 +41,6 @@ and this project adheres to [Semantic Versioning].
 [semantic versioning]: https://semver.org/spec/v2.0.0.html
 
 <!-- Versions -->
-[unreleased]: https://github.com/VidyakinIvan/Modding-Assistant/compare/Modding-Assistant%2Fv1.0.0...HEAD
+[unreleased]: https://github.com/VidyakinIvan/Modding-Assistant/compare/Modding-Assistant%2Fv1.1.0...HEAD
+[1.1.0]: https://github.com/VidyakinIvan/Modding-Assistant/compare/Modding-Assistant%2Fv1.0.0...Modding-Assistant%2Fv1.1.0
 [1.0.0]: https://github.com/VidyakinIvan/Modding-Assistant/releases/tag/Modding-Assistant%2Fv1.0.0
