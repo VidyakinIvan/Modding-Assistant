@@ -181,6 +181,7 @@
                             </MultiBinding>
                         </DataGridTextColumn.Binding>
                     </DataGridTextColumn>
+                    <DataGridTextColumn Header="Order" IsReadOnly="True" Binding="{Binding Order}"  Width="*" ElementStyle="{StaticResource CenterTextColumnStyle}"/>
                     <DataGridTextColumn Header="Name" Width="4*" ElementStyle="{StaticResource CenterTextColumnStyle}">
                         <DataGridTextColumn.Binding>
                             <Binding Path="Name" UpdateSourceTrigger="PropertyChanged" ValidatesOnDataErrors="True" NotifyOnValidationError="True">
