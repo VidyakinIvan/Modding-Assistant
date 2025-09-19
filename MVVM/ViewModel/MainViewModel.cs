@@ -23,6 +23,8 @@ namespace Modding_Assistant.MVVM.ViewModel
         private readonly IMainWindowService _mainWindowService;
         private readonly ISettingsService _settingsService;
         private readonly IMoveModsDialogService _moveModsDialogService;
+        private readonly IExcelExportService _excelExportService;
+        private readonly IDialogService _dialogService;
         private RelayCommand? _loadCommand;
         private RelayCommand? _fromFileCommand;
         private RelayCommand? _moveBeforeCommand;
@@ -33,12 +35,15 @@ namespace Modding_Assistant.MVVM.ViewModel
         private RelayCommand? _settingsCommand;
         private RelayCommand? _exportCommand;
         private RelayCommand? _exitCommand;
-        public MainViewModel(ModContext db, IMainWindowService mainWindowService, ISettingsService settingsService, IMoveModsDialogService moveModsDialogService)
+        public MainViewModel(ModContext db, IMainWindowService mainWindowService, ISettingsService settingsService, 
+            IMoveModsDialogService moveModsDialogService, IExcelExportService excelExportService, IDialogService dialogService)
         {
             _db = db;
             _mainWindowService = mainWindowService;
             _settingsService = settingsService;
             _moveModsDialogService = moveModsDialogService;
+            _excelExportService = excelExportService;
+            _dialogService = dialogService;
             _db.Mods.Load();
             ModList = db.Mods.Local.ToObservableCollection();
             ModList.CollectionChanged += ModList_CollectionChanged;
@@ -248,57 +253,31 @@ namespace Modding_Assistant.MVVM.ViewModel
         {
             get
             {
-                return _exportCommand ??= new RelayCommand(_ =>
+                return _exportCommand ??= new RelayCommand(async _ =>
                 {
-                    var saveFileDialog = new Microsoft.Win32.SaveFileDialog
-                    {
-                        Filter = "Excel files (*.xlsx)|*.xlsx",
-                        FileName = $"Export_{DateTime.Now:yyyy-MM-dd_HH-mm-ss}.xlsx"
-                    };
-                    if (saveFileDialog.ShowDialog() == true)
+                    var fileName = await _dialogService.ShowSaveFileDialogAsync(
+                        $"Export to Excel", "Excel Files (*.xlsx)|*.xlsx|All Files (*.*)|*.*");
+                    if (!string.IsNullOrEmpty(fileName))
                     {
                         try
                         {
-                            using (var workbook = new XLWorkbook())
+                            var success = await _excelExportService.ExportToExcelAsync(
+                                ModList,
+                                fileName,
+                                "Mods"
+                            );
+                            if (success)
                             {
-                                var worksheet = workbook.Worksheets.Add("Mods");
-                                var headers = new[]
-                                {
-                                    "Order", "Name", "Version", "Install Instructions", "Url",
-                                    "Dependencies", "Mod Raw Name", "Last Updated", "Description", "Potential Issues"
-                                };
-
-                                for (int i = 0; i < headers.Length; i++)
-                                {
-                                    worksheet.Cell(1, i + 1).Value = headers[i];
-                                    worksheet.Cell(1, i + 1).Style.Font.Bold = true;
-                                    worksheet.Cell(1, i + 1).Style.Fill.BackgroundColor = XLColor.LightGray;
-                                }
-                                int row = 2;
-                                foreach (var mod in ModList)
-                                {
-                                    worksheet.Cell(row, 1).Value = mod.Order;
-                                    worksheet.Cell(row, 2).Value = mod.Name;
-                                    worksheet.Cell(row, 3).Value = mod.Version;
-                                    worksheet.Cell(row, 4).Value = mod.InstallInstructions;
-                                    worksheet.Cell(row, 5).Value = mod.Url;
-                                    worksheet.Cell(row, 6).Value = mod.Dependencies;
-                                    worksheet.Cell(row, 7).Value = mod.ModRawName;
-                                    worksheet.Cell(row, 8).Value = mod.LastUpdated.ToString();
-                                    worksheet.Cell(row, 9).Value = mod.Description;
-                                    worksheet.Cell(row, 10).Value = mod.PotentialIssues;
-                                    row++;
-                                }
-
-                                worksheet.Columns().AdjustToContents();
-                                workbook.SaveAs(saveFileDialog.FileName);
-                                MessageBox.Show("Export successful!", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
-
+                                await _dialogService.ShowMessageAsync("Success", "Export successful!");
+                            }
+                            else
+                            {
+                                await _dialogService.ShowErrorAsync("Error", "Failed to create file");
                             }
                         }
                         catch (Exception ex)
                         {
-                            MessageBox.Show($"Failed to create file:\n{ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                            await _dialogService.ShowErrorAsync("Error", $"Failed to create file:\n{ex.Message}");
                         }
                     }
                 });
