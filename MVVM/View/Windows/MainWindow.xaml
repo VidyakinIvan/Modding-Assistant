@@ -49,6 +49,9 @@
             M12,7
             A5,5 0 1 1 11.999,7Z
         </Geometry>
+        <Geometry x:Key="ExportIconGeometry">
+            M3,17 L3,21 L21,21 L21,17 M12,17 L12,3 M7,8 L12,3 L17,8
+        </Geometry>
         <Style x:Key="CenterTextColumnStyle" TargetType="TextBlock">
             <Setter Property="HorizontalAlignment" Value="Center"/>
             <Setter Property="TextAlignment" Value="Center"/>
@@ -94,24 +97,35 @@
                 <RowDefinition Height="50"/>
                 <RowDefinition/>
             </Grid.RowDefinitions>
-            <Button Grid.Row="0" HorizontalAlignment="Left" Width="30" Height="30" Padding="2" Background="Transparent" BorderThickness="0"
-                    Command = "{Binding SettingsCommand}">
-                <Button.Style>
-                    <Style TargetType="Button">
-                        <Setter Property="Margin" Value="30 5 0 0"/>
+            <StackPanel Grid.Row="0" Height="50" Orientation="Horizontal">
+                <StackPanel.Style>
+                    <Style TargetType="StackPanel">
+                        <Setter Property="Margin" Value="30 10 0 0"/>
                         <Style.Triggers>
                             <DataTrigger Binding="{Binding RelativeSource={RelativeSource AncestorType=Window}, Path=WindowState}" Value="Maximized">
                                 <Setter Property="Margin" Value="75 10 0 0"/>
                             </DataTrigger>
                         </Style.Triggers>
                     </Style>
-                </Button.Style>
-                <Border Background="Transparent">
+                </StackPanel.Style>
+                <Button Grid.Row="0" HorizontalAlignment="Left" Width="30" Height="30" Padding="2" Background="Transparent" BorderThickness="0"
+                    Command = "{Binding SettingsCommand}">
+                    <Border Background="Transparent">
                     <Path Data="{StaticResource SettingsIconGeometry}"
                           Fill="#DFFFFF"
                           Stretch="Uniform"/>
                 </Border>
             </Button>
+                <Button HorizontalAlignment="Left"
+                        Width="30" Height="30" Padding="2" Background="Transparent" BorderThickness="0"
+                        Command="{Binding ExportCommand}">
+                    <Border Background="Transparent">
+                        <Path Data="{StaticResource ExportIconGeometry}"
+                              Fill="#DFFFFF"
+                              Stretch="Uniform"/>
+                    </Border>
+                </Button>
+            </StackPanel>
             <TextBlock Text="Mod Assistant" Grid.Column="1" Foreground="#DFFFFF" VerticalAlignment="Top"
                        HorizontalAlignment="Center"
                        FontSize="22"

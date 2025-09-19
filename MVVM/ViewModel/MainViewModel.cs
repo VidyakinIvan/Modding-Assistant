@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using ClosedXML.Excel;
+using Microsoft.EntityFrameworkCore;
 using Modding_Assistant.Core;
 using Modding_Assistant.MVVM.Model;
 using Modding_Assistant.MVVM.Services.Implementations;
@@ -6,12 +7,13 @@ using Modding_Assistant.MVVM.Services.Interfaces;
 using System.Collections;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
-using System.Windows;
-using System.Windows.Data;
-using System.Windows.Media;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Data;
+using System.Windows.Media;
 
 namespace Modding_Assistant.MVVM.ViewModel
 {
@@ -21,6 +23,8 @@ namespace Modding_Assistant.MVVM.ViewModel
         private readonly IMainWindowService _mainWindowService;
         private readonly ISettingsService _settingsService;
         private readonly IMoveModsDialogService _moveModsDialogService;
+        private readonly IExcelExportService _excelExportService;
+        private readonly IDialogService _dialogService;
         private RelayCommand? _loadCommand;
         private RelayCommand? _fromFileCommand;
         private RelayCommand? _moveBeforeCommand;
@@ -29,13 +33,17 @@ namespace Modding_Assistant.MVVM.ViewModel
         private RelayCommand? _maximizeCommand;
         private RelayCommand? _moveWindowCommand;
         private RelayCommand? _settingsCommand;
+        private RelayCommand? _exportCommand;
         private RelayCommand? _exitCommand;
-        public MainViewModel(ModContext db, IMainWindowService mainWindowService, ISettingsService settingsService, IMoveModsDialogService moveModsDialogService)
+        public MainViewModel(ModContext db, IMainWindowService mainWindowService, ISettingsService settingsService, 
+            IMoveModsDialogService moveModsDialogService, IExcelExportService excelExportService, IDialogService dialogService)
         {
             _db = db;
             _mainWindowService = mainWindowService;
             _settingsService = settingsService;
             _moveModsDialogService = moveModsDialogService;
+            _excelExportService = excelExportService;
+            _dialogService = dialogService;
             _db.Mods.Load();
             ModList = db.Mods.Local.ToObservableCollection();
             ModList.CollectionChanged += ModList_CollectionChanged;
@@ -236,6 +244,41 @@ namespace Modding_Assistant.MVVM.ViewModel
                     {
                         string folderName = pickFolderDialog.FolderName;
                         _settingsService.ModsFolder = pickFolderDialog.FolderName;
+                    }
+                });
+            }
+        }
+
+        public RelayCommand ExportCommand
+        {
+            get
+            {
+                return _exportCommand ??= new RelayCommand(async _ =>
+                {
+                    var fileName = await _dialogService.ShowSaveFileDialogAsync(
+                        $"Export to Excel", "Excel Files (*.xlsx)|*.xlsx|All Files (*.*)|*.*");
+                    if (!string.IsNullOrEmpty(fileName))
+                    {
+                        try
+                        {
+                            var success = await _excelExportService.ExportToExcelAsync(
+                                ModList,
+                                fileName,
+                                "Mods"
+                            );
+                            if (success)
+                            {
+                                await _dialogService.ShowMessageAsync("Success", "Export successful!");
+                            }
+                            else
+                            {
+                                await _dialogService.ShowErrorAsync("Error", "Failed to create file");
+                            }
+                        }
+                        catch (Exception ex)
+                        {
+                            await _dialogService.ShowErrorAsync("Error", $"Failed to create file:\n{ex.Message}");
+                        }
                     }
                 });
             }

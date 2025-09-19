@@ -28,7 +28,8 @@ namespace Modding_Assistant
                     services.AddTransient<MoveModsViewModel>();
                     services.AddSingleton<ISettingsService, SettingsService>();
                     services.AddSingleton<IMoveModsDialogService, MoveModsDialogService>();
-
+                    services.AddSingleton<IExcelExportService, ExcelExportService>();
+                    services.AddSingleton<IDialogService, DialogService>();
                     services.AddSingleton<IMainWindowService>(provider =>
                     {
                         var mainWindow = provider.GetRequiredService<MainWindow>();
