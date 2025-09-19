@@ -117,7 +117,8 @@
                 </Border>
             </Button>
                 <Button HorizontalAlignment="Left"
-                        Width="30" Height="30" Padding="2" Background="Transparent" BorderThickness="0">
+                        Width="30" Height="30" Padding="2" Background="Transparent" BorderThickness="0"
+                        Command="{Binding ExportCommand}">
                     <Border Background="Transparent">
                         <Path Data="{StaticResource ExportIconGeometry}"
                               Fill="#DFFFFF"

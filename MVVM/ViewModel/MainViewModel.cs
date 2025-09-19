@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using ClosedXML.Excel;
+using Microsoft.EntityFrameworkCore;
 using Modding_Assistant.Core;
 using Modding_Assistant.MVVM.Model;
 using Modding_Assistant.MVVM.Services.Implementations;
@@ -6,12 +7,13 @@ using Modding_Assistant.MVVM.Services.Interfaces;
 using System.Collections;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
-using System.Windows;
-using System.Windows.Data;
-using System.Windows.Media;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Data;
+using System.Windows.Media;
 
 namespace Modding_Assistant.MVVM.ViewModel
 {
@@ -29,6 +31,7 @@ namespace Modding_Assistant.MVVM.ViewModel
         private RelayCommand? _maximizeCommand;
         private RelayCommand? _moveWindowCommand;
         private RelayCommand? _settingsCommand;
+        private RelayCommand? _exportCommand;
         private RelayCommand? _exitCommand;
         public MainViewModel(ModContext db, IMainWindowService mainWindowService, ISettingsService settingsService, IMoveModsDialogService moveModsDialogService)
         {
@@ -236,6 +239,67 @@ namespace Modding_Assistant.MVVM.ViewModel
                     {
                         string folderName = pickFolderDialog.FolderName;
                         _settingsService.ModsFolder = pickFolderDialog.FolderName;
+                    }
+                });
+            }
+        }
+
+        public RelayCommand ExportCommand
+        {
+            get
+            {
+                return _exportCommand ??= new RelayCommand(_ =>
+                {
+                    var saveFileDialog = new Microsoft.Win32.SaveFileDialog
+                    {
+                        Filter = "Excel files (*.xlsx)|*.xlsx",
+                        FileName = $"Export_{DateTime.Now:yyyy-MM-dd_HH-mm-ss}.xlsx"
+                    };
+                    if (saveFileDialog.ShowDialog() == true)
+                    {
+                        try
+                        {
+                            using (var workbook = new XLWorkbook())
+                            {
+                                var worksheet = workbook.Worksheets.Add("Mods");
+                                var headers = new[]
+                                {
+                                    "Order", "Name", "Version", "Install Instructions", "Url",
+                                    "Dependencies", "Mod Raw Name", "Last Updated", "Description", "Potential Issues"
+                                };
+
+                                for (int i = 0; i < headers.Length; i++)
+                                {
+                                    worksheet.Cell(1, i + 1).Value = headers[i];
+                                    worksheet.Cell(1, i + 1).Style.Font.Bold = true;
+                                    worksheet.Cell(1, i + 1).Style.Fill.BackgroundColor = XLColor.LightGray;
+                                }
+                                int row = 2;
+                                foreach (var mod in ModList)
+                                {
+                                    worksheet.Cell(row, 1).Value = mod.Order;
+                                    worksheet.Cell(row, 2).Value = mod.Name;
+                                    worksheet.Cell(row, 3).Value = mod.Version;
+                                    worksheet.Cell(row, 4).Value = mod.InstallInstructions;
+                                    worksheet.Cell(row, 5).Value = mod.Url;
+                                    worksheet.Cell(row, 6).Value = mod.Dependencies;
+                                    worksheet.Cell(row, 7).Value = mod.ModRawName;
+                                    worksheet.Cell(row, 8).Value = mod.LastUpdated.ToString();
+                                    worksheet.Cell(row, 9).Value = mod.Description;
+                                    worksheet.Cell(row, 10).Value = mod.PotentialIssues;
+                                    row++;
+                                }
+
+                                worksheet.Columns().AdjustToContents();
+                                workbook.SaveAs(saveFileDialog.FileName);
+                                MessageBox.Show("Export successful!", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
+
+                            }
+                        }
+                        catch (Exception ex)
+                        {
+                            MessageBox.Show($"Failed to create file:\n{ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                        }
                     }
                 });
             }
