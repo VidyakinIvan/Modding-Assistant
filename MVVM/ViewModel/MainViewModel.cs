@@ -35,6 +35,7 @@ namespace Modding_Assistant.MVVM.ViewModel
         private RelayCommand? _moveWindowCommand;
         private RelayCommand? _settingsCommand;
         private RelayCommand? _exportCommand;
+        private RelayCommand? _languageCommand;
         private RelayCommand? _exitCommand;
         public MainViewModel(ModContext db, IMainWindowService mainWindowService, ISettingsService settingsService, 
             IMoveModsDialogService moveModsDialogService, IExcelExportService excelExportService, IDialogService dialogService,
@@ -79,6 +80,7 @@ namespace Modding_Assistant.MVVM.ViewModel
                 }
             }
         }
+        public string CurrentLanguage => _localizationService.CurrentCulture.TwoLetterISOLanguageName;
         public ObservableCollection<ModModel> ModList { get; set; }
         public RelayCommand LoadCommand
         {
@@ -282,6 +284,26 @@ namespace Modding_Assistant.MVVM.ViewModel
                         {
                             await _dialogService.ShowErrorAsync("Error", $"Failed to create file:\n{ex.Message}");
                         }
+                    }
+                });
+            }
+        }
+        public RelayCommand LanguageCommand
+        {
+            get
+            {
+                return _languageCommand ??= new RelayCommand(_ =>
+                {
+                    var cultures = _localizationService.SupportedCultures.ToList();
+                    var current = _localizationService.CurrentCulture;
+                    int idx = cultures.FindIndex(c => c.Equals(current));
+                    int nextIdx = (idx + 1) % cultures.Count;
+                    var culture = cultures[nextIdx];
+
+                    if (culture != null && !_localizationService.CurrentCulture.Equals(culture))
+                    {
+                        _localizationService.CurrentCulture = culture;
+                        OnPropertyChanged(string.Empty);
                     }
                 });
             }
