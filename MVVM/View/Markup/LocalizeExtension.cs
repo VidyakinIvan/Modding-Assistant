@@ -1,12 +1,7 @@
-﻿using Modding_Assistant.MVVM.Services.Interfaces;
-using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System;
 using System.Windows.Data;
 using System.Windows.Markup;
+using Modding_Assistant.MVVM.Services.Interfaces;
 
 namespace Modding_Assistant.MVVM.View.Markup
 {
@@ -17,9 +12,12 @@ namespace Modding_Assistant.MVVM.View.Markup
 
         public override object ProvideValue(IServiceProvider serviceProvider)
         {
-            var locService = (ILocalizationService)((App)App.Current)._host.Services.GetService(typeof(ILocalizationService));
-            Debug.WriteLine(Key);
-            return locService?.GetString(Key) ?? $"[{Key}]";
+            var binding = new Binding($"[{Key}]")
+            {
+                Source = ((App)App.Current)._host.Services.GetService(typeof(ILocalizationService)),
+                Mode = BindingMode.OneWay
+            };
+            return binding.ProvideValue(serviceProvider);
         }
     }
 }

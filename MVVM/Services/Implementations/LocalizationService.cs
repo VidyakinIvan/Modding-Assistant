@@ -11,12 +11,15 @@ using System.Threading.Tasks;
 
 namespace Modding_Assistant.MVVM.Services.Implementations
 {
-    public class LocalizationService : INotifyPropertyChanged, ILocalizationService
+    public class LocalizationService : ILocalizationService, INotifyPropertyChanged
     {
         private readonly ResourceManager _resourceManager;
         private CultureInfo _currentCulture;
 
+        public string this[string key] => GetString(key);
+
         public event PropertyChangedEventHandler? PropertyChanged;
+
         public IEnumerable<CultureInfo> SupportedCultures { get; }
         public LocalizationService(ResourceManager resourceManager)
         {
@@ -33,7 +36,7 @@ namespace Modding_Assistant.MVVM.Services.Implementations
                 if (_currentCulture != value)
                 {
                     _currentCulture = value;
-                    OnPropertyChanged(nameof(CurrentCulture));
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("Item[]")); // уведомить все биндинги
                 }
             }
         }
