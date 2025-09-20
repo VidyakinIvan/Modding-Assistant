@@ -25,6 +25,7 @@ namespace Modding_Assistant.MVVM.ViewModel
         private readonly IMoveModsDialogService _moveModsDialogService;
         private readonly IExcelExportService _excelExportService;
         private readonly IDialogService _dialogService;
+        private readonly ILocalizationService _localizationService;
         private RelayCommand? _loadCommand;
         private RelayCommand? _fromFileCommand;
         private RelayCommand? _moveBeforeCommand;
@@ -36,7 +37,8 @@ namespace Modding_Assistant.MVVM.ViewModel
         private RelayCommand? _exportCommand;
         private RelayCommand? _exitCommand;
         public MainViewModel(ModContext db, IMainWindowService mainWindowService, ISettingsService settingsService, 
-            IMoveModsDialogService moveModsDialogService, IExcelExportService excelExportService, IDialogService dialogService)
+            IMoveModsDialogService moveModsDialogService, IExcelExportService excelExportService, IDialogService dialogService,
+            ILocalizationService localizationService)
         {
             _db = db;
             _mainWindowService = mainWindowService;
@@ -44,6 +46,7 @@ namespace Modding_Assistant.MVVM.ViewModel
             _moveModsDialogService = moveModsDialogService;
             _excelExportService = excelExportService;
             _dialogService = dialogService;
+            _localizationService = localizationService;
             _db.Mods.Load();
             ModList = db.Mods.Local.ToObservableCollection();
             ModList.CollectionChanged += ModList_CollectionChanged;
