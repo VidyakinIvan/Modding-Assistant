@@ -16,7 +16,7 @@ namespace Modding_Assistant
     /// </summary>
     public partial class App : Application
     {
-        private readonly IHost _host;
+        public readonly IHost _host;
         public App()
         {
             _host = Host.CreateDefaultBuilder()
@@ -35,6 +35,8 @@ namespace Modding_Assistant
                         var mainWindow = provider.GetRequiredService<MainWindow>();
                         return new MainWindowService(mainWindow);
                     });
+                    services.AddSingleton<ILocalizationService>(provider =>
+                        new LocalizationService(Modding_Assistant.Resources.Strings.ResourceManager));
                     services.AddDbContext<ModContext>(options => 
                         options.UseSqlite("Data Source=modding_assistant.db"));
                 })

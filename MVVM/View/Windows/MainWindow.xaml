@@ -8,6 +8,7 @@
         xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
         xmlns:conv="clr-namespace:Modding_Assistant.MVVM.View.Converters"
         xmlns:core="clr-namespace:Modding_Assistant.Core"
+        xmlns:markup="clr-namespace:Modding_Assistant.MVVM.View.Markup"
         mc:Ignorable="d"
         WindowStyle="None"
         Background="Transparent"
@@ -58,14 +59,14 @@
             <Setter Property="TextTrimming" Value="CharacterEllipsis"/>
         </Style>
         <ContextMenu x:Key="DataGridContextMenu">
-            <MenuItem Header="Copy Cell" Command="ApplicationCommands.Copy"/>
-            <MenuItem Header="Select All" Command="ApplicationCommands.SelectAll"/>
-            <MenuItem Header="Refresh" Command="{Binding LoadCommand}"
+            <MenuItem Header="{markup:Localize ContextMenuCopy}" Command="ApplicationCommands.Copy"/>
+            <MenuItem Header="{markup:Localize ContextMenuSelectAll}" Command="ApplicationCommands.SelectAll"/>
+            <MenuItem Header="{markup:Localize ContextMenuRefresh}" Command="{Binding LoadCommand}"
                       CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=Window}}"/>
-            <MenuItem Header="From file..." Command="{Binding FromFileCommand}"/>
-            <MenuItem Header="Move to..." Command="{Binding MoveBeforeCommand}" 
+            <MenuItem Header="{markup:Localize ContextMenuFromFile}" Command="{Binding FromFileCommand}"/>
+            <MenuItem Header="{markup:Localize ContextMenuMove}" Command="{Binding MoveBeforeCommand}" 
                       CommandParameter="{Binding PlacementTarget.SelectedItems, RelativeSource={RelativeSource AncestorType=ContextMenu}}"/>
-            <MenuItem Header="Delete" Command="{Binding DeleteCommand}" 
+            <MenuItem Header="{markup:Localize ContextMenuDelete}" Command="{Binding DeleteCommand}" 
                       CommandParameter="{Binding PlacementTarget.SelectedItems, RelativeSource={RelativeSource AncestorType=ContextMenu}}"/>
         </ContextMenu>
         <conv:RowIndexConverter x:Key="RowIndexConverter"/>
@@ -124,6 +125,12 @@
                               Fill="#DFFFFF"
                               Stretch="Uniform"/>
                     </Border>
+                </Button>
+                <Button HorizontalAlignment="Left"
+                        Width="30" Height="30" Padding="2" Background="Transparent" BorderThickness="0"
+                        Command="{Binding LanguageCommand}">
+                    <TextBlock Text="{Binding CurrentLanguage}" FontSize="22" 
+                               VerticalAlignment="Center" HorizontalAlignment="Center" Foreground="#DFFFFF" FontWeight="Bold"/>
                 </Button>
             </StackPanel>
             <TextBlock Text="Mod Assistant" Grid.Column="1" Foreground="#DFFFFF" VerticalAlignment="Top"
@@ -249,8 +256,8 @@
                             </MultiBinding>
                         </DataGridTextColumn.Binding>
                     </DataGridTextColumn>
-                    <DataGridTextColumn Header="Order" IsReadOnly="True" Binding="{Binding Order}"  Width="*" ElementStyle="{StaticResource CenterTextColumnStyle}"/>
-                    <DataGridTextColumn Header="Name" Width="4*" ElementStyle="{StaticResource CenterTextColumnStyle}">
+                    <DataGridTextColumn Header="{markup:Localize DataGridHeaderOrder}" IsReadOnly="True" Binding="{Binding Order}"  Width="*" ElementStyle="{StaticResource CenterTextColumnStyle}"/>
+                    <DataGridTextColumn Header="{markup:Localize DataGridHeaderName}" Width="4*" ElementStyle="{StaticResource CenterTextColumnStyle}">
                         <DataGridTextColumn.Binding>
                             <Binding Path="Name" UpdateSourceTrigger="PropertyChanged" ValidatesOnDataErrors="True" NotifyOnValidationError="True">
                                 <Binding.ValidationRules>
@@ -259,7 +266,7 @@
                             </Binding>
                         </DataGridTextColumn.Binding>
                     </DataGridTextColumn>
-                    <DataGridTextColumn Header="Version" Width="2*" ElementStyle="{StaticResource CenterTextColumnStyle}">
+                    <DataGridTextColumn Header="{markup:Localize DataGridHeaderVersion}" Width="2*" ElementStyle="{StaticResource CenterTextColumnStyle}">
                         <DataGridTextColumn.Binding>
                             <Binding Path="Version" UpdateSourceTrigger="PropertyChanged" ValidatesOnDataErrors="True" NotifyOnValidationError="True">
                                 <Binding.ValidationRules>
@@ -268,7 +275,7 @@
                             </Binding>
                         </DataGridTextColumn.Binding>
                     </DataGridTextColumn>
-                    <DataGridTextColumn Header="InstallInstructions" Width="6*" ElementStyle="{StaticResource CenterTextColumnStyle}">
+                    <DataGridTextColumn Header="{markup:Localize DataGridHeaderInstallInstructions}" Width="6*" ElementStyle="{StaticResource CenterTextColumnStyle}">
                         <DataGridTextColumn.Binding>
                             <Binding Path="InstallInstructions" UpdateSourceTrigger="PropertyChanged" ValidatesOnDataErrors="True" NotifyOnValidationError="True">
                                 <Binding.ValidationRules>
@@ -277,10 +284,10 @@
                             </Binding>
                         </DataGridTextColumn.Binding>
                     </DataGridTextColumn>
-                    <DataGridTextColumn Header="Url" Binding="{Binding Url}" Width="6*" ElementStyle="{StaticResource CenterTextColumnStyle}"/>
-                    <DataGridTextColumn Header="Dependencies" Binding="{Binding Dependencies}" Width="2*" ElementStyle="{StaticResource CenterTextColumnStyle}"/>
-                    <DataGridTextColumn Header="ModRawName" Binding="{Binding ModRawName}" Width="4*" ElementStyle="{StaticResource CenterTextColumnStyle}"/>
-                    <DataGridTemplateColumn Header="LastUpdated" Width="2*" >
+                    <DataGridTextColumn Header="{markup:Localize DataGridHeaderURL}" Binding="{Binding Url}" Width="6*" ElementStyle="{StaticResource CenterTextColumnStyle}"/>
+                    <DataGridTextColumn Header="{markup:Localize DataGridHeaderDependencies}" Binding="{Binding Dependencies}" Width="2*" ElementStyle="{StaticResource CenterTextColumnStyle}"/>
+                    <DataGridTextColumn Header="{markup:Localize DataGridHeaderModRawName}" Binding="{Binding ModRawName}" Width="4*" ElementStyle="{StaticResource CenterTextColumnStyle}"/>
+                    <DataGridTemplateColumn Header="{markup:Localize DataGridHeaderLastUpdated}" Width="2*" >
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
                                 <TextBlock Text="{Binding LastUpdated, StringFormat='dd.MM.yyyy'}" HorizontalAlignment="Center"/>
@@ -305,7 +312,7 @@
                             </DataTemplate>
                         </DataGridTemplateColumn.CellEditingTemplate>
                     </DataGridTemplateColumn>
-                    <DataGridTextColumn Header="Description" Width="6*" ElementStyle="{StaticResource CenterTextColumnStyle}">
+                    <DataGridTextColumn Header="{markup:Localize DataGridHeaderDescription}" Width="6*" ElementStyle="{StaticResource CenterTextColumnStyle}">
                         <DataGridTextColumn.Binding>
                             <Binding Path="Description" UpdateSourceTrigger="PropertyChanged" ValidatesOnDataErrors="True" NotifyOnValidationError="True">
                                 <Binding.ValidationRules>
@@ -314,7 +321,7 @@
                             </Binding>
                         </DataGridTextColumn.Binding>
                     </DataGridTextColumn>
-                    <DataGridTextColumn Header="PotentialIssues" Binding="{Binding PotentialIssues}" Width="6*" ElementStyle="{StaticResource CenterTextColumnStyle}"/>
+                    <DataGridTextColumn Header="{markup:Localize DataGridHeaderPotentialIssues}" Binding="{Binding PotentialIssues}" Width="6*" ElementStyle="{StaticResource CenterTextColumnStyle}"/>
                 </DataGrid.Columns>
                 <DataGrid.Style>
                     <Style TargetType="DataGrid">

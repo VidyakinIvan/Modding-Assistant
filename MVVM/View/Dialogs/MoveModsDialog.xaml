@@ -6,8 +6,9 @@
         xmlns:viewModel="clr-namespace:Modding_Assistant.MVVM.ViewModel"
         xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
         xmlns:conv="clr-namespace:Modding_Assistant.MVVM.View.Converters"
+        xmlns:markup="clr-namespace:Modding_Assistant.MVVM.View.Markup"
         mc:Ignorable="d"
-        Title="Move after..." Height="180" Width="450"
+        Title="Move after..." Height="180" Width="550"
         WindowStartupLocation="CenterOwner"
         ResizeMode="NoResize"
         Background="#23272E"
@@ -46,7 +47,7 @@
                 </ControlTemplate>
             </Button.Template>
         </Button>
-        <TextBlock Text="Enter the mod number after which to move the selected items:" Grid.Row="1"/>
+        <TextBlock Text="{markup:Localize MoveDialogInputPrompt}" Grid.Row="1"/>
         <TextBox x:Name="ModNumberTextBox"
                  Grid.Row="2"
                  Height="28"
@@ -58,7 +59,7 @@
                  Padding="6,0"
                  Text="{Binding ModNumber, Converter={StaticResource NullableIntConverter}, UpdateSourceTrigger=PropertyChanged}"/>
         <StackPanel Grid.Row="3" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0 10 0 0">
-            <Button Content="OK"
+            <Button Content="{markup:Localize MoveDialogOkButton}"
                     Width="80"
                     Margin="0,0,8,0"
                     IsDefault="True"
@@ -78,7 +79,7 @@
                     </Style>
                 </Button.Style>
             </Button>
-            <Button Content="Cancel"
+            <Button Content="{markup:Localize MoveDialogCancelButton}"
                     Width="80"
                     IsCancel="True"
                     Background="#3A3F4B"
