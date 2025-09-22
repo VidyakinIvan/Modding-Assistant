@@ -4,6 +4,14 @@
              xmlns:local="clr-namespace:Modding_Assistant"
              xmlns:viewModel="clr-namespace:Modding_Assistant.MVVM.ViewModel">
     <Application.Resources>
-        
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="Resources/Brushes/Colors.xaml"/>
+                <ResourceDictionary Source="Resources/Icons/WindowIcons.xaml"/>
+                <ResourceDictionary Source="Resources/Styles/ButtonStyles.xaml"/>
+                <ResourceDictionary Source="Resources/Styles/DataGridStyles.xaml"/>
+                <ResourceDictionary Source="Resources/Converters/MainWindowConverters.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
     </Application.Resources>
 </Application>

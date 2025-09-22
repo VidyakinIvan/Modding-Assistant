@@ -1,0 +1,18 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    
+    <Color x:Key="PrimaryBackgroundColor">#27253F</Color>
+    <Color x:Key="SecondaryBackgroundColor">#3C3A55</Color>
+    <Color x:Key="HoverBackgroundColor">#484A6E</Color>
+    <Color x:Key="PrimaryForegroundColor">#DFFFFF</Color>
+
+    <SolidColorBrush x:Key="PrimaryBackgroundBrush" Color="{StaticResource PrimaryBackgroundColor}"/>
+    <SolidColorBrush x:Key="SecondaryBackgroundBrush" Color="{StaticResource SecondaryBackgroundColor}"/>
+    <SolidColorBrush x:Key="HoverBackgroundBrush" Color="{StaticResource HoverBackgroundColor}"/>
+    <SolidColorBrush x:Key="PrimaryForegroundBrush" Color="{StaticResource PrimaryForegroundColor}"/>
+
+    <SolidColorBrush x:Key="MinimizeButtonHoverBrush" Color="RoyalBlue"/>
+    <SolidColorBrush x:Key="MaximizeButtonHoverBrush" Color="Violet"/>
+    <SolidColorBrush x:Key="CloseButtonHoverBrush" Color="Red"/>
+    
+</ResourceDictionary>

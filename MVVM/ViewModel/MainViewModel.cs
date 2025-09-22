@@ -80,6 +80,12 @@ namespace Modding_Assistant.MVVM.ViewModel
                 }
             }
         }
+        private WindowState _windowState;
+        public WindowState WindowState
+        {
+            get => _windowState;
+            set => SetProperty(ref _windowState, value);
+        }
         public string CurrentLanguage => _localizationService.CurrentCulture.TwoLetterISOLanguageName;
         public ObservableCollection<ModModel> ModList { get; set; }
         public RelayCommand LoadCommand
@@ -219,9 +225,15 @@ namespace Modding_Assistant.MVVM.ViewModel
                 return _maximizeCommand ??= new RelayCommand(_ =>
                 {
                     if (_mainWindowService.WindowState == WindowState.Maximized)
+                    {   
                         _mainWindowService.Restore();
+                        WindowState = WindowState.Normal;
+                    }
                     else
+                    {
                         _mainWindowService.Maximize();
+                        WindowState = WindowState.Maximized;
+                    }
                 });
             }
         }
