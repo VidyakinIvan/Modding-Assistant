@@ -10,7 +10,8 @@
                 <ResourceDictionary Source="Resources/Icons/WindowIcons.xaml"/>
                 <ResourceDictionary Source="Resources/Styles/ButtonStyles.xaml"/>
                 <ResourceDictionary Source="Resources/Styles/DataGridStyles.xaml"/>
-                <ResourceDictionary Source="Resources/Converters/MainWindowConverters.xaml"/>
+                <ResourceDictionary Source="Resources/Styles/TextStyles.xaml"/>
+                <ResourceDictionary Source="Resources/Dimensions/WindowDimensions.xaml"/>
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Application.Resources>

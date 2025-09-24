@@ -4,5 +4,6 @@
 
     <conv:RowIndexConverter x:Key="RowIndexConverter"/>
     <conv:DateOnlyToDateTimeConverter x:Key="DateOnlyToDateTimeConverter"/>
+    <conv:WindowStateToMarginConverter x:Key="WindowStateToMarginConverter"/>
     
 </ResourceDictionary>

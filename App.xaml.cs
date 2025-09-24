@@ -36,7 +36,7 @@ namespace Modding_Assistant
                         return new MainWindowService(mainWindow);
                     });
                     services.AddSingleton<ILocalizationService>(provider =>
-                        new LocalizationService(Modding_Assistant.Resources.Strings.ResourceManager));
+                        new LocalizationService(Modding_Assistant.Resources.Strings.Strings.ResourceManager));
                     services.AddDbContext<ModContext>(options => 
                         options.UseSqlite("Data Source=modding_assistant.db"));
                 })

@@ -1,0 +1,13 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:system="clr-namespace:System;assembly=mscorlib">
+
+    <!-- Window Dimensions -->
+    <system:Double x:Key="WindowWidth">900</system:Double>
+    <system:Double x:Key="WindowHeight">600</system:Double>
+    <CornerRadius x:Key="WindowCornerRadius">10</CornerRadius>
+
+    <!-- Control Heights -->
+    <system:Double x:Key="ToolbarHeight">50</system:Double>
+
+</ResourceDictionary>
