@@ -1,32 +1,34 @@
-﻿using Modding_Assistant.MVVM.Services.Interfaces;
-using System;
-using System.Collections.Generic;
+﻿using Microsoft.Extensions.Logging;
+using Modding_Assistant.MVVM.Services.Interfaces;
+using System.Collections.Concurrent;
 using System.ComponentModel;
 using System.Globalization;
-using System.Linq;
 using System.Resources;
 using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Modding_Assistant.MVVM.Services.Implementations
 {
-    public class LocalizationService : ILocalizationService, INotifyPropertyChanged
+    public class LocalizationService(ResourceManager resourceManager, 
+        IEnumerable<CultureInfo>? supportedCultures = null, 
+        ILogger<LocalizationService>? logger = null) : ILocalizationService
     {
-        private readonly ResourceManager _resourceManager;
-        private CultureInfo _currentCulture;
+        private const string IndexerPropertyName = "Item[]";
+
+        private readonly ResourceManager _resourceManager = resourceManager 
+            ?? throw new ArgumentNullException(nameof(resourceManager));
+        private readonly ConcurrentDictionary<(string, CultureInfo), string> _cache = new();
+        private readonly ILogger<LocalizationService>? _logger = logger;
+        private CultureInfo _currentCulture = CultureInfo.CurrentUICulture;
 
         public string this[string key] => GetString(key);
 
         public event PropertyChangedEventHandler? PropertyChanged;
 
-        public IEnumerable<CultureInfo> SupportedCultures { get; }
-        public LocalizationService(ResourceManager resourceManager)
-        {
-            _resourceManager = resourceManager;
-            _currentCulture = CultureInfo.CurrentUICulture;
-            SupportedCultures = [ new CultureInfo("en-US"), new CultureInfo("ru-RU") ];
-        }
+        public IEnumerable<CultureInfo> SupportedCultures { get; } = supportedCultures ??
+        [
+            new CultureInfo("en-US"),
+            new CultureInfo("ru-RU")
+        ];
         
         public CultureInfo CurrentCulture
         {
@@ -35,15 +37,31 @@ namespace Modding_Assistant.MVVM.Services.Implementations
             {
                 if (_currentCulture != value)
                 {
+                    _logger?.LogInformation("Changing culture from {OldCulture} to {NewCulture}",
+                        _currentCulture.Name, value.Name);
                     _currentCulture = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("Item[]")); // уведомить все биндинги
+                    _cache.Clear();
+                    OnPropertyChanged(IndexerPropertyName);
                 }
             }
         }
+
         public string GetString(string key)
         {
-            return _resourceManager.GetString(key, _currentCulture) ?? $"[{key}]";
+            if (string.IsNullOrWhiteSpace(key))
+            {
+                _logger?.LogWarning("Attempt to get localization string with empty key");
+                return "[empty_key]";
+            }
+            string? result = _resourceManager.GetString(key, _currentCulture);
+            if (result == null)
+            {
+                _logger?.LogWarning("Localization key '{Key}' not found for culture '{Culture}'", key, _currentCulture.Name);
+                return $"[{key}]";
+            }
+            return result;
         }
+
         protected virtual void OnPropertyChanged([CallerMemberName] string? propertyName = null)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
