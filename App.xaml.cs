@@ -26,7 +26,7 @@ namespace Modding_Assistant
                 })
                 .ConfigureServices((context, services) =>
                 {
-                    services.AddApplicationServices()
+                    services.AddServices()
                         .AddDatabase(context.Configuration)
                         .AddViewModels()
                         .AddViews();

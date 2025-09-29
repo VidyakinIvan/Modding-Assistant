@@ -7,17 +7,12 @@ using Modding_Assistant.MVVM.Services.Interfaces;
 using Modding_Assistant.MVVM.View.Dialogs;
 using Modding_Assistant.MVVM.View.Windows;
 using Modding_Assistant.MVVM.ViewModel;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Modding_Assistant.Core
 {
-    public static class ServicesConfiguration
+    public static class DIConfigurator
     {
-        public static IServiceCollection AddApplicationServices(this IServiceCollection services)
+        public static IServiceCollection AddServices(this IServiceCollection services)
         {
             services.AddSingleton<ISettingsService, SettingsService>();
             services.AddSingleton<IMoveModsDialogService, MoveModsDialogService>();
@@ -35,8 +30,13 @@ namespace Modding_Assistant.Core
         
         public static IServiceCollection AddDatabase(this IServiceCollection services, IConfiguration configuration)
         {
+            var connectionString = configuration.GetConnectionString("DefaultConnection");
+            if (string.IsNullOrWhiteSpace(connectionString))
+            {
+                throw new InvalidOperationException("Connection string 'DefaultConnection' is not configured.");
+            }
             services.AddDbContext<ModContext>(options =>
-                options.UseSqlite(configuration.GetConnectionString("DefaultConnection")));
+                options.UseSqlite(connectionString));
 
             services.AddScoped<IDatabaseService, DatabaseService>();
             return services;
