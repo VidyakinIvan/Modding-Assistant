@@ -5,11 +5,25 @@ namespace Modding_Assistant.MVVM.Services.Implementations
 {
     internal class MainWindowService(Window window) : IMainWindowService
     {
-        private readonly Window _window = window;
+        private readonly Window _window = window ?? throw new ArgumentNullException(nameof(window));
         public void Minimize() => _window.WindowState = WindowState.Minimized;
         public void Maximize() => _window.WindowState = WindowState.Maximized;
         public void Restore() => _window.WindowState = WindowState.Normal;
-        public void DragMove() => _window.DragMove();
+        public void DragMove()
+        {
+            try
+            {
+                if (_window.WindowState != WindowState.Maximized &&
+                    _window.ResizeMode != ResizeMode.NoResize)
+                {
+                    _window.DragMove();
+                }
+            }
+            catch (InvalidOperationException ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"DragMove failed: {ex.Message}");
+            }
+        }
         public void Close() => _window.Close();
         public void Hide() => _window.Hide();
         public double Left
@@ -23,8 +37,22 @@ namespace Modding_Assistant.MVVM.Services.Implementations
             get => _window.Top;
             set => _window.Top = value;
         }
-        public double Width => _window.Width;
-        public double Height => _window.Height;
+        public double Width
+        {
+            get => _window.Width;
+            set
+            {
+                _window.Width = value >= _window.MinWidth ? value : _window.MinWidth;
+            }
+        }
+        public double Height
+        {
+            get => _window.Height;
+            set
+            {
+                _window.Height = value >= _window.MinHeight ? value : _window.MinHeight;
+            }
+        }
         public WindowState WindowState
         {
             get => _window.WindowState;

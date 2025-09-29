@@ -11,7 +11,8 @@
         WindowStyle="None"
         Background="Transparent"
         AllowsTransparency="True"
-        Height="{StaticResource WindowHeight}" Width="{StaticResource WindowWidth}">
+        Height="{StaticResource WindowHeight}" Width="{StaticResource WindowWidth}"
+        MinWidth="{StaticResource MinWindowWidth}" MinHeight="{StaticResource MinWindowHeight}">
 
     <Window.Resources>
         <ResourceDictionary>

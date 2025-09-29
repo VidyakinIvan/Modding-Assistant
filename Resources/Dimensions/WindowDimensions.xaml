@@ -5,6 +5,8 @@
     <!-- Window Dimensions -->
     <system:Double x:Key="WindowWidth">900</system:Double>
     <system:Double x:Key="WindowHeight">600</system:Double>
+    <system:Double x:Key="MinWindowWidth">600</system:Double>
+    <system:Double x:Key="MinWindowHeight">400</system:Double>
     <CornerRadius x:Key="WindowCornerRadius">10</CornerRadius>
 
     <!-- Control Heights -->

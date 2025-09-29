@@ -12,8 +12,8 @@ namespace Modding_Assistant.MVVM.Services.Interfaces
         void Hide();
         double Left { get; set; }
         double Top { get; set; }
-        double Width { get; }
-        double Height { get; }
+        double Width { get; set; }
+        double Height { get; set; }
         WindowState WindowState { get; set; }
     }
 }
