@@ -7,27 +7,28 @@ using System.Threading;
 using System.Threading.Tasks;
 namespace Modding_Assistant.MVVM.Services.Implementations
 {
-    public class DatabaseService : IDatabaseService
+    public class DatabaseService(ModContext context, ILogger<DatabaseService> logger) : IDatabaseService
     {
-        private readonly ModContext _context;
-        private readonly ILogger<DatabaseService> _logger;
-
-        public DatabaseService(ModContext context, ILogger<DatabaseService> logger)
-        {
-            _context = context;
-            _logger = logger;
-        }
+        private readonly ModContext _context = context ?? throw new ArgumentNullException(nameof(context));
+        private readonly ILogger<DatabaseService> _logger = logger ?? throw new ArgumentNullException(nameof(logger));
 
         public async Task InitializeAsync(CancellationToken cancellationToken = default)
         {
             try
             {
                 _logger.LogInformation("Starting database migration...");
-                await _context.Database.MigrateAsync(cancellationToken);
+                using var migrationCts = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken);
+                migrationCts.CancelAfter(TimeSpan.FromMinutes(5));
+                await _context.Database.MigrateAsync(migrationCts.Token);
                 var canConnect = await _context.Database.CanConnectAsync(cancellationToken);
                 if (!canConnect)
                     throw new InvalidOperationException("Database is not accessible after migration");
                 _logger.LogInformation("Database migration completed successfully.");
+            }
+            catch (OperationCanceledException) when (!cancellationToken.IsCancellationRequested)
+            {
+                _logger.LogError("Database migration timed out");
+                throw new TimeoutException("Database migration operation timed out");
             }
             catch (Exception ex)
             {
