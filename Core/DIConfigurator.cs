@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using Modding_Assistant.MVVM.Model;
 using Modding_Assistant.MVVM.Services.Implementations;
 using Modding_Assistant.MVVM.Services.Interfaces;
@@ -22,7 +23,8 @@ namespace Modding_Assistant.Core
             services.AddSingleton<IMainWindowService>(provider =>
             {
                 var mainWindow = provider.GetRequiredService<MainWindow>();
-                return new MainWindowService(mainWindow);
+                var logger = provider.GetRequiredService<ILogger<MainWindowService>>();
+                return new MainWindowService(mainWindow, logger);
             });
             services.AddSingleton<ILocalizationService>(provider =>
                 new LocalizationService(Resources.Strings.Strings.ResourceManager));

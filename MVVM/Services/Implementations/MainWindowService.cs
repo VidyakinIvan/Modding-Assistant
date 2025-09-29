@@ -1,11 +1,13 @@
-﻿using Modding_Assistant.MVVM.Services.Interfaces;
+﻿using Microsoft.Extensions.Logging;
+using Modding_Assistant.MVVM.Services.Interfaces;
 using System.Windows;
 
 namespace Modding_Assistant.MVVM.Services.Implementations
 {
-    internal class MainWindowService(Window window) : IMainWindowService
+    internal class MainWindowService(Window window, ILogger<MainWindowService> logger) : IMainWindowService
     {
         private readonly Window _window = window ?? throw new ArgumentNullException(nameof(window));
+        private readonly ILogger<MainWindowService> _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         public void Minimize() => _window.WindowState = WindowState.Minimized;
         public void Maximize() => _window.WindowState = WindowState.Maximized;
         public void Restore() => _window.WindowState = WindowState.Normal;
@@ -21,7 +23,7 @@ namespace Modding_Assistant.MVVM.Services.Implementations
             }
             catch (InvalidOperationException ex)
             {
-                System.Diagnostics.Debug.WriteLine($"DragMove failed: {ex.Message}");
+                _logger.LogWarning(ex, "Failed to drag move window");
             }
         }
         public void Close() => _window.Close();
