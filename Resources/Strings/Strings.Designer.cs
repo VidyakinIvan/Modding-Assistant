@@ -239,5 +239,23 @@ namespace Modding_Assistant.Resources.Strings {
                 return ResourceManager.GetString("MoveDialogOkButton", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to An error occurred during application startup. Please check the logs for more details..
+        /// </summary>
+        public static string StartupError {
+            get {
+                return ResourceManager.GetString("StartupError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Startup error.
+        /// </summary>
+        public static string StartupErrorHeader {
+            get {
+                return ResourceManager.GetString("StartupErrorHeader", resourceCulture);
+            }
+        }
     }
 }

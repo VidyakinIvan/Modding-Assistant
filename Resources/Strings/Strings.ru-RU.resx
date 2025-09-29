@@ -177,4 +177,10 @@
   <data name="DataGridHeaderPotentialIssues" xml:space="preserve">
     <value>Потенциальные проблемы</value>
   </data>
+  <data name="StartupError" xml:space="preserve">
+    <value>Произошла ошибка при запуске приложения. Пожалуйста, проверьте логи на наличие более подробной информации.</value>
+  </data>
+  <data name="StartupErrorHeader" xml:space="preserve">
+    <value>Ошибка запуска</value>
+  </data>
 </root>

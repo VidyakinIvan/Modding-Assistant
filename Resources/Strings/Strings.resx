@@ -177,4 +177,10 @@
   <data name="DataGridHeaderPotentialIssues" xml:space="preserve">
     <value>Potential Issues</value>
   </data>
+  <data name="StartupError" xml:space="preserve">
+    <value>An error occurred during application startup. Please check the logs for more details.</value>
+  </data>
+  <data name="StartupErrorHeader" xml:space="preserve">
+    <value>Startup error</value>
+  </data>
 </root>
