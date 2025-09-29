@@ -18,6 +18,7 @@ namespace Modding_Assistant.Core
             services.AddSingleton<IMoveModsDialogService, MoveModsDialogService>();
             services.AddSingleton<IExcelExportService, ExcelExportService>();
             services.AddSingleton<IDialogService, DialogService>();
+            services.AddSingleton<INotificationService, NotificationService>();
             services.AddSingleton<IMainWindowService>(provider =>
             {
                 var mainWindow = provider.GetRequiredService<MainWindow>();

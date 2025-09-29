@@ -3,6 +3,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Modding_Assistant.Core;
+using Modding_Assistant.MVVM.Services.Implementations;
 using Modding_Assistant.MVVM.Services.Interfaces;
 using Modding_Assistant.MVVM.View.Windows;
 using Modding_Assistant.MVVM.ViewModel;
@@ -48,10 +49,10 @@ namespace Modding_Assistant
             }
             catch (Exception ex)
             {
-                HandleStartupException(ex);
+                HandleStartupException(ex, _host.Services.GetRequiredService<INotificationService>());
             }
         }
-        private void HandleStartupException(Exception ex)
+        private void HandleStartupException(Exception ex, INotificationService? notificationService = null)
         {
             _logger?.LogCritical(ex, "Application startup failed");
             string message = "Critical application startup error.";
@@ -69,7 +70,10 @@ namespace Modding_Assistant
                     _logger?.LogWarning(serviceEx, "Failed to get localization service");
                 }
             }
-            MessageBox.Show(message, caption, MessageBoxButton.OK, MessageBoxImage.Error);
+            if (notificationService != null)
+                notificationService.ShowError(message, caption);
+            else
+                MessageBox.Show(message, caption, MessageBoxButton.OK, MessageBoxImage.Error);
             Shutdown(1);
         }
         private async Task InitializeDatabaseAsync()
