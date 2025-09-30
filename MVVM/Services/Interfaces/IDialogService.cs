@@ -8,7 +8,9 @@ namespace Modding_Assistant.MVVM.Services.Interfaces
 {
     public interface IDialogService
     {
+        Task<string?> ShowPickFolderDialogAsync(string Title);
         Task<string?> ShowSaveFileDialogAsync(string defaultFileName, string filter);
+        Task<string?> ShowOpenFileDialogAsync(string title, string filter);
         Task ShowMessageAsync(string title, string message);
         Task ShowErrorAsync(string title, string message);
     }

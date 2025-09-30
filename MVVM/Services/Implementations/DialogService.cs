@@ -11,6 +11,17 @@ namespace Modding_Assistant.MVVM.Services.Implementations
 {
     public class DialogService : IDialogService
     {
+        public async Task<string?> ShowPickFolderDialogAsync(string title)
+        {
+            return await Application.Current.Dispatcher.InvokeAsync(() =>
+            {
+                var pickFolderDialog = new OpenFolderDialog
+                {
+                    Title = title
+                };
+                return pickFolderDialog.ShowDialog() == true ? pickFolderDialog.FolderName : null;
+            });
+        }
         public async Task<string?> ShowSaveFileDialogAsync(string defaultFileName, string filter)
         {
             return await Application.Current.Dispatcher.InvokeAsync(() =>
@@ -24,6 +35,18 @@ namespace Modding_Assistant.MVVM.Services.Implementations
             });
         }
 
+        public async Task<string?> ShowOpenFileDialogAsync(string title, string filter)
+        {
+            return await Application.Current.Dispatcher.InvokeAsync(() =>
+            {
+                var openFileDialog = new OpenFileDialog
+                {
+                    Title = title,
+                    Filter = filter
+                };
+                return openFileDialog.ShowDialog() == true ? openFileDialog.FileName : null;
+            });
+        }
         public async Task ShowMessageAsync(string title, string message)
         {
             await Application.Current.Dispatcher.InvokeAsync(() =>

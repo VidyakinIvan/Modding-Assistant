@@ -26,6 +26,7 @@ namespace Modding_Assistant.MVVM.ViewModel
         private readonly IExcelExportService _excelExportService;
         private readonly IDialogService _dialogService;
         private readonly ILocalizationService _localizationService;
+        private readonly INotificationService _notificationService;
         private RelayCommand? _loadCommand;
         private RelayCommand? _fromFileCommand;
         private RelayCommand? _moveBeforeCommand;
@@ -39,7 +40,7 @@ namespace Modding_Assistant.MVVM.ViewModel
         private RelayCommand? _exitCommand;
         public MainViewModel(ModContext db, IMainWindowService mainWindowService, ISettingsService settingsService, 
             IMoveModsDialogService moveModsDialogService, IExcelExportService excelExportService, IDialogService dialogService,
-            ILocalizationService localizationService)
+            ILocalizationService localizationService, INotificationService notificationService)
         {
             _db = db;
             _mainWindowService = mainWindowService;
@@ -48,6 +49,7 @@ namespace Modding_Assistant.MVVM.ViewModel
             _excelExportService = excelExportService;
             _dialogService = dialogService;
             _localizationService = localizationService;
+            _notificationService = notificationService;
             _db.Mods.Load();
             ModList = db.Mods.Local.ToObservableCollection();
             ModList.CollectionChanged += ModList_CollectionChanged;
@@ -101,41 +103,31 @@ namespace Modding_Assistant.MVVM.ViewModel
                 });
             }
         }
-        private static string GetFriendlyModName(string fileName)
-        {
-            var name = System.Text.RegularExpressions.Regex.Replace(
-                fileName,
-                @"([-_ (]*\d{4,}.*$)|(\s*[\(\[]?v?\d+(\.\d+)*[\)\]]?$)",
-                string.Empty,
-                System.Text.RegularExpressions.RegexOptions.IgnoreCase
-            );
-            name = name.Replace('_', ' ').Replace('-', ' ').Trim();
-            name = System.Globalization.CultureInfo.CurrentCulture.TextInfo.ToTitleCase(name.ToLower());
-            return string.IsNullOrWhiteSpace(name) ? fileName : name;
-        }
+
         public RelayCommand FromFileCommand
         {
             get
             {
-                return _fromFileCommand ??= new RelayCommand(_ =>
+                return _fromFileCommand ??= new RelayCommand(async _ =>
                 {
-                    var openFileDialog = new Microsoft.Win32.OpenFileDialog
-                    {
-                        Filter = "Archive Files (*.zip;*.rar;*.7z)|*.zip;*.rar;*.7z|All Files (*.*)|*.*",
-                        Title = "Select Mod Archive"
-                    };
-                    if (openFileDialog.ShowDialog() == true)
-                    {
-                        string fileName = System.IO.Path.GetFileNameWithoutExtension(openFileDialog.FileName);
+                    var fileName = await _dialogService.ShowOpenFileDialogAsync(
+                        "Select Mod Archive",
+                        "Archive Files (*.zip;*.rar;*.7z)|*.zip;*.rar;*.7z|All Files (*.*)|*.*");
+                    if (string.IsNullOrEmpty(fileName))
+                        return;
 
-                        var newMod = new ModModel { Name = GetFriendlyModName(fileName), ModRawName = fileName, LastUpdated = DateOnly.FromDateTime(DateTime.Today) };
-                        ModList.Add(newMod);
-                    }
+                    string fileNameWithoutExtension = System.IO.Path.GetFileNameWithoutExtension(fileName);
+
+                    var newMod = new ModModel { Name = ModNameHelper.GetFriendlyModName(fileNameWithoutExtension), 
+                       ModRawName = System.IO.Path.GetFileName(fileName), 
+                        LastUpdated = DateOnly.FromDateTime(DateTime.Today) };
+
+                    ModList.Add(newMod);
                     _db.SaveChanges();
                     string modsFolder = _settingsService.ModsFolder;
                     if (!string.IsNullOrWhiteSpace(_settingsService.ModsFolder) && Directory.Exists(modsFolder))
                     {
-                        string sourceFilePath = openFileDialog.FileName;
+                        string sourceFilePath = fileName;
                         if (Directory.Exists(modsFolder))
                         {
                             string destFilePath = Path.Combine(modsFolder, Path.GetFileName(sourceFilePath));
@@ -145,7 +137,7 @@ namespace Modding_Assistant.MVVM.ViewModel
                             }
                             catch (Exception ex)
                             {
-                                MessageBox.Show($"Failed to copy file:\n{ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                                _notificationService.ShowError("Error", $"Failed to move file:\n{ex.Message}");
                             }
                         }
                     }
@@ -251,16 +243,12 @@ namespace Modding_Assistant.MVVM.ViewModel
         {
             get
             {
-                return _settingsCommand ??= new RelayCommand(_ =>
+                return _settingsCommand ??= new RelayCommand(async _ =>
                 {
-                    var pickFolderDialog = new Microsoft.Win32.OpenFolderDialog
+                    var folderName = await _dialogService.ShowPickFolderDialogAsync("Select Mods Folder");
+                    if (!string.IsNullOrEmpty(folderName))
                     {
-                        Title = "Select Mod Folder"
-                    };
-                    if (pickFolderDialog.ShowDialog() == true)
-                    {
-                        string folderName = pickFolderDialog.FolderName;
-                        _settingsService.ModsFolder = pickFolderDialog.FolderName;
+                        _settingsService.ModsFolder = folderName;
                     }
                 });
             }
