@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using Modding_Assistant.MVVM.ViewModel;
+using System.Windows;
 
 namespace Modding_Assistant.MVVM.View.Windows
 {
@@ -7,9 +8,10 @@ namespace Modding_Assistant.MVVM.View.Windows
     /// </summary>
     public partial class MainWindow : Window
     {
-        public MainWindow()
+        public MainWindow(MainViewModel mainViewModel)
         {
             InitializeComponent();
+            DataContext = mainViewModel;
         }
     }
 }

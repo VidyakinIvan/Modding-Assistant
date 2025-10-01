@@ -4,6 +4,7 @@ namespace Modding_Assistant.MVVM.Services.Interfaces
 {
     public interface IMainWindowService
     {
+        void SetMainWindow(Window window);
         void Minimize();
         void Maximize();
         void Restore();

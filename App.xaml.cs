@@ -43,7 +43,8 @@ namespace Modding_Assistant
                 await InitializeDatabaseAsync();
                 Current.Resources["LocalizationService"] = _host.Services.GetRequiredService<ILocalizationService>();
                 var mainWindow = _host.Services.GetRequiredService<MainWindow>();
-                mainWindow.DataContext = _host.Services.GetRequiredService<MainViewModel>();
+                var mainWindowService = _host.Services.GetRequiredService<IMainWindowService>();
+                (mainWindowService as MainWindowService)?.SetMainWindow(mainWindow);
                 mainWindow.Show();  
                 base.OnStartup(e);
             }

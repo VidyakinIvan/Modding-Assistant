@@ -19,12 +19,7 @@ namespace Modding_Assistant.Core
             services.AddSingleton<IExcelExportService, ExcelExportService>();
             services.AddSingleton<IOpenDialogService, OpenDialogService>();
             services.AddSingleton<INotificationService, NotificationService>();
-            services.AddSingleton<IMainWindowService>(provider =>
-            {
-                var mainWindow = provider.GetRequiredService<MainWindow>();
-                var logger = provider.GetRequiredService<ILogger<MainWindowService>>();
-                return new MainWindowService(mainWindow, logger);
-            });
+            services.AddSingleton<IMainWindowService, MainWindowService>();
             services.AddSingleton<ILocalizationService>(provider =>
                 new LocalizationService(Resources.Strings.Strings.ResourceManager));
             return services;
