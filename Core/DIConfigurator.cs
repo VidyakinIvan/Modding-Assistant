@@ -16,9 +16,8 @@ namespace Modding_Assistant.Core
         public static IServiceCollection AddServices(this IServiceCollection services)
         {
             services.AddSingleton<ISettingsService, SettingsService>();
-            services.AddSingleton<IMoveModsDialogService, MoveModsDialogService>();
             services.AddSingleton<IExcelExportService, ExcelExportService>();
-            services.AddSingleton<IDialogService, DialogService>();
+            services.AddSingleton<IOpenDialogService, OpenDialogService>();
             services.AddSingleton<INotificationService, NotificationService>();
             services.AddSingleton<IMainWindowService>(provider =>
             {

@@ -1,4 +1,5 @@
 ﻿using Modding_Assistant.MVVM.ViewModel;
+using System.Diagnostics;
 using System.Windows;
 
 namespace Modding_Assistant.MVVM.View.Dialogs
@@ -18,6 +19,10 @@ namespace Modding_Assistant.MVVM.View.Dialogs
                     vm.RequestOk += OnRequestOk;
                     vm.RequestClose += OnRequestClose;
                 }
+            };
+            this.MouseLeftButtonDown += (s, e) =>
+            {
+                this.DragMove();
             };
         }
 

@@ -6,11 +6,12 @@ using System.Threading.Tasks;
 
 namespace Modding_Assistant.MVVM.Services.Interfaces
 {
-    public interface IDialogService
+    public interface IOpenDialogService
     {
         Task<string?> ShowPickFolderDialogAsync(string Title);
         Task<string?> ShowSaveFileDialogAsync(string defaultFileName, string filter);
         Task<string?> ShowOpenFileDialogAsync(string title, string filter);
+        int? ShowMoveModsDialog();
         Task ShowMessageAsync(string title, string message);
         Task ShowErrorAsync(string title, string message);
     }

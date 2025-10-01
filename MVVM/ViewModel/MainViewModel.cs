@@ -22,9 +22,8 @@ namespace Modding_Assistant.MVVM.ViewModel
         private readonly ModContext _db;
         private readonly IMainWindowService _mainWindowService;
         private readonly ISettingsService _settingsService;
-        private readonly IMoveModsDialogService _moveModsDialogService;
         private readonly IExcelExportService _excelExportService;
-        private readonly IDialogService _dialogService;
+        private readonly IOpenDialogService _openDialogService;
         private readonly ILocalizationService _localizationService;
         private readonly INotificationService _notificationService;
         private RelayCommand? _loadCommand;
@@ -39,15 +38,14 @@ namespace Modding_Assistant.MVVM.ViewModel
         private RelayCommand? _languageCommand;
         private RelayCommand? _exitCommand;
         public MainViewModel(ModContext db, IMainWindowService mainWindowService, ISettingsService settingsService, 
-            IMoveModsDialogService moveModsDialogService, IExcelExportService excelExportService, IDialogService dialogService,
+            IExcelExportService excelExportService, IOpenDialogService openDialogService, 
             ILocalizationService localizationService, INotificationService notificationService)
         {
             _db = db;
             _mainWindowService = mainWindowService;
             _settingsService = settingsService;
-            _moveModsDialogService = moveModsDialogService;
             _excelExportService = excelExportService;
-            _dialogService = dialogService;
+            _openDialogService = openDialogService;
             _localizationService = localizationService;
             _notificationService = notificationService;
             _db.Mods.Load();
@@ -110,7 +108,7 @@ namespace Modding_Assistant.MVVM.ViewModel
             {
                 return _fromFileCommand ??= new RelayCommand(async _ =>
                 {
-                    var fileName = await _dialogService.ShowOpenFileDialogAsync(
+                    var fileName = await _openDialogService.ShowOpenFileDialogAsync(
                         "Select Mod Archive",
                         "Archive Files (*.zip;*.rar;*.7z)|*.zip;*.rar;*.7z|All Files (*.*)|*.*");
                     if (string.IsNullOrEmpty(fileName))
@@ -152,7 +150,7 @@ namespace Modding_Assistant.MVVM.ViewModel
                 {
                     if (selectedMods is IList mods && mods.Count > 0)
                     {
-                        int? result = _moveModsDialogService.ShowNumberDialog();
+                        int? result = _openDialogService.ShowMoveModsDialog();
                         if (result.HasValue)
                         {
                             foreach (var mod in mods)
@@ -245,7 +243,7 @@ namespace Modding_Assistant.MVVM.ViewModel
             {
                 return _settingsCommand ??= new RelayCommand(async _ =>
                 {
-                    var folderName = await _dialogService.ShowPickFolderDialogAsync("Select Mods Folder");
+                    var folderName = await _openDialogService.ShowPickFolderDialogAsync("Select Mods Folder");
                     if (!string.IsNullOrEmpty(folderName))
                     {
                         _settingsService.ModsFolder = folderName;
@@ -260,7 +258,7 @@ namespace Modding_Assistant.MVVM.ViewModel
             {
                 return _exportCommand ??= new RelayCommand(async _ =>
                 {
-                    var fileName = await _dialogService.ShowSaveFileDialogAsync(
+                    var fileName = await _openDialogService.ShowSaveFileDialogAsync(
                         $"Export to Excel", "Excel Files (*.xlsx)|*.xlsx|All Files (*.*)|*.*");
                     if (!string.IsNullOrEmpty(fileName))
                     {
@@ -273,16 +271,16 @@ namespace Modding_Assistant.MVVM.ViewModel
                             );
                             if (success)
                             {
-                                await _dialogService.ShowMessageAsync("Success", "Export successful!");
+                                await _openDialogService.ShowMessageAsync("Success", "Export successful!");
                             }
                             else
                             {
-                                await _dialogService.ShowErrorAsync("Error", "Failed to create file");
+                                await _openDialogService.ShowErrorAsync("Error", "Failed to create file");
                             }
                         }
                         catch (Exception ex)
                         {
-                            await _dialogService.ShowErrorAsync("Error", $"Failed to create file:\n{ex.Message}");
+                            await _openDialogService.ShowErrorAsync("Error", $"Failed to create file:\n{ex.Message}");
                         }
                     }
                 });

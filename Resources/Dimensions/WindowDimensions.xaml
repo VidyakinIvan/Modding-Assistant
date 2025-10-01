@@ -9,6 +9,12 @@
     <system:Double x:Key="MinWindowHeight">400</system:Double>
     <CornerRadius x:Key="WindowCornerRadius">10</CornerRadius>
 
+    
+    <!-- Dialog Dimensions-->
+    <system:Double x:Key="DialogWidth">550</system:Double>
+    <system:Double x:Key="DialogHeight">190</system:Double>
+    <Thickness x:Key="DialogMargin">16</Thickness>
+    
     <!-- Control Heights -->
     <system:Double x:Key="ToolbarHeight">50</system:Double>
 

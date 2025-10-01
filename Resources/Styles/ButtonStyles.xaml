@@ -71,6 +71,38 @@
         </Setter>
     </Style>
 
+    <Style x:Key="CloseButtonSquaredStyle" TargetType="Button" BasedOn="{StaticResource WindowControlButtonBaseStyle}">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Border x:Name="Bd" 
+                            Background="{TemplateBinding Background}">
+                        <Path Data="{StaticResource CloseButtonGeometry}"
+                                Stretch="Uniform" Stroke="{StaticResource PrimaryForegroundBrush}" StrokeThickness="2"/>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="Bd" Property="Background" Value="{StaticResource CloseButtonHoverBrush}"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style x:Key="DialogButtonStyle" TargetType="Button">
+        <Setter Property="Width" Value="80"/>
+        <Setter Property="Padding" Value="6,2"/>
+        <Setter Property="Background" Value="{StaticResource DialogAccentBrush}"/>
+        <Setter Property="Foreground" Value="{StaticResource DialogForegroundBrush}"/>
+        <Setter Property="BorderBrush" Value="{StaticResource DialogButtonBorderBrush}"/>
+        <Style.Triggers>
+            <Trigger Property="IsEnabled" Value="False">
+                <Setter Property="Opacity" Value="0.2"/>
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+    
     <Style x:Key="ToolbarButtonStyle" TargetType="Button">
         <Setter Property="Width" Value="30"/>
         <Setter Property="Height" Value="30"/>

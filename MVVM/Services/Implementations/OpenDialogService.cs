@@ -1,16 +1,21 @@
-﻿using System;
+﻿using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Win32;
+using Modding_Assistant.MVVM.Services.Interfaces;
+using Modding_Assistant.MVVM.View.Dialogs;
+using Modding_Assistant.MVVM.View.Windows;
+using Modding_Assistant.MVVM.ViewModel;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
-using Microsoft.Win32;
-using Modding_Assistant.MVVM.Services.Interfaces;
 
 namespace Modding_Assistant.MVVM.Services.Implementations
 {
-    public class DialogService : IDialogService
+    public class OpenDialogService(IServiceProvider serviceProvider) : IOpenDialogService
     {
+        private readonly IServiceProvider _serviceProvider = serviceProvider;
         public async Task<string?> ShowPickFolderDialogAsync(string title)
         {
             return await Application.Current.Dispatcher.InvokeAsync(() =>
@@ -46,6 +51,18 @@ namespace Modding_Assistant.MVVM.Services.Implementations
                 };
                 return openFileDialog.ShowDialog() == true ? openFileDialog.FileName : null;
             });
+        }
+
+        public int? ShowMoveModsDialog()
+        {
+            var moveDialog = _serviceProvider.GetRequiredService<MoveModsDialog>();
+            var viewModel = _serviceProvider.GetRequiredService<MoveModsViewModel>();
+            moveDialog.Owner = _serviceProvider.GetRequiredService<MainWindow>();
+            moveDialog.DataContext = viewModel;
+            if (moveDialog.ShowDialog() == true)
+                return moveDialog.ModNumber;
+            else
+                return null;
         }
         public async Task ShowMessageAsync(string title, string message)
         {
