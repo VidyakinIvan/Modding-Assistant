@@ -44,7 +44,7 @@ namespace Modding_Assistant
                 Current.Resources["LocalizationService"] = _host.Services.GetRequiredService<ILocalizationService>();
                 var mainWindow = _host.Services.GetRequiredService<MainWindow>();
                 var mainWindowService = _host.Services.GetRequiredService<IMainWindowService>();
-                (mainWindowService as MainWindowService)?.SetMainWindow(mainWindow);
+                mainWindowService.SetMainWindow(mainWindow);
                 mainWindow.Show();  
                 base.OnStartup(e);
             }
@@ -58,18 +58,15 @@ namespace Modding_Assistant
             _logger?.LogCritical(ex, "Application startup failed");
             string message = "Critical application startup error.";
             string caption = "Startup Error";
-            if (_host != null)
+            try
             {
-                try
-                {
-                    var localizationService = _host.Services.GetRequiredService<ILocalizationService>();
-                    message = localizationService.GetString("StartupError") ?? message;
-                    caption = localizationService.GetString("StartupErrorHeader") ?? caption;
-                }
-                catch (Exception serviceEx)
-                {
-                    _logger?.LogWarning(serviceEx, "Failed to get localization service");
-                }
+                var localizationService = _host.Services.GetRequiredService<ILocalizationService>();
+                message = localizationService.GetString("StartupError") ?? message;
+                caption = localizationService.GetString("StartupErrorHeader") ?? caption;
+            }
+            catch (Exception serviceEx)
+            {
+                _logger?.LogWarning(serviceEx, "Failed to get localization service");
             }
             if (notificationService != null)
                 notificationService.ShowError(message, caption);
@@ -89,12 +86,9 @@ namespace Modding_Assistant
         {
             try
             {
-                if (_host != null)
-                {
-                    using var cts = new CancellationTokenSource(TimeSpan.FromSeconds(5));
-                    await _host.StopAsync(cts.Token);
-                    _host.Dispose();
-                }
+                using var cts = new CancellationTokenSource(TimeSpan.FromSeconds(5));
+                await _host.StopAsync(cts.Token);
+                _host.Dispose();
             }
             catch (Exception ex)
             {
