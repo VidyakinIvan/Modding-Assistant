@@ -42,7 +42,7 @@ namespace Modding_Assistant.Core
                 Directory.CreateDirectory(appFolder);
             }
 
-            var connectionString = configuration.GetConnectionString("DefaultConnection");
+            var connectionString = configuration.GetConnectionString("DefaultConnectionPath");
             if (string.IsNullOrWhiteSpace(connectionString))
             {
                 throw new InvalidOperationException("Connection string 'DefaultConnection' is not configured.");
