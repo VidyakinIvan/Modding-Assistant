@@ -3,6 +3,7 @@ using Microsoft.Extensions.Logging;
 using Modding_Assistant.MVVM.Model;
 using Modding_Assistant.MVVM.Services.Interfaces;
 using System;
+using System.Diagnostics;
 using System.Threading;
 using System.Threading.Tasks;
 namespace Modding_Assistant.MVVM.Services.Implementations
@@ -16,23 +17,24 @@ namespace Modding_Assistant.MVVM.Services.Implementations
         {
             try
             {
-                _logger.LogInformation("Starting database migration...");
-                using var migrationCts = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken);
-                migrationCts.CancelAfter(TimeSpan.FromMinutes(5));
-                await _context.Database.MigrateAsync(migrationCts.Token);
+                _logger.LogInformation("Starting database initializing...");
+                using var creationCts = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken);
+                creationCts.CancelAfter(TimeSpan.FromMinutes(5));
+                await _context.Database.EnsureCreatedAsync(creationCts.Token);
+                Debug.WriteLine(_context.Database.CanConnect());
                 var canConnect = await _context.Database.CanConnectAsync(cancellationToken);
                 if (!canConnect)
-                    throw new InvalidOperationException("Database is not accessible after migration");
-                _logger.LogInformation("Database migration completed successfully.");
+                    throw new InvalidOperationException("Database is not accessible after initializing");
+                _logger.LogInformation("Database initializing completed successfully.");
             }
             catch (OperationCanceledException) when (!cancellationToken.IsCancellationRequested)
             {
-                _logger.LogError("Database migration timed out");
-                throw new TimeoutException("Database migration operation timed out");
+                _logger.LogError("Database initializing timed out");
+                throw new TimeoutException("Database initializing operation timed out");
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Database migration failed.");
+                _logger.LogError(ex, "Database initializing failed.");
                 throw;
             }
         }

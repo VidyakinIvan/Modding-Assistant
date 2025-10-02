@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using DocumentFormat.OpenXml.Bibliography;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -8,6 +9,7 @@ using Modding_Assistant.MVVM.Services.Interfaces;
 using Modding_Assistant.MVVM.View.Dialogs;
 using Modding_Assistant.MVVM.View.Windows;
 using Modding_Assistant.MVVM.ViewModel;
+using System.IO;
 
 namespace Modding_Assistant.Core
 {
@@ -27,13 +29,27 @@ namespace Modding_Assistant.Core
         
         public static IServiceCollection AddDatabase(this IServiceCollection services, IConfiguration configuration)
         {
+            var appDataPath = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
+            var appFolder = Path.Combine(appDataPath, "ModdingAssistant");
+
+            try
+            {
+                Directory.CreateDirectory(appFolder);
+            }
+            catch
+            {
+                appFolder = Path.Combine(Directory.GetCurrentDirectory(), "Data");
+                Directory.CreateDirectory(appFolder);
+            }
+
             var connectionString = configuration.GetConnectionString("DefaultConnection");
             if (string.IsNullOrWhiteSpace(connectionString))
             {
                 throw new InvalidOperationException("Connection string 'DefaultConnection' is not configured.");
             }
+            connectionString = Path.Combine(appFolder, connectionString);
             services.AddDbContext<ModContext>(options =>
-                options.UseSqlite(connectionString));
+                options.UseSqlite("Data Source="+connectionString));
 
             services.AddScoped<IDatabaseService, DatabaseService>();
             return services;

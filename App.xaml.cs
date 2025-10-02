@@ -7,6 +7,7 @@ using Modding_Assistant.MVVM.Services.Implementations;
 using Modding_Assistant.MVVM.Services.Interfaces;
 using Modding_Assistant.MVVM.View.Windows;
 using Modding_Assistant.MVVM.ViewModel;
+using System.Diagnostics;
 using System.Windows;
 
 namespace Modding_Assistant
