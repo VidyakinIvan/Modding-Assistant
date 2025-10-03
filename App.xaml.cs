@@ -20,7 +20,6 @@ namespace Modding_Assistant
 
             try
             {
-
                 using var startupCts = new CancellationTokenSource(TimeSpan.FromMinutes(2));
 
                 await InitializeApplicationAsync(e, startupCts.Token);
@@ -50,7 +49,12 @@ namespace Modding_Assistant
                 await applicationInitializer.InitializeAsync(_host, cancellationToken);
 
             }
-            catch (Exception ex) when (ex is not OperationCanceledException)
+            catch (OperationCanceledException)
+            {
+                _logger?.LogWarning("Application initialization was cancelled");
+                throw;
+            }
+            catch (Exception ex)
             {
                 _logger?.LogError(ex, "Error during application initialization");
                 throw;
