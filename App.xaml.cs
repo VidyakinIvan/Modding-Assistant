@@ -85,8 +85,8 @@ namespace Modding_Assistant
             }
             finally
             {
-                base.OnExit(e);
                 _host?.Dispose();
+                base.OnExit(e);
             }
         }
     }
