@@ -3,12 +3,6 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Modding_Assistant.MVVM.Services.Interfaces;
 using Modding_Assistant.MVVM.View.Windows;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.InteropServices.JavaScript;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 
 namespace Modding_Assistant.Core
@@ -16,28 +10,28 @@ namespace Modding_Assistant.Core
     /// <summary>
     /// Class for starting <see cref="IHost"/> container, <see cref="ILocalizationService"/> and <see cref="IDatabaseService"/>
     /// </summary>
-    public class ApplicationInitializer() : IApplicationInitializer
+    public class ApplicationInitializer(IServiceProvider serviceProvider, ILogger<ApplicationInitializer> logger) 
+        : IApplicationInitializer
     {
-        public async Task InitializeAsync(IServiceProvider serviceProvider, CancellationToken cancellationToken)
+        private readonly IServiceProvider _serviceProvider = serviceProvider;
+        private readonly ILogger<ApplicationInitializer> _logger = logger;
+        public async Task InitializeAsync(CancellationToken cancellationToken)
         {
-            await InitializeDatabaseAsync(serviceProvider, cancellationToken);
-            var localizationService = serviceProvider.GetService<ILocalizationService>();
+            await InitializeDatabaseAsync(cancellationToken);
+            var localizationService = _serviceProvider.GetService<ILocalizationService>();
             if (localizationService != null)
             {
                 Application.Current.Resources["LocalizationService"] = localizationService;
             }
-            ShowMainWindow(serviceProvider);
+            ShowMainWindow();
 
         }
         /// <summary>
         /// Async Task for <see cref="IDatabaseService"/> initialization
         /// </summary>
-        private async Task InitializeDatabaseAsync(IServiceProvider serviceProvider, CancellationToken cancellationToken = default)
+        private async Task InitializeDatabaseAsync(CancellationToken cancellationToken = default)
         {
-            ArgumentNullException.ThrowIfNull(serviceProvider);
-
-            using var scope = serviceProvider.CreateScope();
-            var databaseService = scope.ServiceProvider.GetRequiredService<IDatabaseService>();
+            var databaseService = _serviceProvider.GetRequiredService<IDatabaseService>();
 
             using var linkedCts = CancellationTokenSource.CreateLinkedTokenSource(
                 cancellationToken,
@@ -49,15 +43,14 @@ namespace Modding_Assistant.Core
         /// <summary>
         /// Opens main application window
         /// </summary>
-        private void ShowMainWindow(IServiceProvider serviceProvider)
+        private void ShowMainWindow()
         {
-            if (serviceProvider != null)
-            {
-                var mainWindow = serviceProvider.GetRequiredService<MainWindow>();
-                var mainWindowService = serviceProvider.GetRequiredService<IMainWindowService>();
-                mainWindowService.SetMainWindow(mainWindow);
-                mainWindow.Show();
-            }
+            var mainWindow = _serviceProvider.GetRequiredService<MainWindow>();
+            var mainWindowService = _serviceProvider.GetRequiredService<IMainWindowService>();
+            mainWindowService.SetMainWindow(mainWindow);
+            mainWindow.Show();
+
+            _logger.LogInformation("Main window opened");
         }
     }
 }

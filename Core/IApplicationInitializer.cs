@@ -10,6 +10,6 @@ namespace Modding_Assistant.Core
 {
     public interface IApplicationInitializer
     {
-        public Task InitializeAsync(IServiceProvider serviceProvider, CancellationToken cancellationToken);
+        public Task InitializeAsync(CancellationToken cancellationToken);
     }
 }

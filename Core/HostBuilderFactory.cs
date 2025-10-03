@@ -77,7 +77,7 @@ namespace Modding_Assistant.Core
             services.AddDbContext<ModContext>(options =>
                 options.UseSqlite(connectionStringBuilder.ConnectionString));
 
-            services.AddScoped<IDatabaseService, DatabaseService>();
+            services.AddSingleton<IDatabaseService, DatabaseService>();
             return services;
         }
 
