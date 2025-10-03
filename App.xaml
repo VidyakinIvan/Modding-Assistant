@@ -5,14 +5,24 @@
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
                 <!-- Base resources (no dependencies) -->
-                <ResourceDictionary Source="Resources/Brushes/Colors.xaml"/>
-                <ResourceDictionary Source="Resources/Icons/WindowIcons.xaml"/>
-                <ResourceDictionary Source="Resources/Styles/TextStyles.xaml"/>
-                <ResourceDictionary Source="Resources/Dimensions/WindowDimensions.xaml"/>
+
+                <!-- Primary color palette and brushes -->
+                <ResourceDictionary Source="/Resources/Brushes/Colors.xaml"/>
+                <!-- Window and dialog icons -->
+                <ResourceDictionary Source="/Resources/Icons/WindowIcons.xaml"/>
+                <!-- Window and dialog text styles -->
+                <ResourceDictionary Source="/Resources/Styles/TextStyles.xaml"/>
+                <!-- Dimensions for full-size windows -->
+                <ResourceDictionary Source="/Resources/Dimensions/WindowDimensions.xaml"/>
+                <!-- Dimensions for custom dialogs -->
+                <ResourceDictionary Source="/Resources/Dimensions/DialogDimensions.xaml"/>
 
                 <!-- Dependent resources -->
-                <ResourceDictionary Source="Resources/Styles/ButtonStyles.xaml"/>
-                <ResourceDictionary Source="Resources/Styles/DataGridStyles.xaml"/>
+
+                <!-- Window and dialog button styles -->
+                <ResourceDictionary Source="/Resources/Styles/ButtonStyles.xaml"/>
+                <!-- Main dataGrid styles -->
+                <ResourceDictionary Source="/Resources/Styles/DataGridStyles.xaml"/>
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Application.Resources>

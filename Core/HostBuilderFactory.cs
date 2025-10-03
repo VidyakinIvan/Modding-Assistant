@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Modding_Assistant.MVVM.Model;
 using Modding_Assistant.MVVM.Services.Implementations;
@@ -13,10 +14,25 @@ using System.IO;
 
 namespace Modding_Assistant.Core
 {
-    public static class DIConfigurator
+    public static class HostBuilderFactory
     {
-        public static IServiceCollection AddServices(this IServiceCollection services)
+        public static IHostBuilder CreateHostBuilder(string[] args) =>
+            Host.CreateDefaultBuilder(args)
+            .ConfigureAppConfiguration((context, config) =>
+            {
+                config.AddJsonFile("appsettings.json", optional: false);
+            })
+            .ConfigureServices((context, services) =>
+            {
+                services.AddServices()
+                    .AddDatabase(context.Configuration)
+                    .AddViewModels()
+                    .AddViews();
+            });
+
+        private static IServiceCollection AddServices(this IServiceCollection services)
         {
+            services.AddSingleton<IApplicationInitializer, ApplicationInitializer>();
             services.AddSingleton<ISettingsService, SettingsService>();
             services.AddSingleton<IExcelExportService, ExcelExportService>();
             services.AddSingleton<IOpenDialogService, OpenDialogService>();
@@ -27,7 +43,7 @@ namespace Modding_Assistant.Core
             return services;
         }
         
-        public static IServiceCollection AddDatabase(this IServiceCollection services, IConfiguration configuration)
+        private static IServiceCollection AddDatabase(this IServiceCollection services, IConfiguration configuration)
         {
             var appDataPath = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
             var appFolder = Path.Combine(appDataPath, "ModdingAssistant");
@@ -55,7 +71,7 @@ namespace Modding_Assistant.Core
             return services;
         }
 
-        public static IServiceCollection AddViewModels(this IServiceCollection services)
+        private static IServiceCollection AddViewModels(this IServiceCollection services)
         {
             services.AddSingleton<MainViewModel>();
             services.AddTransient<MoveModsViewModel>();

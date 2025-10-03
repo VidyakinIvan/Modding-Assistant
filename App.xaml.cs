@@ -1,13 +1,7 @@
-﻿using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Modding_Assistant.Core;
-using Modding_Assistant.MVVM.Services.Implementations;
-using Modding_Assistant.MVVM.Services.Interfaces;
-using Modding_Assistant.MVVM.View.Windows;
-using Modding_Assistant.MVVM.ViewModel;
-using System.Diagnostics;
 using System.Windows;
 
 namespace Modding_Assistant
@@ -17,79 +11,72 @@ namespace Modding_Assistant
     /// </summary>
     public partial class App : Application
     {
-        private IHost _host = null!;
+        private IHost? _host;
         private ILogger<App>? _logger;
-
-        private static IHostBuilder CreateHostBuilder(string[] args) =>
-            Host.CreateDefaultBuilder(args)
-                .ConfigureAppConfiguration((context, config) =>
-                {
-                    config.AddJsonFile("appsettings.json", optional: false);
-                })
-                .ConfigureServices((context, services) =>
-                {
-                    services.AddServices()
-                        .AddDatabase(context.Configuration)
-                        .AddViewModels()
-                        .AddViews();
-                });
 
         protected override async void OnStartup(StartupEventArgs e)
         {
+            base.OnStartup(e);
+
             try
             {
-                _host = CreateHostBuilder(e.Args).Build();
-                _logger = _host.Services.GetRequiredService<ILogger<App>>();
-                await _host.StartAsync();
-                await InitializeDatabaseAsync();
-                Current.Resources["LocalizationService"] = _host.Services.GetRequiredService<ILocalizationService>();
-                var mainWindow = _host.Services.GetRequiredService<MainWindow>();
-                var mainWindowService = _host.Services.GetRequiredService<IMainWindowService>();
-                mainWindowService.SetMainWindow(mainWindow);
-                mainWindow.Show();  
-                base.OnStartup(e);
+                ShutdownMode = ShutdownMode.OnExplicitShutdown;
+
+                using var startupCts = new CancellationTokenSource(TimeSpan.FromMinutes(2));
+
+                await InitializeAsync(e, startupCts.Token);
             }
             catch (Exception ex)
             {
-                HandleStartupException(ex, _host.Services.GetRequiredService<INotificationService>());
+                _logger?.LogCritical(ex, "Application startup failed");
+
+                StartupErrorHandler.HandleStartupException(ex, _host);
+                Shutdown(1);
             }
         }
-        private void HandleStartupException(Exception ex, INotificationService? notificationService = null)
+
+        /// <summary>
+        /// Async Task for application initialization
+        /// </summary>
+        private async Task InitializeAsync(StartupEventArgs e, CancellationToken cancellationToken)
         {
-            _logger?.LogCritical(ex, "Application startup failed");
-            string message = "Critical application startup error.";
-            string caption = "Startup Error";
             try
             {
-                var localizationService = _host.Services.GetRequiredService<ILocalizationService>();
-                message = localizationService.GetString("StartupError") ?? message;
-                caption = localizationService.GetString("StartupErrorHeader") ?? caption;
+                _host = HostBuilderFactory.CreateHostBuilder(e.Args).Build();
+                _logger = _host.Services.GetRequiredService<ILogger<App>>();
+
+                _logger.LogInformation("Application initialization started, opening main window");
+
+                var applicationInitializer = _host.Services.GetRequiredService<IApplicationInitializer>();
+                await applicationInitializer.InitializeAsync(_host, cancellationToken);
+
+                ShutdownMode = ShutdownMode.OnLastWindowClose;
+
             }
-            catch (Exception serviceEx)
+            catch (Exception ex) when (ex is not OperationCanceledException)
             {
-                _logger?.LogWarning(serviceEx, "Failed to get localization service");
+                _logger?.LogError(ex, "Error during application initialization");
+                throw;
             }
-            if (notificationService != null)
-                notificationService.ShowError(message, caption);
-            else
-                MessageBox.Show(message, caption, MessageBoxButton.OK, MessageBoxImage.Error);
-            Shutdown(1);
-        }
-        private async Task InitializeDatabaseAsync()
-        {
-            using var scope = _host.Services.CreateScope();
-            var databaseService = scope.ServiceProvider.GetRequiredService<IDatabaseService>();
-            using var cts = new CancellationTokenSource(TimeSpan.FromSeconds(30));
-            await databaseService.InitializeAsync(cts.Token);
         }
 
         protected override async void OnExit(ExitEventArgs e)
         {
             try
             {
-                using var cts = new CancellationTokenSource(TimeSpan.FromSeconds(5));
-                await _host.StopAsync(cts.Token);
-                _host.Dispose();
+                if (_host != null)
+                {
+                    using var cts = new CancellationTokenSource(TimeSpan.FromSeconds(5));
+                    await _host.StopAsync(cts.Token);
+                }
+            }
+            catch (OperationCanceledException)
+            {
+                _logger?.LogWarning("Application shutdown was cancelled");
+            }
+            catch (AggregateException ex) when (ex.InnerException != null)
+            {
+                _logger?.LogError(ex.InnerException, "Error during application shutdown");
             }
             catch (Exception ex)
             {
@@ -98,6 +85,7 @@ namespace Modding_Assistant
             finally
             {
                 base.OnExit(e);
+                _host?.Dispose();
             }
         }
     }

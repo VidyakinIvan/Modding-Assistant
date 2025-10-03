@@ -1,0 +1,10 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:system="clr-namespace:System;assembly=mscorlib">>
+
+    <!-- Dialog Dimensions-->
+    <system:Double x:Key="DialogWidth">550</system:Double>
+    <system:Double x:Key="DialogHeight">190</system:Double>
+    <Thickness x:Key="DialogMargin">16</Thickness>
+    
+</ResourceDictionary>
