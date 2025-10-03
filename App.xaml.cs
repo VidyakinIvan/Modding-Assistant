@@ -20,7 +20,6 @@ namespace Modding_Assistant
 
             try
             {
-                ShutdownMode = ShutdownMode.OnExplicitShutdown;
 
                 using var startupCts = new CancellationTokenSource(TimeSpan.FromMinutes(2));
 
@@ -49,8 +48,6 @@ namespace Modding_Assistant
 
                 var applicationInitializer = _host.Services.GetRequiredService<IApplicationInitializer>();
                 await applicationInitializer.InitializeAsync(_host, cancellationToken);
-
-                ShutdownMode = ShutdownMode.OnLastWindowClose;
 
             }
             catch (Exception ex) when (ex is not OperationCanceledException)
