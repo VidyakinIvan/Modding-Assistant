@@ -3,7 +3,7 @@ using Microsoft.Extensions.Hosting;
 using Modding_Assistant.MVVM.Services.Interfaces;
 using System.Windows;
 
-namespace Modding_Assistant.Core
+namespace Modding_Assistant.Core.Application
 {
     /// <summary>
     /// Main application level exceptions handler

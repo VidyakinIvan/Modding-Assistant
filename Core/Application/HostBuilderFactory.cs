@@ -11,7 +11,7 @@ using Modding_Assistant.MVVM.View.Windows;
 using Modding_Assistant.MVVM.ViewModel;
 using System.IO;
 
-namespace Modding_Assistant.Core
+namespace Modding_Assistant.Core.Application
 {
     public static class HostBuilderFactory
     {

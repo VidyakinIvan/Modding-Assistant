@@ -5,7 +5,7 @@ using Modding_Assistant.MVVM.Services.Interfaces;
 using Modding_Assistant.MVVM.View.Windows;
 using System.Windows;
 
-namespace Modding_Assistant.Core
+namespace Modding_Assistant.Core.Application
 {
     /// <summary>
     /// Class for starting <see cref="IHost"/> container, <see cref="ILocalizationService"/> and <see cref="IDatabaseService"/>
@@ -21,7 +21,7 @@ namespace Modding_Assistant.Core
             var localizationService = _serviceProvider.GetService<ILocalizationService>();
             if (localizationService != null)
             {
-                Application.Current.Resources["LocalizationService"] = localizationService;
+                System.Windows.Application.Current.Resources["LocalizationService"] = localizationService;
             }
             ShowMainWindow();
 

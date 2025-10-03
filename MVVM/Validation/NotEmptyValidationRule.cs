@@ -1,7 +1,7 @@
 ﻿using System.Globalization;
 using System.Windows.Controls;
 
-namespace Modding_Assistant.Core
+namespace Modding_Assistant.MVVM.Validation
 {
     public class NotEmptyValidationRule : ValidationRule
     {

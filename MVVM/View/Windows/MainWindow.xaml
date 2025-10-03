@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Modding_Assistant"
         xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
-        xmlns:core="clr-namespace:Modding_Assistant.Core"
+        xmlns:val="clr-namespace:Modding_Assistant.MVVM.Validation"
         xmlns:markup="clr-namespace:Modding_Assistant.MVVM.View.Markup"
         mc:Ignorable="d"
         WindowStyle="None"
@@ -97,7 +97,7 @@
                             <Binding Path="Name" UpdateSourceTrigger="PropertyChanged" ValidatesOnDataErrors="True" 
                                      NotifyOnValidationError="True">
                                 <Binding.ValidationRules>
-                                    <core:NotEmptyValidationRule/>
+                                    <val:NotEmptyValidationRule/>
                                 </Binding.ValidationRules>
                             </Binding>
                         </DataGridTextColumn.Binding>
@@ -108,7 +108,7 @@
                             <Binding Path="Version" UpdateSourceTrigger="PropertyChanged" ValidatesOnDataErrors="True" 
                                      NotifyOnValidationError="True">
                                 <Binding.ValidationRules>
-                                    <core:NotEmptyValidationRule/>
+                                    <val:NotEmptyValidationRule/>
                                 </Binding.ValidationRules>
                             </Binding>
                         </DataGridTextColumn.Binding>
@@ -120,7 +120,7 @@
                                      ValidatesOnDataErrors="True" 
                                      NotifyOnValidationError="True">
                                 <Binding.ValidationRules>
-                                    <core:NotEmptyValidationRule/>
+                                    <val:NotEmptyValidationRule/>
                                 </Binding.ValidationRules>
                             </Binding>
                         </DataGridTextColumn.Binding>
@@ -147,7 +147,7 @@
                                                  ValidatesOnDataErrors="True" NotifyOnValidationError="True" 
                                                  Converter="{StaticResource DateOnlyToDateTimeConverter}">
                                             <Binding.ValidationRules>
-                                                <core:NotEmptyValidationRule/>
+                                                <val:NotEmptyValidationRule/>
                                             </Binding.ValidationRules>
                                         </Binding>
                                     </DatePicker.SelectedDate>
@@ -161,7 +161,7 @@
                             <Binding Path="Description" UpdateSourceTrigger="PropertyChanged" ValidatesOnDataErrors="True" 
                                      NotifyOnValidationError="True">
                                 <Binding.ValidationRules>
-                                    <core:NotEmptyValidationRule/>
+                                    <val:NotEmptyValidationRule/>
                                 </Binding.ValidationRules>
                             </Binding>
                         </DataGridTextColumn.Binding>

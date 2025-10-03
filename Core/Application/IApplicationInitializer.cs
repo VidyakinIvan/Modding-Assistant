@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Modding_Assistant.Core
+namespace Modding_Assistant.Core.Application
 {
     public interface IApplicationInitializer
     {

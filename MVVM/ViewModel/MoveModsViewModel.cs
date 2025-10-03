@@ -1,4 +1,4 @@
-﻿using Modding_Assistant.Core;
+﻿using Modding_Assistant.MVVM.Base;
 
 namespace Modding_Assistant.MVVM.ViewModel
 {
