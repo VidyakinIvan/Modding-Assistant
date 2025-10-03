@@ -13,6 +13,8 @@ namespace Modding_Assistant.Core.Application
     public class ApplicationInitializer(IServiceProvider serviceProvider, ILogger<ApplicationInitializer> logger) 
         : IApplicationInitializer
     {
+        private static readonly TimeSpan DbStartupTimeout = TimeSpan.FromSeconds(30);
+
         private readonly IServiceProvider _serviceProvider = serviceProvider;
         private readonly ILogger<ApplicationInitializer> _logger = logger;
         public async Task InitializeAsync(CancellationToken cancellationToken)
@@ -35,7 +37,7 @@ namespace Modding_Assistant.Core.Application
 
             using var linkedCts = CancellationTokenSource.CreateLinkedTokenSource(
                 cancellationToken,
-                new CancellationTokenSource(TimeSpan.FromSeconds(30)).Token
+                new CancellationTokenSource(DbStartupTimeout).Token
             );
             await databaseService.InitializeAsync(linkedCts.Token);
         }
