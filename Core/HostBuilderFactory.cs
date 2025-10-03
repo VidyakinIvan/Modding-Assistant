@@ -1,4 +1,5 @@
 ﻿using DocumentFormat.OpenXml.Bibliography;
+using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -59,13 +60,19 @@ namespace Modding_Assistant.Core
             }
 
             var connectionString = configuration.GetConnectionString("DefaultConnectionPath");
+
             if (string.IsNullOrWhiteSpace(connectionString))
             {
                 throw new InvalidOperationException("Connection string 'DefaultConnection' is not configured.");
             }
-            connectionString = Path.Combine(appFolder, connectionString);
+
+            var connectionStringBuilder = new SqliteConnectionStringBuilder
+            {
+                DataSource = Path.Combine(appFolder, connectionString)
+            };
+
             services.AddDbContext<ModContext>(options =>
-                options.UseSqlite("Data Source="+connectionString));
+                options.UseSqlite(connectionStringBuilder.ConnectionString));
 
             services.AddScoped<IDatabaseService, DatabaseService>();
             return services;
