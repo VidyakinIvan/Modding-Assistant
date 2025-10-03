@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using Modding_Assistant.Core.Data.Interfaces;
 using Modding_Assistant.MVVM.Services.Interfaces;
 using Modding_Assistant.MVVM.View.Windows;
 

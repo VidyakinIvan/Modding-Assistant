@@ -1,5 +1,6 @@
 ﻿using ClosedXML.Excel;
 using Microsoft.EntityFrameworkCore;
+using Modding_Assistant.Core.Data.Models;
 using Modding_Assistant.Core.Utilities;
 using Modding_Assistant.MVVM.Base;
 using Modding_Assistant.MVVM.Model;
