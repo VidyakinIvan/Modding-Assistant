@@ -14,13 +14,16 @@ namespace Modding_Assistant
         private IHost? _host;
         private ILogger<App>? _logger;
 
+        private static readonly TimeSpan StartupTimeout = TimeSpan.FromMinutes(2);
+        private static readonly TimeSpan ShutdownTimeout = TimeSpan.FromSeconds(5);
+
         protected override async void OnStartup(StartupEventArgs e)
         {
             base.OnStartup(e);
 
             try
             {
-                using var startupCts = new CancellationTokenSource(TimeSpan.FromMinutes(2));
+                using var startupCts = new CancellationTokenSource(StartupTimeout);
 
                 await InitializeApplicationAsync(e.Args, startupCts.Token);
             }
@@ -67,7 +70,7 @@ namespace Modding_Assistant
             {
                 if (_host != null)
                 {
-                    using var cts = new CancellationTokenSource(TimeSpan.FromSeconds(5));
+                    using var cts = new CancellationTokenSource(ShutdownTimeout);
                     await _host.StopAsync(cts.Token);
                 }
             }
