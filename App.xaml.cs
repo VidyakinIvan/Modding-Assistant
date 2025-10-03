@@ -22,7 +22,7 @@ namespace Modding_Assistant
             {
                 using var startupCts = new CancellationTokenSource(TimeSpan.FromMinutes(2));
 
-                await InitializeApplicationAsync(e, startupCts.Token);
+                await InitializeApplicationAsync(e.Args, startupCts.Token);
             }
             catch (Exception ex)
             {
@@ -36,11 +36,11 @@ namespace Modding_Assistant
         /// <summary>
         /// Async Task for application initialization
         /// </summary>
-        private async Task InitializeApplicationAsync(StartupEventArgs e, CancellationToken cancellationToken)
+        private async Task InitializeApplicationAsync(string[] args, CancellationToken cancellationToken)
         {
             try
             {
-                _host = HostBuilderFactory.CreateHostBuilder(e.Args).Build();
+                _host = HostBuilderFactory.CreateHostBuilder(args).Build();
                 _logger = _host.Services.GetRequiredService<ILogger<App>>();
 
                 _logger.LogInformation("Application initialization started, opening main window");
