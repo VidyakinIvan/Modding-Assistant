@@ -1,9 +1,7 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Modding_Assistant.MVVM.Services.Interfaces;
 using Modding_Assistant.MVVM.View.Windows;
-using System.Windows;
 
 namespace Modding_Assistant.Core.Application
 {
