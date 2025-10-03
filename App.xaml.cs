@@ -44,12 +44,14 @@ namespace Modding_Assistant
             try
             {
                 _host = HostBuilderFactory.CreateHostBuilder(args).Build();
+                await _host.StartAsync(cancellationToken);
+
                 _logger = _host.Services.GetRequiredService<ILogger<App>>();
 
                 _logger.LogInformation("Application initialization started, opening main window");
 
                 var applicationInitializer = _host.Services.GetRequiredService<IApplicationInitializer>();
-                await applicationInitializer.InitializeAsync(_host, cancellationToken);
+                await applicationInitializer.InitializeAsync(_host.Services, cancellationToken);
 
             }
             catch (OperationCanceledException)

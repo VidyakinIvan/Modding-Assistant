@@ -18,26 +18,25 @@ namespace Modding_Assistant.Core
     /// </summary>
     public class ApplicationInitializer() : IApplicationInitializer
     {
-        public async Task InitializeAsync(IHost host, CancellationToken cancellationToken)
+        public async Task InitializeAsync(IServiceProvider serviceProvider, CancellationToken cancellationToken)
         {
-            await host.StartAsync(cancellationToken);
-            await InitializeDatabaseAsync(host, cancellationToken);
-            var localizationService = host.Services.GetService<ILocalizationService>();
+            await InitializeDatabaseAsync(serviceProvider, cancellationToken);
+            var localizationService = serviceProvider.GetService<ILocalizationService>();
             if (localizationService != null)
             {
                 Application.Current.Resources["LocalizationService"] = localizationService;
             }
-            ShowMainWindow(host);
+            ShowMainWindow(serviceProvider);
 
         }
         /// <summary>
         /// Async Task for <see cref="IDatabaseService"/> initialization
         /// </summary>
-        private async Task InitializeDatabaseAsync(IHost host, CancellationToken cancellationToken = default)
+        private async Task InitializeDatabaseAsync(IServiceProvider serviceProvider, CancellationToken cancellationToken = default)
         {
-            ArgumentNullException.ThrowIfNull(host);
+            ArgumentNullException.ThrowIfNull(serviceProvider);
 
-            using var scope = host.Services.CreateScope();
+            using var scope = serviceProvider.CreateScope();
             var databaseService = scope.ServiceProvider.GetRequiredService<IDatabaseService>();
 
             using var linkedCts = CancellationTokenSource.CreateLinkedTokenSource(
@@ -50,12 +49,12 @@ namespace Modding_Assistant.Core
         /// <summary>
         /// Opens main application window
         /// </summary>
-        private void ShowMainWindow(IHost host)
+        private void ShowMainWindow(IServiceProvider serviceProvider)
         {
-            if (host != null)
+            if (serviceProvider != null)
             {
-                var mainWindow = host.Services.GetRequiredService<MainWindow>();
-                var mainWindowService = host.Services.GetRequiredService<IMainWindowService>();
+                var mainWindow = serviceProvider.GetRequiredService<MainWindow>();
+                var mainWindowService = serviceProvider.GetRequiredService<IMainWindowService>();
                 mainWindowService.SetMainWindow(mainWindow);
                 mainWindow.Show();
             }
