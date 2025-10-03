@@ -8,7 +8,7 @@ using System.Windows;
 namespace Modding_Assistant.Core.Application
 {
     /// <summary>
-    /// Class for starting <see cref="IHost"/> container, <see cref="ILocalizationService"/> and <see cref="IDatabaseService"/>
+    /// Class for starting <see cref="ILocalizationService"/> and <see cref="IDatabaseService"/>
     /// </summary>
     public class ApplicationInitializer(IServiceProvider serviceProvider, ILogger<ApplicationInitializer> logger) 
         : IApplicationInitializer

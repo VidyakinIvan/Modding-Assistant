@@ -13,6 +13,9 @@ using System.IO;
 
 namespace Modding_Assistant.Core.Application
 {
+    /// <summary>
+    /// Static class for DI host building
+    /// </summary>
     public static class HostBuilderFactory
     {
         private const string AppSettingsFile = "appsettings.json";
@@ -20,6 +23,9 @@ namespace Modding_Assistant.Core.Application
         private const string AppFolderName = "ModdingAssistant";
         private const string FallbackDataFolder = "Data";
 
+        /// <summary>
+        /// Factory method for <see cref="IHostBuilder"/>
+        /// </summary>
         public static IHostBuilder CreateHostBuilder(string[] args) =>
             Host.CreateDefaultBuilder(args)
             .ConfigureAppConfiguration((context, config) =>
