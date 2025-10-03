@@ -24,7 +24,7 @@ namespace Modding_Assistant
 
                 using var startupCts = new CancellationTokenSource(TimeSpan.FromMinutes(2));
 
-                await InitializeAsync(e, startupCts.Token);
+                await InitializeApplicationAsync(e, startupCts.Token);
             }
             catch (Exception ex)
             {
@@ -38,7 +38,7 @@ namespace Modding_Assistant
         /// <summary>
         /// Async Task for application initialization
         /// </summary>
-        private async Task InitializeAsync(StartupEventArgs e, CancellationToken cancellationToken)
+        private async Task InitializeApplicationAsync(StartupEventArgs e, CancellationToken cancellationToken)
         {
             try
             {
