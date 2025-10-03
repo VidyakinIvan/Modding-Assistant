@@ -2,6 +2,7 @@
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Modding_Assistant.Core;
+using Modding_Assistant.MVVM.Services.Interfaces;
 using System.Windows;
 
 namespace Modding_Assistant
@@ -31,7 +32,9 @@ namespace Modding_Assistant
             {
                 _logger?.LogCritical(ex, "Application startup failed");
 
-                StartupErrorHandler.HandleStartupException(ex, _host);
+                StartupErrorHandler.HandleStartupException(ex, _host?.Services.GetService<ILocalizationService>(),
+                    _host?.Services.GetService<INotificationService>());
+
                 Shutdown(1);
             }
         }

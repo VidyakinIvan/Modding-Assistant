@@ -10,18 +10,18 @@ namespace Modding_Assistant.Core
     /// </summary>
     public static class StartupErrorHandler
     {
-        public static void HandleStartupException(Exception ex, IHost? host)
+        public static void HandleStartupException(Exception ex, ILocalizationService? localizationService = null,
+            INotificationService? notificationService = null)
         {
             string message = $"Critical application startup error: {ex.Message ?? "Unknown error"}";
             string caption = "Startup Error";
 
-            var localizationService = host?.Services.GetService<ILocalizationService>();
             if (localizationService != null)
             {
                 message = localizationService.GetString("StartupError") ?? message;
                 caption = localizationService.GetString("StartupErrorHeader") ?? caption;
             }
-            var notificationService = host?.Services.GetService<INotificationService>();
+
             if (notificationService != null)
                 notificationService.ShowError(message, caption);
             else
