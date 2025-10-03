@@ -1,10 +1,8 @@
-﻿using DocumentFormat.OpenXml.Bibliography;
-using Microsoft.Data.Sqlite;
+﻿using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 using Modding_Assistant.MVVM.Model;
 using Modding_Assistant.MVVM.Services.Implementations;
 using Modding_Assistant.MVVM.Services.Interfaces;
@@ -17,11 +15,16 @@ namespace Modding_Assistant.Core
 {
     public static class HostBuilderFactory
     {
+        private const string AppSettingsFile = "appsettings.json";
+        private const string DbPathKey = "DefaultDbPath";
+        private const string AppFolderName = "ModdingAssistant";
+        private const string FallbackDataFolder = "Data";
+
         public static IHostBuilder CreateHostBuilder(string[] args) =>
             Host.CreateDefaultBuilder(args)
             .ConfigureAppConfiguration((context, config) =>
             {
-                config.AddJsonFile("appsettings.json", optional: false);
+                config.AddJsonFile(AppSettingsFile, optional: false);
             })
             .ConfigureServices((context, services) =>
             {
@@ -47,7 +50,7 @@ namespace Modding_Assistant.Core
         private static IServiceCollection AddDatabase(this IServiceCollection services, IConfiguration configuration)
         {
             var appDataPath = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
-            var appFolder = Path.Combine(appDataPath, "ModdingAssistant");
+            var appFolder = Path.Combine(appDataPath, AppFolderName);
 
             try
             {
@@ -55,15 +58,15 @@ namespace Modding_Assistant.Core
             }
             catch
             {
-                appFolder = Path.Combine(Directory.GetCurrentDirectory(), "Data");
+                appFolder = Path.Combine(Directory.GetCurrentDirectory(), FallbackDataFolder);
                 Directory.CreateDirectory(appFolder);
             }
 
-            var connectionString = configuration.GetConnectionString("DefaultConnectionPath");
+            var connectionString = configuration.GetConnectionString(DbPathKey);
 
             if (string.IsNullOrWhiteSpace(connectionString))
             {
-                throw new InvalidOperationException("Connection string 'DefaultConnection' is not configured.");
+                throw new InvalidOperationException($"Connection string '{DbPathKey}' is not configured.");
             }
 
             var connectionStringBuilder = new SqliteConnectionStringBuilder
@@ -85,7 +88,7 @@ namespace Modding_Assistant.Core
             return services;
         }
 
-        public static IServiceCollection AddViews(this IServiceCollection services)
+        private static IServiceCollection AddViews(this IServiceCollection services)
         {
             services.AddSingleton<MainWindow>();
             services.AddTransient<MoveModsDialog>();
