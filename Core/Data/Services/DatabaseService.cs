@@ -8,9 +8,7 @@ namespace Modding_Assistant.Core.Data.Services
         private readonly ModContext _context = context;
         private readonly ILogger<DatabaseService> _logger = logger;
 
-        /// <summary>
-        /// Initializes the database (migrations, initial data)
-        /// </summary>
+        /// <inheritdoc/>
         public async Task InitializeAsync(CancellationToken cancellationToken)
         {
             try
@@ -33,9 +31,7 @@ namespace Modding_Assistant.Core.Data.Services
             }
         }
 
-        /// <summary>
-        /// Checks the availability of the database
-        /// </summary>
+        /// <inheritdoc/>
         public async Task<bool> CheckHealthAsync(CancellationToken cancellationToken)
         {
             try

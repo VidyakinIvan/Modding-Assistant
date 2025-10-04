@@ -41,7 +41,10 @@ namespace Modding_Assistant.Core.Application
                     .AddViewModels()
                     .AddViews();
             });
-
+        
+        /// <summary>
+        /// Initializes MVVM layer services
+        /// </summary>
         private static IServiceCollection AddServices(this IServiceCollection services)
         {
             services.AddSingleton<IApplicationInitializer, ApplicationInitializer>();
@@ -54,7 +57,10 @@ namespace Modding_Assistant.Core.Application
                 new LocalizationService(Resources.Strings.Strings.ResourceManager));
             return services;
         }
-        
+
+        /// <summary>
+        /// Initializes database and it's service
+        /// </summary>
         private static IServiceCollection AddDatabase(this IServiceCollection services, IConfiguration configuration)
         {
             var appDataPath = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
@@ -89,6 +95,9 @@ namespace Modding_Assistant.Core.Application
             return services;
         }
 
+        /// <summary>
+        /// Initialize ViewModels
+        /// </summary>
         private static IServiceCollection AddViewModels(this IServiceCollection services)
         {
             services.AddSingleton<MainViewModel>();
@@ -96,6 +105,9 @@ namespace Modding_Assistant.Core.Application
             return services;
         }
 
+        /// <summary>
+        /// Initializes windows and dialogs
+        /// </summary>
         private static IServiceCollection AddViews(this IServiceCollection services)
         {
             services.AddSingleton<MainWindow>();

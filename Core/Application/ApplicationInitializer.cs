@@ -16,6 +16,8 @@ namespace Modding_Assistant.Core.Application
 
         private readonly IServiceProvider _serviceProvider = serviceProvider;
         private readonly ILogger<ApplicationInitializer> _logger = logger;
+
+        /// <inheritdoc/>
         public async Task InitializeAsync(CancellationToken cancellationToken)
         {
             await InitializeDatabaseAsync(cancellationToken);
