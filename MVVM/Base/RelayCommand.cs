@@ -7,6 +7,12 @@ namespace Modding_Assistant.MVVM.Base
         private readonly Action<object?> execute = execute ?? throw new ArgumentNullException(nameof(execute));
         private readonly Func<object?, bool>? canExecute = canExecute;
 
+        public RelayCommand(Action execute)
+            : this(_ => execute(), null) { }
+
+        public RelayCommand(Action execute, Func<bool> canExecute)
+            : this(_ => execute(), _ => canExecute()) { }
+
         public event EventHandler? CanExecuteChanged
         {
             add { CommandManager.RequerySuggested += value; }
