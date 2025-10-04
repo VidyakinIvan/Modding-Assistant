@@ -9,7 +9,7 @@
                 <!-- Primary color palette and brushes -->
                 <ResourceDictionary Source="/Resources/Brushes/Colors.xaml"/>
                 <!-- Window and dialog icons -->
-                <ResourceDictionary Source="/Resources/Icons/WindowIcons.xaml"/>
+                <ResourceDictionary Source="/Resources/Icons/Icons.xaml"/>
                 <!-- Window and dialog text styles -->
                 <ResourceDictionary Source="/Resources/Styles/TextStyles.xaml"/>
                 <!-- Dimensions for full-size windows -->
