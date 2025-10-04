@@ -45,7 +45,7 @@ namespace Modding_Assistant.MVVM.Services.Implementations
         /// </summary>
         private static bool ShowConfirmationBox(string message, string caption, MessageBoxButton button, MessageBoxImage icon)
         {
-            var result = MessageBox.Show(message, caption, MessageBoxButton.YesNo, MessageBoxImage.Question);
+            var result = MessageBox.Show(message, caption, button, icon);
 
             return result == MessageBoxResult.Yes;
         }
