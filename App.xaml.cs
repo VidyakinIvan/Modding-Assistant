@@ -73,7 +73,7 @@ namespace Modding_Assistant
         {
             try
             {
-                if (_host != null)
+                if (_host is not null)
                 {
                     using var cts = new CancellationTokenSource(ShutdownTimeout);
                     await _host.StopAsync(cts.Token);
@@ -83,7 +83,7 @@ namespace Modding_Assistant
             {
                 _logger?.LogWarning("Application shutdown was cancelled");
             }
-            catch (AggregateException ex) when (ex.InnerException != null)
+            catch (AggregateException ex) when (ex.InnerException is not null)
             {
                 _logger?.LogError(ex.InnerException, "Error during application shutdown");
             }

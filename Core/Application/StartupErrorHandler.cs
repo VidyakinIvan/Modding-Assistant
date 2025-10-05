@@ -17,13 +17,13 @@ namespace Modding_Assistant.Core.Application
             string message = $"Critical application startup error: {ex.Message ?? "Unknown error"}";
             string caption = "Startup Error";
 
-            if (localizationService != null)
+            if (localizationService is not null)
             {
                 message = localizationService["StartupError"] ?? message;
                 caption = localizationService["StartupErrorHeader"] ?? caption;
             }
 
-            if (notificationService != null)
+            if (notificationService is not null)
                 notificationService.ShowError(message, caption);
             else
                 MessageBox.Show(message, caption, MessageBoxButton.OK, MessageBoxImage.Error);

@@ -22,7 +22,7 @@ namespace Modding_Assistant.Core.Application
         {
             await InitializeDatabaseAsync(cancellationToken);
             var localizationService = _serviceProvider.GetService<ILocalizationService>();
-            if (localizationService != null)
+            if (localizationService is not null)
             {
                 System.Windows.Application.Current.Resources["LocalizationService"] = localizationService;
             }
