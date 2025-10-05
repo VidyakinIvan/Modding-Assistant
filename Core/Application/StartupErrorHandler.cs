@@ -19,8 +19,8 @@ namespace Modding_Assistant.Core.Application
 
             if (localizationService != null)
             {
-                message = localizationService.GetString("StartupError") ?? message;
-                caption = localizationService.GetString("StartupErrorHeader") ?? caption;
+                message = localizationService["StartupError"] ?? message;
+                caption = localizationService["StartupErrorHeader"] ?? caption;
             }
 
             if (notificationService != null)
