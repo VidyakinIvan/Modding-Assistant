@@ -269,7 +269,7 @@ namespace Modding_Assistant.MVVM.ViewModel
                             var success = await _excelExportService.ExportToExcelAsync(
                                 ModList,
                                 fileName,
-                                "Mods"
+                                "Mods", new CancellationTokenSource(TimeSpan.FromMinutes(2)).Token
                             );
                             if (success)
                             {
