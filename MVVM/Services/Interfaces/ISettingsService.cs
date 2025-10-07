@@ -6,7 +6,7 @@
     public interface ISettingsService
     {
         /// <summary>
-        /// Service for managing application and user settings
+        /// Gets or sets the main window's left position  
         /// </summary>
         double MainWindowLeft { get; set; }
 
