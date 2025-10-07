@@ -35,7 +35,9 @@ namespace Modding_Assistant.MVVM.View.Converters
         /// <summary>
         /// This method is not implemented as window state to margin conversion is one-way only
         /// </summary>
-        /// <returns>This method always throws <see cref="NotImplementedException"/></returns>
+        /// <returns>
+        /// This method always throws <see cref="NotImplementedException"/>
+        /// </returns>
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {
             throw new NotImplementedException();
