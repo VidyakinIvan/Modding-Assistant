@@ -143,7 +143,7 @@
                         </DataGridTemplateColumn.CellTemplate>
                         <DataGridTemplateColumn.CellEditingTemplate>
                             <DataTemplate>
-                                <DatePicker>
+                                <DatePicker Style="{StaticResource DataGridDatePickerStyle}">
                                     <DatePicker.SelectedDate>
                                         <Binding Path="LastUpdated" Mode="TwoWay" UpdateSourceTrigger="PropertyChanged" 
                                                  ValidatesOnDataErrors="True" NotifyOnValidationError="True" 
