@@ -72,7 +72,7 @@
                             Converter={StaticResource WindowStateToMarginConverter}}">
                 <Button Style="{StaticResource MinimizeButtonStyle}" Command="{Binding MinimizeCommand}"/>
                 <Button Style="{StaticResource MaximizeButtonStyle}" Command="{Binding MaximizeCommand}"/>
-                <Button Style="{StaticResource CloseButtonStyle}" Command="{Binding ExitCommand}"/>
+                <Button Style="{StaticResource CloseButtonRoundedStyle}" Command="{Binding ExitCommand}"/>
             </StackPanel>
             <DataGrid Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="3" ItemsSource="{Binding ModList}" 
                       Style="{StaticResource DataGridStyle}"

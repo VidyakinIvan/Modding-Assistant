@@ -9,7 +9,6 @@
     </Style>
 
     <Style x:Key="MinimizeButtonStyle" TargetType="Button" BasedOn="{StaticResource WindowControlButtonBaseStyle}">
-        <Setter Property="Padding" Value="50"/>
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="Button">
@@ -51,7 +50,7 @@
         </Setter>
     </Style>
 
-    <Style x:Key="CloseButtonStyle" TargetType="Button" BasedOn="{StaticResource WindowControlButtonBaseStyle}">
+    <Style x:Key="CloseButtonRoundedStyle" TargetType="Button" BasedOn="{StaticResource WindowControlButtonBaseStyle}">
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="Button">
@@ -91,7 +90,7 @@
     </Style>
 
     <Style x:Key="DialogButtonStyle" TargetType="Button">
-        <Setter Property="Width" Value="80"/>
+        <Setter Property="MinWidth" Value="80"/>
         <Setter Property="Padding" Value="6,2"/>
         <Setter Property="Background" Value="{StaticResource DialogAccentBrush}"/>
         <Setter Property="Foreground" Value="{StaticResource DialogForegroundBrush}"/>
