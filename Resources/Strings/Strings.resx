@@ -135,9 +135,6 @@
   <data name="ContextMenuSelectAll" xml:space="preserve">
     <value>Select All</value>
   </data>
-  <data name="ContextMenuRefresh" xml:space="preserve">
-    <value>Refresh</value>
-  </data>
   <data name="ContextMenuFromFile" xml:space="preserve">
     <value>From file...</value>
   </data>

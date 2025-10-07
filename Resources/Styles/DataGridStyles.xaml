@@ -14,6 +14,7 @@
         <Setter Property="FontWeight" Value="Bold"/>
         <Setter Property="FontSize" Value="14"/>
         <Setter Property="Height" Value="40"/>
+        <Setter Property="VerticalContentAlignment" Value="Center"/>
         <Setter Property="HorizontalContentAlignment" Value="Center"/>
         <Setter Property="ContentTemplate">
             <Setter.Value>
@@ -28,7 +29,8 @@
         <Setter Property="Background" Value="{StaticResource PrimaryBackgroundBrush}"/>
         <Setter Property="Foreground" Value="{StaticResource ForegroundBrush}"/>
         <Setter Property="FontSize" Value="14"/>
-        <Setter Property="Height" Value="30"/>
+        <Setter Property="MinHeight" Value="30"/>
+        <Setter Property="VerticalContentAlignment" Value="Center"/>
         <Style.Triggers>
             <Trigger Property="IsSelected" Value="True">
                 <Setter Property="Background" Value="{StaticResource HoverBackgroundBrush}"/>
@@ -51,8 +53,6 @@
     <ContextMenu x:Key="DataGridContextMenu" x:Shared="False">
         <MenuItem Header="{markup:Localize ContextMenuCopy}" Command="ApplicationCommands.Copy"/>
         <MenuItem Header="{markup:Localize ContextMenuSelectAll}" Command="ApplicationCommands.SelectAll"/>
-        <MenuItem Header="{markup:Localize ContextMenuRefresh}" Command="{Binding LoadCommand}"
-                  CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=Window}}"/>
         <MenuItem Header="{markup:Localize ContextMenuFromFile}" Command="{Binding FromFileCommand}"/>
         <MenuItem Header="{markup:Localize ContextMenuMove}" Command="{Binding MoveBeforeCommand}" 
                   CommandParameter="{Binding PlacementTarget.SelectedItems, RelativeSource={RelativeSource AncestorType=ContextMenu}}"/>

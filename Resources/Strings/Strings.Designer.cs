@@ -97,15 +97,6 @@ namespace Modding_Assistant.Resources.Strings {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Refresh.
-        /// </summary>
-        public static string ContextMenuRefresh {
-            get {
-                return ResourceManager.GetString("ContextMenuRefresh", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Select All.
         /// </summary>
         public static string ContextMenuSelectAll {
