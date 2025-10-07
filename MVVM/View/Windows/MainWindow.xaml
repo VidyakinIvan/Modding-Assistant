@@ -50,25 +50,26 @@
             </Grid.RowDefinitions>
             <StackPanel Grid.Row="1" Grid.Column="1" Height="{StaticResource ToolbarHeight}" Orientation="Horizontal">
                 <Button Style="{StaticResource ToolbarButtonStyle}" Command="{Binding SettingsCommand}">
-                    <Path Data="{StaticResource SettingsIconGeometry}" Fill="{StaticResource PrimaryForegroundBrush}" 
+                    <Path Data="{StaticResource SettingsIconGeometry}" Fill="{StaticResource ForegroundBrush}" 
                           Stretch="Uniform"/>
                 </Button>
                 <Button Style="{StaticResource ToolbarButtonStyle}" Command="{Binding ExportCommand}">
-                    <Path Data="{StaticResource ExportIconGeometry}" Fill="{StaticResource PrimaryForegroundBrush}" 
+                    <Path Data="{StaticResource ExportIconGeometry}" Fill="{StaticResource ForegroundBrush}" 
                           Stretch="Uniform"/>
                 </Button>
                 <Button Style="{StaticResource ToolbarButtonStyle}" Command="{Binding LanguageCommand}">
                     <TextBlock Text="{Binding CurrentLanguage}" FontSize="{StaticResource LargeFontSize}" 
                                FontWeight="{StaticResource AccentFontWeight}" VerticalAlignment="Center" 
-                               HorizontalAlignment="Center" Foreground="{StaticResource PrimaryForegroundBrush}"/>
+                               HorizontalAlignment="Center" Foreground="{StaticResource ForegroundBrush}"/>
                 </Button>
             </StackPanel>
-            <TextBlock Grid.Row="0" Grid.Column="2" Text="Mod Assistant" Foreground="{StaticResource PrimaryForegroundBrush}" 
+            <TextBlock Grid.Row="0" Grid.Column="2" Text="Mod Assistant" Foreground="{StaticResource ForegroundBrush}" 
                        IsHitTestVisible="False" FontWeight="{StaticResource NormalFontWeight}" HorizontalAlignment="Center" 
                        VerticalAlignment="Center" FontSize="{StaticResource TitleFontSize}"/>
             <StackPanel Grid.Row="0" Grid.Column="3" Grid.ColumnSpan="2" HorizontalAlignment="Right" VerticalAlignment="Top" 
                         Orientation="Horizontal" 
-                        Margin="{Binding WindowState, RelativeSource={RelativeSource AncestorType=Window}, Converter={StaticResource WindowStateToMarginConverter}}">
+                        Margin="{Binding WindowState, RelativeSource={RelativeSource AncestorType=Window}, 
+                            Converter={StaticResource WindowStateToMarginConverter}}">
                 <Button Style="{StaticResource MinimizeButtonStyle}" Command="{Binding MinimizeCommand}"/>
                 <Button Style="{StaticResource MaximizeButtonStyle}" Command="{Binding MaximizeCommand}"/>
                 <Button Style="{StaticResource CloseButtonStyle}" Command="{Binding ExitCommand}"/>
