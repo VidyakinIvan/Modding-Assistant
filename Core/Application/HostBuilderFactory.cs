@@ -50,7 +50,7 @@ namespace Modding_Assistant.Core.Application
             services.AddSingleton<IApplicationInitializer, ApplicationInitializer>();
             services.AddSingleton<ISettingsService, SettingsService>();
             services.AddSingleton<IExcelExportService, ExcelExportService>();
-            services.AddSingleton<IOpenDialogService, OpenDialogService>();
+            services.AddTransient<IOpenDialogService, OpenDialogService>();
             services.AddSingleton<INotificationService, NotificationService>();
             services.AddSingleton<IMainWindowService, MainWindowService>();
             services.AddSingleton<ILocalizationService>(provider =>
@@ -102,6 +102,7 @@ namespace Modding_Assistant.Core.Application
         {
             services.AddSingleton<MainViewModel>();
             services.AddTransient<MoveModsViewModel>();
+            services.AddTransient<Func<MoveModsViewModel>>(sp => () => sp.GetRequiredService<MoveModsViewModel>());
             return services;
         }
 
@@ -112,6 +113,7 @@ namespace Modding_Assistant.Core.Application
         {
             services.AddSingleton<MainWindow>();
             services.AddTransient<MoveModsDialog>();
+            services.AddTransient<Func<MoveModsDialog>>(sp => () => sp.GetRequiredService<MoveModsDialog>());
             return services;
         }
     }

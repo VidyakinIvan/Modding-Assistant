@@ -1,83 +1,72 @@
-﻿using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Win32;
+﻿using Microsoft.Win32;
 using Modding_Assistant.MVVM.Services.Interfaces;
 using Modding_Assistant.MVVM.View.Dialogs;
 using Modding_Assistant.MVVM.View.Windows;
 using Modding_Assistant.MVVM.ViewModel;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
 
 namespace Modding_Assistant.MVVM.Services.Implementations
 {
-    public class OpenDialogService(IServiceProvider serviceProvider) : IOpenDialogService
+    /// <summary>
+    /// Classs for displaying various system dialogs and custom application dialogs
+    /// </summary>
+    public class OpenDialogService(MainWindow mainWindow, Func<MoveModsDialog> moveModsDialogFactory,
+        Func<MoveModsViewModel> moveModsViewModelFactory) 
+        : IOpenDialogService
     {
-        private readonly IServiceProvider _serviceProvider = serviceProvider;
-        public async Task<string?> ShowPickFolderDialogAsync(string title)
+        private readonly MainWindow _mainWindow = mainWindow;
+        private readonly Func<MoveModsDialog> _moveModsDialogFactory = moveModsDialogFactory;
+        private readonly Func<MoveModsViewModel> _moveModsViewModelFactory = moveModsViewModelFactory;
+
+        /// <inheritdoc/>
+        public string? ShowPickFolderDialog(string title)
         {
-            return await Application.Current.Dispatcher.InvokeAsync(() =>
+            ArgumentException.ThrowIfNullOrWhiteSpace(title);
+
+            var pickFolderDialog = new OpenFolderDialog
             {
-                var pickFolderDialog = new OpenFolderDialog
-                {
-                    Title = title
-                };
-                return pickFolderDialog.ShowDialog() == true ? pickFolderDialog.FolderName : null;
-            });
-        }
-        public async Task<string?> ShowSaveFileDialogAsync(string defaultFileName, string filter)
-        {
-            return await Application.Current.Dispatcher.InvokeAsync(() =>
-            {
-                var saveFileDialog = new SaveFileDialog
-                {
-                    FileName = defaultFileName,
-                    Filter = filter
-                };
-                return saveFileDialog.ShowDialog() == true ? saveFileDialog.FileName : null;
-            });
+                Title = title
+            };
+            return pickFolderDialog.ShowDialog() == true ? pickFolderDialog.FolderName : null;
         }
 
-        public async Task<string?> ShowOpenFileDialogAsync(string title, string filter)
+        /// <inheritdoc/>
+        public string? ShowSaveFileDialog(string defaultFileName, string filter)
         {
-            return await Application.Current.Dispatcher.InvokeAsync(() =>
+            ArgumentException.ThrowIfNullOrWhiteSpace(defaultFileName);
+            ArgumentException.ThrowIfNullOrWhiteSpace(filter);
+
+            var saveFileDialog = new SaveFileDialog
             {
-                var openFileDialog = new OpenFileDialog
-                {
-                    Title = title,
-                    Filter = filter
-                };
-                return openFileDialog.ShowDialog() == true ? openFileDialog.FileName : null;
-            });
+                FileName = defaultFileName,
+                Filter = filter
+            };
+            return saveFileDialog.ShowDialog() == true ? saveFileDialog.FileName : null;
         }
 
+        /// <inheritdoc/>
+        public string? ShowOpenFileDialog(string title, string filter)
+        {
+            ArgumentException.ThrowIfNullOrWhiteSpace(title);
+            ArgumentException.ThrowIfNullOrWhiteSpace(filter);
+
+            var openFileDialog = new OpenFileDialog
+            {
+                Title = title,
+                Filter = filter
+            };
+            return openFileDialog.ShowDialog() == true ? openFileDialog.FileName : null;
+        }
+
+        /// <inheritdoc/>
         public int? ShowMoveModsDialog()
         {
-            var moveDialog = _serviceProvider.GetRequiredService<MoveModsDialog>();
-            var viewModel = _serviceProvider.GetRequiredService<MoveModsViewModel>();
-            moveDialog.Owner = _serviceProvider.GetRequiredService<MainWindow>();
-            moveDialog.DataContext = viewModel;
-            if (moveDialog.ShowDialog() == true)
-                return moveDialog.ModNumber;
-            else
-                return null;
-        }
-        public async Task ShowMessageAsync(string title, string message)
-        {
-            await Application.Current.Dispatcher.InvokeAsync(() =>
-            {
-                MessageBox.Show(message, title, MessageBoxButton.OK, MessageBoxImage.Information);
-            });
-        }
+            var moveModsDialog = _moveModsDialogFactory();
+            var moveModsViewModel = _moveModsViewModelFactory();
 
-        public async Task ShowErrorAsync(string title, string message)
-        {
-            await Application.Current.Dispatcher.InvokeAsync(() =>
-            {
-                MessageBox.Show(message, title, MessageBoxButton.OK, MessageBoxImage.Error);
-            });
+            moveModsDialog.Owner = _mainWindow;
+            moveModsDialog.DataContext = moveModsViewModel;
+
+            return moveModsDialog.ShowDialog() == true ? moveModsDialog.ModNumber : null;
         }
     }
 }

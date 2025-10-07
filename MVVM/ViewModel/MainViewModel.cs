@@ -108,9 +108,9 @@ namespace Modding_Assistant.MVVM.ViewModel
         {
             get
             {
-                return _fromFileCommand ??= new RelayCommand(async _ =>
+                return _fromFileCommand ??= new RelayCommand(_ =>
                 {
-                    var fileName = await _openDialogService.ShowOpenFileDialogAsync(
+                    var fileName = _openDialogService.ShowOpenFileDialog(
                         "Select Mod Archive",
                         "Archive Files (*.zip;*.rar;*.7z)|*.zip;*.rar;*.7z|All Files (*.*)|*.*");
                     if (string.IsNullOrEmpty(fileName))
@@ -243,9 +243,9 @@ namespace Modding_Assistant.MVVM.ViewModel
         {
             get
             {
-                return _settingsCommand ??= new RelayCommand(async _ =>
+                return _settingsCommand ??= new RelayCommand(_ =>
                 {
-                    var folderName = await _openDialogService.ShowPickFolderDialogAsync("Select Mods Folder");
+                    var folderName = _openDialogService.ShowPickFolderDialog("Select Mods Folder");
                     if (!string.IsNullOrEmpty(folderName))
                     {
                         _settingsService.ModsFolder = folderName;
@@ -260,7 +260,7 @@ namespace Modding_Assistant.MVVM.ViewModel
             {
                 return _exportCommand ??= new RelayCommand(async _ =>
                 {
-                    var fileName = await _openDialogService.ShowSaveFileDialogAsync(
+                    var fileName = _openDialogService.ShowSaveFileDialog(
                         $"Export to Excel", "Excel Files (*.xlsx)|*.xlsx|All Files (*.*)|*.*");
                     if (!string.IsNullOrEmpty(fileName))
                     {
@@ -273,16 +273,16 @@ namespace Modding_Assistant.MVVM.ViewModel
                             );
                             if (success)
                             {
-                                await _openDialogService.ShowMessageAsync("Success", "Export successful!");
+                                _notificationService.ShowInformation("Success", "Export successful!");
                             }
                             else
                             {
-                                await _openDialogService.ShowErrorAsync("Error", "Failed to create file");
+                                _notificationService.ShowError("Error", "Failed to create file");
                             }
                         }
                         catch (Exception ex)
                         {
-                            await _openDialogService.ShowErrorAsync("Error", $"Failed to create file:\n{ex.Message}");
+                            _notificationService.ShowError("Error", $"Failed to create file:\n{ex.Message}");
                         }
                     }
                 });
