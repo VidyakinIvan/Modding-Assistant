@@ -152,7 +152,7 @@ namespace Modding_Assistant.MVVM.ViewModel
                 {
                     if (selectedMods is IList mods && mods.Count > 0)
                     {
-                        int? result = _openDialogService.ShowMoveModsDialog();
+                        int? result = _openDialogService.ShowMoveModsDialog(_mainWindowService.GetMainWindow());
                         if (result.HasValue)
                         {
                             foreach (var mod in mods)

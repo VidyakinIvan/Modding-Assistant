@@ -8,6 +8,14 @@ namespace Modding_Assistant.MVVM.Services.Interfaces
     public interface IMainWindowService
     {
         /// <summary>
+        /// Gets the main application window instance (if exists)
+        /// </summary>
+        /// <returns>
+        /// Returns <see cref="Window"/> if main window exists, null-reference otherwise
+        /// </returns>
+        Window? GetMainWindow();
+
+        /// <summary>
         /// Sets the main application window instance
         /// </summary>
         void SetMainWindow(Window window);

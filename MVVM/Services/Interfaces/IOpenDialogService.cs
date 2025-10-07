@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 
 namespace Modding_Assistant.MVVM.Services.Interfaces
 {
@@ -50,6 +51,6 @@ namespace Modding_Assistant.MVVM.Services.Interfaces
         /// This dialog is specific to the application's mod management functionality
         /// and allows users to specify mod movement operations.
         /// </remarks>
-        int? ShowMoveModsDialog();
+        int? ShowMoveModsDialog(Window? owner);
     }
 }

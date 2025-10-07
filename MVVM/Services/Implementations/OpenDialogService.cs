@@ -3,17 +3,17 @@ using Modding_Assistant.MVVM.Services.Interfaces;
 using Modding_Assistant.MVVM.View.Dialogs;
 using Modding_Assistant.MVVM.View.Windows;
 using Modding_Assistant.MVVM.ViewModel;
+using System.Windows;
 
 namespace Modding_Assistant.MVVM.Services.Implementations
 {
     /// <summary>
     /// Classs for displaying various system dialogs and custom application dialogs
     /// </summary>
-    public class OpenDialogService(MainWindow mainWindow, Func<MoveModsDialog> moveModsDialogFactory,
+    public class OpenDialogService(Func<MoveModsDialog> moveModsDialogFactory,
         Func<MoveModsViewModel> moveModsViewModelFactory) 
         : IOpenDialogService
     {
-        private readonly MainWindow _mainWindow = mainWindow;
         private readonly Func<MoveModsDialog> _moveModsDialogFactory = moveModsDialogFactory;
         private readonly Func<MoveModsViewModel> _moveModsViewModelFactory = moveModsViewModelFactory;
 
@@ -58,12 +58,12 @@ namespace Modding_Assistant.MVVM.Services.Implementations
         }
 
         /// <inheritdoc/>
-        public int? ShowMoveModsDialog()
+        public int? ShowMoveModsDialog(Window? owner)
         {
             var moveModsDialog = _moveModsDialogFactory();
             var moveModsViewModel = _moveModsViewModelFactory();
 
-            moveModsDialog.Owner = _mainWindow;
+            moveModsDialog.Owner = owner;
             moveModsDialog.DataContext = moveModsViewModel;
 
             return moveModsDialog.ShowDialog() == true ? moveModsDialog.ModNumber : null;
