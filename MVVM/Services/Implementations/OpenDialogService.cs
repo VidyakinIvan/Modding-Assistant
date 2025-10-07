@@ -66,7 +66,9 @@ namespace Modding_Assistant.MVVM.Services.Implementations
             moveModsDialog.Owner = owner;
             moveModsDialog.DataContext = moveModsViewModel;
 
-            return moveModsDialog.ShowDialog() == true ? moveModsDialog.ModNumber : null;
+            bool? dialogResult = moveModsDialog.ShowDialog();
+
+            return dialogResult == true ? moveModsViewModel.ModNumber : null;
         }
     }
 }

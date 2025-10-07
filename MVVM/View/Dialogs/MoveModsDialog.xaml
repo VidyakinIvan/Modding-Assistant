@@ -4,6 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:markup="clr-namespace:Modding_Assistant.MVVM.View.Markup"
+        xmlns:ap="clr-namespace:Modding_Assistant.MVVM.AttachedProperties"
         mc:Ignorable="d"
         Height="{StaticResource DialogHeight}" Width="{StaticResource DialogWidth}"
         WindowStartupLocation="CenterOwner"
@@ -11,7 +12,8 @@
         Background="{StaticResource DialogPrimaryBackgroundBrush}"
         Foreground="{StaticResource DialogForegroundBrush}"
         FontSize="{StaticResource NormalFontSize}"
-        WindowStyle="None">
+        WindowStyle="None"
+        ap:MoveModsDialogCloser.DialogResult="{Binding DialogResult, Mode=OneWay}">
 
     <Window.Resources>
         <ResourceDictionary>
@@ -28,13 +30,17 @@
             <RowDefinition/>
             <RowDefinition/>
         </Grid.RowDefinitions>
+        
         <Button Style="{StaticResource CloseButtonSquaredStyle}" HorizontalAlignment="Right" Command="{Binding CloseCommand}"/>
+        
         <TextBlock Text="{markup:Localize MoveDialogInputPrompt}" Grid.Row="1"/>
+        
         <TextBox x:Name="ModNumberTextBox" Grid.Row="2" Height="28" VerticalContentAlignment="Center"
                  Background="{StaticResource DialogSecondaryBackgroundBrush}" 
                  Foreground="{StaticResource DialogForegroundBrush}"
                  BorderBrush="{StaticResource DialogAccentBrush}" BorderThickness="1" Padding="6,0"
                  Text="{Binding ModNumber, Converter={StaticResource NullableIntConverter}, UpdateSourceTrigger=PropertyChanged}"/>
+        
         <StackPanel Grid.Row="3" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0 10 0 0">
             <Button Content="{markup:Localize MoveDialogOkButton}" Style="{StaticResource DialogButtonStyle}"
                     Margin="0,0,8,0"
