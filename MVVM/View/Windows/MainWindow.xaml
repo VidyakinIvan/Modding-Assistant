@@ -137,7 +137,8 @@
                     <DataGridTemplateColumn Header="{markup:Localize DataGridHeaderLastUpdated}" Width="2*" >
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
-                                <TextBlock Text="{Binding LastUpdated, StringFormat='dd.MM.yyyy'}" HorizontalAlignment="Center"/>
+                                <TextBlock Text="{Binding LastUpdated, StringFormat='dd.MM.yyyy'}" 
+                                           Style="{StaticResource CenterTextColumnStyle}"/>
                             </DataTemplate>
                         </DataGridTemplateColumn.CellTemplate>
                         <DataGridTemplateColumn.CellEditingTemplate>

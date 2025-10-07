@@ -4,6 +4,7 @@
 
     <Style x:Key="CenterTextColumnStyle" TargetType="TextBlock">
         <Setter Property="HorizontalAlignment" Value="Center"/>
+        <Setter Property="VerticalAlignment" Value="Center"/>
         <Setter Property="TextAlignment" Value="Center"/>
         <Setter Property="TextTrimming" Value="CharacterEllipsis"/>
     </Style>
@@ -48,6 +49,7 @@
         <Setter Property="RowHeaderWidth" Value="0"/>
         <Setter Property="SelectionMode" Value="Extended"/>
         <Setter Property="AutoGenerateColumns" Value="False"/>
+        <Setter Property="VerticalContentAlignment" Value="Center"/>
     </Style>
 
     <ContextMenu x:Key="DataGridContextMenu" x:Shared="False">
