@@ -12,6 +12,7 @@ namespace Modding_Assistant.MVVM.Services.Implementations
         private Window? _window;
         private readonly ILogger<MainWindowService> _logger = logger ?? throw new ArgumentNullException(nameof(logger));
 
+        /// <inheritdoc/>
         public Window? GetMainWindow() => _window;
 
         /// <inheritdoc/>
