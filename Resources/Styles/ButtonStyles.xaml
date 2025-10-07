@@ -15,7 +15,7 @@
                 <ControlTemplate TargetType="Button">
                     <Border x:Name="Bd" Background="{TemplateBinding Background}">
                         <Path Data="{StaticResource MinimizeButtonGeometry}"
-                                Stretch="Uniform" Stroke="{StaticResource PrimaryForegroundBrush}" StrokeThickness="2"/>
+                                Stretch="Uniform" Stroke="{StaticResource ForegroundBrush}" StrokeThickness="2"/>
                     </Border>
                     <ControlTemplate.Triggers>
                         <Trigger Property="IsMouseOver" Value="True">
@@ -32,7 +32,7 @@
             <Setter.Value>
                 <ControlTemplate TargetType="Button">
                     <Border x:Name="Bd" Background="{TemplateBinding Background}">
-                        <Path x:Name="IconPath" Stretch="Uniform" Stroke="{StaticResource PrimaryForegroundBrush}" 
+                        <Path x:Name="IconPath" Stretch="Uniform" Stroke="{StaticResource ForegroundBrush}" 
                               StrokeThickness="2"/>
                     </Border>
                     <ControlTemplate.Triggers>
@@ -59,7 +59,7 @@
                             Background="{TemplateBinding Background}" 
                             CornerRadius="0,10,0,0">
                         <Path Data="{StaticResource CloseButtonGeometry}"
-                                Stretch="Uniform" Stroke="{StaticResource PrimaryForegroundBrush}" StrokeThickness="2"/>
+                                Stretch="Uniform" Stroke="{StaticResource ForegroundBrush}" StrokeThickness="2"/>
                     </Border>
                     <ControlTemplate.Triggers>
                         <Trigger Property="IsMouseOver" Value="True">
@@ -78,7 +78,7 @@
                     <Border x:Name="Bd" 
                             Background="{TemplateBinding Background}">
                         <Path Data="{StaticResource CloseButtonGeometry}"
-                                Stretch="Uniform" Stroke="{StaticResource PrimaryForegroundBrush}" StrokeThickness="2"/>
+                                Stretch="Uniform" Stroke="{StaticResource ForegroundBrush}" StrokeThickness="2"/>
                     </Border>
                     <ControlTemplate.Triggers>
                         <Trigger Property="IsMouseOver" Value="True">
