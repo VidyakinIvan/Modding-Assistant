@@ -17,6 +17,8 @@ namespace Modding_Assistant.MVVM.ViewModel
         private readonly ILocalizationService _localizationService;
         private readonly ISettingsService _settingsService;
 
+        private static readonly TimeSpan ExportTimeout = TimeSpan.FromMinutes(2);
+
         private WindowState _windowState;
 
         public WindowState WindowState
@@ -151,7 +153,7 @@ namespace Modding_Assistant.MVVM.ViewModel
                     await _modFilesService.ExportModsAsync(
                         ModList,
                         fileName,
-                        "Mods", new CancellationTokenSource(TimeSpan.FromMinutes(2)).Token
+                        "Mods", new CancellationTokenSource(ExportTimeout).Token
                     );
                 }
             });
