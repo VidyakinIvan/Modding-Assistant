@@ -53,6 +53,9 @@ namespace Modding_Assistant.Core.Application
             services.AddTransient<IOpenDialogService, OpenDialogService>();
             services.AddSingleton<INotificationService, NotificationService>();
             services.AddSingleton<IMainWindowService, MainWindowService>();
+            services.AddSingleton<IModManagerService, ModManagerService>();
+            services.AddSingleton<IModFilesService, ModFilesService>();
+            services.AddSingleton<ILocalizationManagerService, LocalizationManagerService>();
             services.AddSingleton<ILocalizationService>(provider =>
                 new LocalizationService(Resources.Strings.Strings.ResourceManager));
             return services;

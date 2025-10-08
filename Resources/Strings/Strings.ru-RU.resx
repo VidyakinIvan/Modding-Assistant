@@ -180,4 +180,70 @@
   <data name="StartupErrorHeader" xml:space="preserve">
     <value>Ошибка запуска</value>
   </data>
+  <data name="SelectArchivePrompt" xml:space="preserve">
+    <value>Выберите архив мода</value>
+  </data>
+  <data name="ErrorHeader" xml:space="preserve">
+    <value>Ошибка</value>
+  </data>
+  <data name="FromFileMoveError" xml:space="preserve">
+    <value>Не удалось переместить файл</value>
+  </data>
+  <data name="SelectFolderPrompt" xml:space="preserve">
+    <value>Выберите папку для модов</value>
+  </data>
+  <data name="SuccessHeader" xml:space="preserve">
+    <value>Успех</value>
+  </data>
+  <data name="ExportSuccessMessage" xml:space="preserve">
+    <value>Успешный экспорт</value>
+  </data>
+  <data name="ExportErrorMessage" xml:space="preserve">
+    <value>Не создать файл экспорта</value>
+  </data>
+  <data name="DatabaseErrorHeader" xml:space="preserve">
+    <value>Ошибка базы данных</value>
+  </data>
+  <data name="DatabaseErrorMessage" xml:space="preserve">
+    <value>Не удалось загрузить список модов</value>
+  </data>
+  <data name="AddModErrorMessage" xml:space="preserve">
+    <value>Не удалось добавить мод</value>
+  </data>
+  <data name="DeleteModErrorHeader" xml:space="preserve">
+    <value>Ошибка удаления</value>
+  </data>
+  <data name="DeleteModErrorMessage" xml:space="preserve">
+    <value>Не удалось удалить моды</value>
+  </data>
+  <data name="MoveModErrorHeader" xml:space="preserve">
+    <value>Ошибка перемещения</value>
+  </data>
+  <data name="AddModErrorHeader" xml:space="preserve">
+    <value>Ошибка добавления мода</value>
+  </data>
+  <data name="MoveModErrorMessage" xml:space="preserve">
+    <value>Не удалось переместить моды</value>
+  </data>
+  <data name="SaveChangesErrorHeader" xml:space="preserve">
+    <value>Ошибка сохранения</value>
+  </data>
+  <data name="SaveChangesDatabaseErrorMessage" xml:space="preserve">
+    <value>Не удалось сохранить изменения базы данных</value>
+  </data>
+  <data name="SaveChangesUnexpectedErrorMessage" xml:space="preserve">
+    <value>Во время сохранения произошла неизвестная ошибка</value>
+  </data>
+  <data name="ImportErrorHeader" xml:space="preserve">
+    <value>Ошибка импорта</value>
+  </data>
+  <data name="ImportErrorMessage" xml:space="preserve">
+    <value>Не удалось импортировать моды</value>
+  </data>
+  <data name="ExportWarningHeader" xml:space="preserve">
+    <value>Предупреждение экспортирования</value>
+  </data>
+  <data name="ExportWarningMessage" xml:space="preserve">
+    <value>Нет модов для экспортирования</value>
+  </data>
 </root>

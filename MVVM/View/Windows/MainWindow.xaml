@@ -53,7 +53,7 @@
                     <Path Data="{StaticResource SettingsIconGeometry}" Fill="{StaticResource ForegroundBrush}" 
                           Stretch="Uniform"/>
                 </Button>
-                <Button Style="{StaticResource ToolbarButtonStyle}" Command="{Binding ExportCommand}">
+                <Button Style="{StaticResource ToolbarButtonStyle}" Command="{Binding ExportCommandAsync}">
                     <Path Data="{StaticResource ExportIconGeometry}" Fill="{StaticResource ForegroundBrush}" 
                           Stretch="Uniform"/>
                 </Button>

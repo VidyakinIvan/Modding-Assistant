@@ -7,6 +7,8 @@ namespace Modding_Assistant.MVVM.Services.Interfaces
     /// </summary>
     public interface IMainWindowService
     {
+        event EventHandler<WindowState>? WindowStateChanged;
+
         /// <summary>
         /// Gets the main application window instance (if exists)
         /// </summary>
@@ -19,6 +21,15 @@ namespace Modding_Assistant.MVVM.Services.Interfaces
         /// Sets the main application window instance
         /// </summary>
         void SetMainWindow(Window window);
+
+        /// <summary>
+        /// Initializes the application window and prepares it for display.
+        /// </summary>
+        /// <remarks>
+        /// This method sets up the necessary configurations required for the window to function
+        /// properly.  It should be called before attempting to display or interact with the window.
+        /// </remarks>
+        void InitializeWindow();
 
         /// <summary>
         /// Sets window state to minimized
@@ -39,6 +50,11 @@ namespace Modding_Assistant.MVVM.Services.Interfaces
         /// Enables window dragging when called during mouse events
         /// </summary>
         void DragMove();
+
+        /// <summary>
+        /// Saves the current window settings, such as size, position, and state, to persistent storage.
+        /// </summary>
+        void SaveWindowSettings();
 
         /// <summary>
         /// Closes the application window

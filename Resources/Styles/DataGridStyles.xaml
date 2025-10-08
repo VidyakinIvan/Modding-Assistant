@@ -60,10 +60,10 @@
     <ContextMenu x:Key="DataGridContextMenu" x:Shared="False">
         <MenuItem Header="{markup:Localize ContextMenuCopy}" Command="ApplicationCommands.Copy"/>
         <MenuItem Header="{markup:Localize ContextMenuSelectAll}" Command="ApplicationCommands.SelectAll"/>
-        <MenuItem Header="{markup:Localize ContextMenuFromFile}" Command="{Binding FromFileCommand}"/>
-        <MenuItem Header="{markup:Localize ContextMenuMove}" Command="{Binding MoveBeforeCommand}" 
+        <MenuItem Header="{markup:Localize ContextMenuFromFile}" Command="{Binding FromFileCommandAsync}"/>
+        <MenuItem Header="{markup:Localize ContextMenuMove}" Command="{Binding MoveModsCommandAsync}" 
                   CommandParameter="{Binding PlacementTarget.SelectedItems, RelativeSource={RelativeSource AncestorType=ContextMenu}}"/>
-        <MenuItem Header="{markup:Localize ContextMenuDelete}" Command="{Binding DeleteCommand}" 
+        <MenuItem Header="{markup:Localize ContextMenuDelete}" Command="{Binding DeleteModsCommandAsync}" 
                   CommandParameter="{Binding PlacementTarget.SelectedItems, RelativeSource={RelativeSource AncestorType=ContextMenu}}"/>
     </ContextMenu>
 
