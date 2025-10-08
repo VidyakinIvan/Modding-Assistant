@@ -5,6 +5,26 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog],
 and this project adheres to [Semantic Versioning].
 
+## [1.3.1] - 2025-10-09
+
+### Added
+- No new features were added in this release
+
+### Changed
+- No features was changed in this release
+
+### Fixed
+- Fixed an issue where the database does not save mods after adding them through dataGrid editing.
+
+### Deprecated
+- No deprecated features in this release
+
+### Removed
+- No features removed in this release
+
+### Security
+- No security changes made in this release
+
 ## [1.3.0] - 2025-10-08
 
 ### Added
@@ -98,7 +118,8 @@ and this project adheres to [Semantic Versioning].
 [semantic versioning]: https://semver.org/spec/v2.0.0.html
 
 <!-- Versions -->
-[1.3.0]:  https://github.com/VidyakinIvan/Modding-Assistant/compare/Modding-Assistant%2Fv1.2.0...HEAD
+[1.3.1]: https://github.com/VidyakinIvan/Modding-Assistant/compare/Modding-Assistant%2Fv1.3.0...HEAD
+[1.3.0]: https://github.com/VidyakinIvan/Modding-Assistant/compare/Modding-Assistant%2Fv1.2.0...Modding-Assistant%2Fv1.3.0
 [1.2.0]: https://github.com/VidyakinIvan/Modding-Assistant/compare/Modding-Assistant%2Fv1.1.0...Modding-Assistant%2Fv1.2.0
 [1.1.0]: https://github.com/VidyakinIvan/Modding-Assistant/compare/Modding-Assistant%2Fv1.0.0...Modding-Assistant%2Fv1.1.0
 [1.0.0]: https://github.com/VidyakinIvan/Modding-Assistant/releases/tag/Modding-Assistant%2Fv1.0.0
