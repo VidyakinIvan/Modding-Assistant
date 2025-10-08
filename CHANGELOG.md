@@ -11,6 +11,7 @@ and this project adheres to [Semantic Versioning].
 - Export to XLSX functionality - export the mod list to an Excel file for easy sharing and backup.
 - Multi-language support - added support for multiple languages (en/ru).
 - Logging - implemented file logging to track application events and errors.
+- Notification windows - added pop-up notifications for important events, warnings and errors.
 
 ## [1.2.0] - 2025-09-18
 
