@@ -99,7 +99,7 @@ namespace Modding_Assistant.MVVM.Services.Implementations
                 _logger.LogError(ex, "Failed to export mods to {FilePath}", filePath);
 
                 _notificationService.ShowError(_localizationService["ErrorHeader"],
-                    $"{_localizationService["ExportErrorMessage"]}:\n{ex.Message}");
+                    $"{_localizationService["ExportErrorMessage"]}: {ex.Message}");
             }
         }
     }
