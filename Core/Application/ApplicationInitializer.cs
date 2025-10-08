@@ -20,12 +20,19 @@ namespace Modding_Assistant.Core.Application
         /// <inheritdoc/>
         public async Task InitializeAsync(CancellationToken cancellationToken)
         {
+            _logger.LogInformation("Initializing database...");
+
             await InitializeDatabaseAsync(cancellationToken);
+
             var localizationService = _serviceProvider.GetService<ILocalizationService>();
+
             if (localizationService is not null)
-            {
                 System.Windows.Application.Current.Resources["LocalizationService"] = localizationService;
-            }
+            else
+                _logger.LogWarning("Localization service is not available");
+
+            _logger.LogInformation("Opening main window...");
+
             ShowMainWindow();
 
         }

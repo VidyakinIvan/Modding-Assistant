@@ -24,7 +24,7 @@ namespace Modding_Assistant.Core.Application
             }
 
             if (notificationService is not null)
-                notificationService.ShowError(message, caption);
+                notificationService.ShowError(caption, message);
             else
                 MessageBox.Show(message, caption, MessageBoxButton.OK, MessageBoxImage.Error);
         }

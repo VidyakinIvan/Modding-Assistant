@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
 using Modding_Assistant.Core.Data.Interfaces;
 using Modding_Assistant.Core.Data.Models;
 using Modding_Assistant.Core.Data.Services;
@@ -12,6 +13,7 @@ using Modding_Assistant.MVVM.View.Dialogs;
 using Modding_Assistant.MVVM.View.Windows;
 using Modding_Assistant.MVVM.ViewModel;
 using System.IO;
+using NLog.Extensions.Logging;
 
 namespace Modding_Assistant.Core.Application
 {
@@ -40,6 +42,10 @@ namespace Modding_Assistant.Core.Application
                     .AddDatabase(context.Configuration)
                     .AddViewModels()
                     .AddViews();
+            })
+            .ConfigureLogging((context, logging) =>
+            {
+                logging.AddLogger(context.Configuration);
             });
         
         /// <summary>
@@ -118,6 +124,23 @@ namespace Modding_Assistant.Core.Application
             services.AddTransient<MoveModsDialog>();
             services.AddTransient<Func<MoveModsDialog>>(sp => () => sp.GetRequiredService<MoveModsDialog>());
             return services;
+        }
+
+        /// <summary>
+        /// Configures the logging system
+        /// </summary>
+        private static ILoggingBuilder AddLogger(this ILoggingBuilder builder, IConfiguration configuration)
+        {
+            builder.ClearProviders();
+
+            builder.AddNLog();
+
+        #if DEBUG
+            builder.AddConfiguration(configuration.GetSection("Logging"));
+            builder.AddDebug();
+        #endif
+
+            return builder;
         }
     }
 }
