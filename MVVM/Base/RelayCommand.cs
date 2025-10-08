@@ -1,11 +1,17 @@
 ﻿using System.Windows.Input;
 
-namespace Modding_Assistant.Core
+namespace Modding_Assistant.MVVM.Base
 {
     public class RelayCommand(Action<object?> execute, Func<object?, bool>? canExecute = null) : ICommand
     {
         private readonly Action<object?> execute = execute ?? throw new ArgumentNullException(nameof(execute));
         private readonly Func<object?, bool>? canExecute = canExecute;
+
+        public RelayCommand(Action execute)
+            : this(_ => execute(), null) { }
+
+        public RelayCommand(Action execute, Func<bool> canExecute)
+            : this(_ => execute(), _ => canExecute()) { }
 
         public event EventHandler? CanExecuteChanged
         {
@@ -15,11 +21,11 @@ namespace Modding_Assistant.Core
 
         public bool CanExecute(object? parameter)
         {
-            return this.canExecute == null || this.canExecute(parameter);
+            return canExecute == null || canExecute(parameter);
         }
         public void Execute(object? parameter)
         {
-            this.execute(parameter);
+            execute(parameter);
         }
         public void RaiseCanExecuteChanged()
         {

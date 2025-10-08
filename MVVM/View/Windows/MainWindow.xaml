@@ -4,251 +4,84 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Modding_Assistant"
-        xmlns:viewModel="clr-namespace:Modding_Assistant.MVVM.ViewModel"
         xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
-        xmlns:conv="clr-namespace:Modding_Assistant.MVVM.View.Converters"
-        xmlns:core="clr-namespace:Modding_Assistant.Core"
+        xmlns:val="clr-namespace:Modding_Assistant.MVVM.Validation"
         xmlns:markup="clr-namespace:Modding_Assistant.MVVM.View.Markup"
         mc:Ignorable="d"
         WindowStyle="None"
         Background="Transparent"
         AllowsTransparency="True"
-        Height="600" Width="900">
+        Height="{StaticResource WindowHeight}" Width="{StaticResource WindowWidth}"
+        MinWidth="{StaticResource MinWindowWidth}" MinHeight="{StaticResource MinWindowHeight}">
+
     <Window.Resources>
-        <Geometry x:Key="SettingsIconGeometry">
-            M13.7654 2.15224C13.3978 2 12.9319 2 12 2C11.0681 2 
-            10.6022 2 10.2346 2.15224C9.74457 2.35523 9.35522 2.74458 
-            9.15223 3.23463C9.05957 3.45834 9.0233 3.7185 9.00911 
-            4.09799C8.98826 4.65568 8.70226 5.17189 8.21894 
-            5.45093C7.73564 5.72996 7.14559 5.71954 6.65219 
-            5.45876C6.31645 5.2813 6.07301 5.18262 5.83294 
-            5.15102C5.30704 5.08178 4.77518 5.22429 4.35436 
-            5.5472C4.03874 5.78938 3.80577 6.1929 3.33983 6.99993C2.87389 7.80697 2.64092 
-            8.21048 2.58899 8.60491C2.51976 9.1308 2.66227 9.66266 2.98518 10.0835C3.13256 
-            10.2756 3.3397 10.437 3.66119 10.639C4.1338 10.936 4.43789 11.4419 4.43786 12C4.43783 
-            12.5581 4.13375 13.0639 3.66118 13.3608C3.33965 13.5629 3.13248 13.7244 2.98508 
-            13.9165C2.66217 14.3373 2.51966 14.8691 2.5889 15.395C2.64082 15.7894 2.87379 
-            16.193 3.33973 17C3.80568 17.807 4.03865 18.2106 4.35426 18.4527C4.77508 
-            18.7756 5.30694 18.9181 5.83284 18.8489C6.07289 18.8173 6.31632 18.7186 
-            6.65204 18.5412C7.14547 18.2804 7.73556 18.27 8.2189 18.549C8.70224 18.8281 
-            8.98826 19.3443 9.00911 19.9021C9.02331 20.2815 9.05957 20.5417 9.15223 
-            20.7654C9.35522 21.2554 9.74457 21.6448 10.2346 21.8478C10.6022 22 11.0681 22 12 
-            22C12.9319 22 13.3978 22 13.7654 21.8478C14.2554 21.6448 14.6448 21.2554 14.8477 
-            20.7654C14.9404 20.5417 14.9767 20.2815 14.9909 19.902C15.0117 19.3443 15.2977 
-            18.8281 15.781 18.549C16.2643 18.2699 16.8544 18.2804 17.3479 18.5412C17.6836 18.7186 
-            17.927 18.8172 18.167 18.8488C18.6929 18.9181 19.2248 18.7756 19.6456 18.4527C19.9612 
-            18.2105 20.1942 17.807 20.6601 16.9999C21.1261 16.1929 21.3591 15.7894 21.411 
-            15.395C21.4802 14.8691 21.3377 14.3372 21.0148 13.9164C20.8674 13.7243 20.6602 
-            13.5628 20.3387 13.3608C19.8662 13.0639 19.5621 12.558 19.5621 11.9999C19.5621 
-            11.4418 19.8662 10.9361 20.3387 10.6392C20.6603 10.4371 20.8675 10.2757 21.0149 
-            10.0835C21.3378 9.66273 21.4803 9.13087 21.4111 8.60497C21.3592 8.21055 21.1262 
-            7.80703 20.6602 7C20.1943 6.19297 19.9613 5.78945 19.6457 5.54727C19.2249 5.22436 
-            18.693 5.08185 18.1671 5.15109C17.9271 5.18269 17.6837 5.28136 17.3479 5.4588C16.8545 
-            5.71959 16.2644 5.73002 15.7811 5.45096C15.2977 5.17191 15.0117 4.65566 14.9909 
-            4.09794C14.9767 3.71848 14.9404 3.45833 14.8477 3.23463C14.6448 2.74458 14.2554 
-            2.35523 13.7654 2.15224Z
-            M12,7
-            A5,5 0 1 1 11.999,7Z
-        </Geometry>
-        <Geometry x:Key="ExportIconGeometry">
-            M3,17 L3,21 L21,21 L21,17 M12,17 L12,3 M7,8 L12,3 L17,8
-        </Geometry>
-        <Style x:Key="CenterTextColumnStyle" TargetType="TextBlock">
-            <Setter Property="HorizontalAlignment" Value="Center"/>
-            <Setter Property="TextAlignment" Value="Center"/>
-            <Setter Property="TextTrimming" Value="CharacterEllipsis"/>
-        </Style>
-        <ContextMenu x:Key="DataGridContextMenu">
-            <MenuItem Header="{markup:Localize ContextMenuCopy}" Command="ApplicationCommands.Copy"/>
-            <MenuItem Header="{markup:Localize ContextMenuSelectAll}" Command="ApplicationCommands.SelectAll"/>
-            <MenuItem Header="{markup:Localize ContextMenuRefresh}" Command="{Binding LoadCommand}"
-                      CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=Window}}"/>
-            <MenuItem Header="{markup:Localize ContextMenuFromFile}" Command="{Binding FromFileCommand}"/>
-            <MenuItem Header="{markup:Localize ContextMenuMove}" Command="{Binding MoveBeforeCommand}" 
-                      CommandParameter="{Binding PlacementTarget.SelectedItems, RelativeSource={RelativeSource AncestorType=ContextMenu}}"/>
-            <MenuItem Header="{markup:Localize ContextMenuDelete}" Command="{Binding DeleteCommand}" 
-                      CommandParameter="{Binding PlacementTarget.SelectedItems, RelativeSource={RelativeSource AncestorType=ContextMenu}}"/>
-        </ContextMenu>
-        <conv:RowIndexConverter x:Key="RowIndexConverter"/>
-        <conv:DateOnlyToDateTimeConverter x:Key="DateOnlyToDateTimeConverter"/>
-        <Geometry x:Key="MaximizeButtonGeometry">M0,0 M0.2,0.2 L0.8,0.2 L0.8,0.8 L0.2,0.8 Z M1,1</Geometry>
-        <Geometry x:Key="RestoreButtonGeometry">M0,0 M0.3,0.3 L0.9,0.3 L0.9,0.9 L0.3,0.9 Z M0.1,0.1 L0.1,0.7 L0.7,0.7 L0.7,0.1 Z M1,1</Geometry>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/Resources/Converters/MainWindowConverters.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
     </Window.Resources>
+
     <i:Interaction.Triggers>
         <i:EventTrigger EventName="Loaded">
-            <i:InvokeCommandAction Command="{Binding LoadCommand}"
-                                   CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=Window}}"/>
+            <i:InvokeCommandAction Command="{Binding LoadCommand}"/>
         </i:EventTrigger>
     </i:Interaction.Triggers>
-    <Border Background="#27253F"
-            CornerRadius="10">
+    
+    <Border Background="{StaticResource PrimaryBackgroundBrush}" CornerRadius="{StaticResource WindowCornerRadius}">
         <i:Interaction.Triggers>
             <i:EventTrigger EventName="MouseLeftButtonDown">
-                <i:InvokeCommandAction Command="{Binding MoveWindowCommand}"
-                                       CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=Window}}"/>
+                <i:InvokeCommandAction Command="{Binding MoveWindowCommand}"/>
             </i:EventTrigger>
         </i:Interaction.Triggers>
         <Grid>
             <Grid.ColumnDefinitions>
-                <ColumnDefinition/>
-                <ColumnDefinition/>
-                <ColumnDefinition/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="5*"/>
+                <ColumnDefinition Width="5*"/>
+                <ColumnDefinition Width="5*"/>
+                <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
-                <RowDefinition Height="50"/>
-                <RowDefinition/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="10*"/>
+                <RowDefinition Height="0.25*"/>
             </Grid.RowDefinitions>
-            <StackPanel Grid.Row="0" Height="50" Orientation="Horizontal">
-                <StackPanel.Style>
-                    <Style TargetType="StackPanel">
-                        <Setter Property="Margin" Value="30 10 0 0"/>
-                        <Style.Triggers>
-                            <DataTrigger Binding="{Binding RelativeSource={RelativeSource AncestorType=Window}, Path=WindowState}" Value="Maximized">
-                                <Setter Property="Margin" Value="75 10 0 0"/>
-                            </DataTrigger>
-                        </Style.Triggers>
-                    </Style>
-                </StackPanel.Style>
-                <Button Grid.Row="0" HorizontalAlignment="Left" Width="30" Height="30" Padding="2" Background="Transparent" BorderThickness="0"
-                    Command = "{Binding SettingsCommand}">
-                    <Border Background="Transparent">
-                    <Path Data="{StaticResource SettingsIconGeometry}"
-                          Fill="#DFFFFF"
+            <StackPanel Grid.Row="1" Grid.Column="1" Height="{StaticResource ToolbarHeight}" Orientation="Horizontal">
+                <Button Style="{StaticResource ToolbarButtonStyle}" Command="{Binding SettingsCommand}">
+                    <Path Data="{StaticResource SettingsIconGeometry}" Fill="{StaticResource ForegroundBrush}" 
                           Stretch="Uniform"/>
-                </Border>
-            </Button>
-                <Button HorizontalAlignment="Left"
-                        Width="30" Height="30" Padding="2" Background="Transparent" BorderThickness="0"
-                        Command="{Binding ExportCommand}">
-                    <Border Background="Transparent">
-                        <Path Data="{StaticResource ExportIconGeometry}"
-                              Fill="#DFFFFF"
-                              Stretch="Uniform"/>
-                    </Border>
                 </Button>
-                <Button HorizontalAlignment="Left"
-                        Width="30" Height="30" Padding="2" Background="Transparent" BorderThickness="0"
-                        Command="{Binding LanguageCommand}">
-                    <TextBlock Text="{Binding CurrentLanguage}" FontSize="22" 
-                               VerticalAlignment="Center" HorizontalAlignment="Center" Foreground="#DFFFFF" FontWeight="Bold"/>
+                <Button Style="{StaticResource ToolbarButtonStyle}" Command="{Binding ExportCommandAsync}">
+                    <Path Data="{StaticResource ExportIconGeometry}" Fill="{StaticResource ForegroundBrush}" 
+                          Stretch="Uniform"/>
+                </Button>
+                <Button Style="{StaticResource ToolbarButtonStyle}" Command="{Binding LanguageCommand}">
+                    <TextBlock Text="{Binding CurrentLanguage}" FontSize="{StaticResource LargeFontSize}" 
+                               FontWeight="{StaticResource AccentFontWeight}" VerticalAlignment="Center" 
+                               HorizontalAlignment="Center" Foreground="{StaticResource ForegroundBrush}"/>
                 </Button>
             </StackPanel>
-            <TextBlock Text="Mod Assistant" Grid.Column="1" Foreground="#DFFFFF" VerticalAlignment="Top"
-                       HorizontalAlignment="Center"
-                       FontSize="22"
-                       IsHitTestVisible="False">
-                <TextBlock.Style>
-                    <Style TargetType="TextBlock">
-                        <Setter Property="Margin" Value="0 5 0 0"/> 
-                        <Style.Triggers>
-                            <DataTrigger Binding="{Binding RelativeSource={RelativeSource AncestorType=Window}, Path=WindowState}" Value="Maximized">
-                                <Setter Property="Margin" Value="0 10 0 0"/>
-                            </DataTrigger>
-                        </Style.Triggers>
-                    </Style>
-                </TextBlock.Style>
-            </TextBlock>
-            <StackPanel Grid.Column="2" HorizontalAlignment="Right" VerticalAlignment="Top" Orientation="Horizontal">
-                <StackPanel.Style>
-                    <Style TargetType="StackPanel">
-                        <Style.Triggers>
-                            <DataTrigger Binding="{Binding RelativeSource={RelativeSource AncestorType=Window}, Path=WindowState}" Value="Maximized">
-                                <Setter Property="Margin" Value="0 5 5 0"/>
-                            </DataTrigger>
-                        </Style.Triggers>
-                    </Style>
-                </StackPanel.Style>
-                <Button Height="45" Width="45" Command="{Binding MinimizeCommand}"
-                    CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=Window}}">
-                    <Button.Template>
-                        <ControlTemplate TargetType="Button">
-                            <Border x:Name="Bd" Background="Transparent">
-                                <Path Data="M0,0 M0.2,0.5 L0.8,0.5 M1,1"
-                                Stretch="Uniform" Stroke="#DFFFFF" StrokeThickness="2"/>
-                            </Border>
-                            <ControlTemplate.Triggers>
-                                <Trigger Property="IsMouseOver" Value="True">
-                                    <Setter TargetName="Bd" Property="Background" Value="RoyalBlue"/>
-                                </Trigger>
-                            </ControlTemplate.Triggers>
-                        </ControlTemplate>
-                    </Button.Template>
-                </Button>
-                <Button Height="45" Width="45" Command="{Binding MaximizeCommand}"
-                        CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=Window}}">
-                    <Button.Template>
-                        <ControlTemplate TargetType="Button">
-                            <Border x:Name="Bd" Background="Transparent">
-                                <Path x:Name="IconPath" Data="{StaticResource MaximizeButtonGeometry}"
-                                Stretch="Uniform" Stroke="#DFFFFF" StrokeThickness="2"/>
-                            </Border>
-                            <ControlTemplate.Triggers>
-                                <DataTrigger Binding="{Binding RelativeSource={RelativeSource AncestorType=Window}, Path=WindowState}" Value="Maximized">
-                                    <Setter TargetName="IconPath" Property="Data" Value="{StaticResource RestoreButtonGeometry}"/>
-                                </DataTrigger>
-                                <Trigger Property="IsMouseOver" Value="True">
-                                    <Setter TargetName="Bd" Property="Background" Value="Violet"/>
-                                </Trigger>
-                            </ControlTemplate.Triggers>
-                        </ControlTemplate>
-                    </Button.Template>
-                </Button>
-                <Button Height="45" Width="45" Command="{Binding ExitCommand}"
-                        CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=Window}}">
-                    <Button.Template>
-                        <ControlTemplate TargetType="Button">
-                            <Border x:Name="Bd" Background="Transparent" CornerRadius="0 10 0 0">
-                                <Path Data="M0,0 M0.2,0.2 L 0.8,0.8 M0.2,0.8 L0.8,0.2 M1,1"
-                                Stretch="Uniform" Stroke="#DFFFFF" StrokeThickness="2"/>
-                            </Border>
-                            <ControlTemplate.Triggers>
-                                <Trigger Property="IsMouseOver" Value="True">
-                                    <Setter TargetName="Bd" Property="Background" Value="Red"/>
-                                </Trigger>
-                            </ControlTemplate.Triggers>
-                        </ControlTemplate>
-                    </Button.Template>
-                </Button>
+            <TextBlock Grid.Row="0" Grid.Column="2" Text="Mod Assistant" Foreground="{StaticResource ForegroundBrush}" 
+                       IsHitTestVisible="False" FontWeight="{StaticResource NormalFontWeight}" HorizontalAlignment="Center" 
+                       VerticalAlignment="Center" FontSize="{StaticResource TitleFontSize}"/>
+            <StackPanel Grid.Row="0" Grid.Column="3" Grid.ColumnSpan="2" HorizontalAlignment="Right" VerticalAlignment="Top" 
+                        Orientation="Horizontal" 
+                        Margin="{Binding WindowState, RelativeSource={RelativeSource AncestorType=Window}, 
+                            Converter={StaticResource WindowStateToMarginConverter}}">
+                <Button Style="{StaticResource MinimizeButtonStyle}" Command="{Binding MinimizeCommand}"/>
+                <Button Style="{StaticResource MaximizeButtonStyle}" Command="{Binding MaximizeCommand}"/>
+                <Button Style="{StaticResource CloseButtonRoundedStyle}" Command="{Binding ExitCommand}"/>
             </StackPanel>
-            <DataGrid Grid.ColumnSpan="3" Grid.Row="1" ItemsSource="{Binding ModList}" AutoGenerateColumns="False"
-                      HeadersVisibility="Column" RowHeaderWidth="0" ContextMenu="{StaticResource DataGridContextMenu}"
-                      SelectionMode="Extended">
-                <DataGrid.ColumnHeaderStyle>
-                    <Style TargetType="DataGridColumnHeader">
-                        <Setter Property="Background" Value="#3C3A55"/>
-                        <Setter Property="Foreground" Value="#DFFFFF"/>
-                        <Setter Property="FontWeight" Value="Bold"/>
-                        <Setter Property="FontSize" Value="14"/>
-                        <Setter Property="Height" Value="40"/>
-                        <Setter Property="HorizontalContentAlignment" Value="Center"/>
-                        <Setter Property="ContentTemplate">
-                            <Setter.Value>
-                                <DataTemplate>
-                                    <TextBlock Text="{Binding}" 
-                                               TextTrimming="CharacterEllipsis"/>
-                                </DataTemplate>
-                            </Setter.Value>
-                        </Setter>
-                    </Style>
-                </DataGrid.ColumnHeaderStyle>
-                <DataGrid.CellStyle>
-                    <Style TargetType="DataGridCell">
-                        <Setter Property="Background" Value="#27253F"/>
-                        <Setter Property="Foreground" Value="#DFFFFF"/>
-                        <Setter Property="FontSize" Value="14"/>
-                        <Setter Property="Height" Value="30"/>
-                        <Style.Triggers>
-                            <Trigger Property="IsSelected" Value="True">
-                                <Setter Property="Background" Value="#4B4A6E"/>
-                            </Trigger>
-                            <Trigger Property="IsMouseOver" Value="True">
-                                <Setter Property="Background" Value="#3C3A55"/>
-                            </Trigger>
-                        </Style.Triggers>
-                    </Style>
-                </DataGrid.CellStyle>
+            <DataGrid Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="3" ItemsSource="{Binding ModList}" 
+                      Style="{StaticResource DataGridStyle}"
+                      ColumnHeaderStyle="{StaticResource DataGridColumnHeaderStyle}"  
+                      CellStyle="{StaticResource DataGridCellStyle}"
+                      ContextMenu="{StaticResource DataGridContextMenu}">
                 <DataGrid.Columns>
-                    <DataGridTextColumn Header="№" IsReadOnly="True" Width="*" ElementStyle="{StaticResource CenterTextColumnStyle}">
+                    <DataGridTextColumn Header="№" IsReadOnly="True" Width="*" 
+                                        ElementStyle="{StaticResource CenterTextColumnStyle}">
                         <DataGridTextColumn.Binding>
                             <MultiBinding Converter="{StaticResource RowIndexConverter}">
                                 <Binding RelativeSource="{RelativeSource AncestorType=DataGrid}"/>
@@ -256,55 +89,67 @@
                             </MultiBinding>
                         </DataGridTextColumn.Binding>
                     </DataGridTextColumn>
-                    <DataGridTextColumn Header="{markup:Localize DataGridHeaderOrder}" IsReadOnly="True" Binding="{Binding Order}"  Width="*" ElementStyle="{StaticResource CenterTextColumnStyle}"/>
-                    <DataGridTextColumn Header="{markup:Localize DataGridHeaderName}" Width="4*" ElementStyle="{StaticResource CenterTextColumnStyle}">
+                    <DataGridTextColumn Header="{markup:Localize DataGridHeaderOrder}" IsReadOnly="True" 
+                                        Binding="{Binding Order}"  Width="*" 
+                                        ElementStyle="{StaticResource CenterTextColumnStyle}"/>
+                    <DataGridTextColumn Header="{markup:Localize DataGridHeaderName}" Width="4*" 
+                                        ElementStyle="{StaticResource CenterTextColumnStyle}">
                         <DataGridTextColumn.Binding>
-                            <Binding Path="Name" UpdateSourceTrigger="PropertyChanged" ValidatesOnDataErrors="True" NotifyOnValidationError="True">
+                            <Binding Path="Name" UpdateSourceTrigger="PropertyChanged" ValidatesOnDataErrors="True" 
+                                     NotifyOnValidationError="True">
                                 <Binding.ValidationRules>
-                                    <core:NotEmptyValidationRule/>
+                                    <val:NotEmptyValidationRule/>
                                 </Binding.ValidationRules>
                             </Binding>
                         </DataGridTextColumn.Binding>
                     </DataGridTextColumn>
-                    <DataGridTextColumn Header="{markup:Localize DataGridHeaderVersion}" Width="2*" ElementStyle="{StaticResource CenterTextColumnStyle}">
+                    <DataGridTextColumn Header="{markup:Localize DataGridHeaderVersion}" Width="2*" 
+                                        ElementStyle="{StaticResource CenterTextColumnStyle}">
                         <DataGridTextColumn.Binding>
-                            <Binding Path="Version" UpdateSourceTrigger="PropertyChanged" ValidatesOnDataErrors="True" NotifyOnValidationError="True">
+                            <Binding Path="Version" UpdateSourceTrigger="PropertyChanged" ValidatesOnDataErrors="True" 
+                                     NotifyOnValidationError="True">
                                 <Binding.ValidationRules>
-                                    <core:NotEmptyValidationRule/>
+                                    <val:NotEmptyValidationRule/>
                                 </Binding.ValidationRules>
                             </Binding>
                         </DataGridTextColumn.Binding>
                     </DataGridTextColumn>
-                    <DataGridTextColumn Header="{markup:Localize DataGridHeaderInstallInstructions}" Width="6*" ElementStyle="{StaticResource CenterTextColumnStyle}">
+                    <DataGridTextColumn Header="{markup:Localize DataGridHeaderInstallInstructions}" Width="6*" 
+                                        ElementStyle="{StaticResource CenterTextColumnStyle}">
                         <DataGridTextColumn.Binding>
-                            <Binding Path="InstallInstructions" UpdateSourceTrigger="PropertyChanged" ValidatesOnDataErrors="True" NotifyOnValidationError="True">
+                            <Binding Path="InstallInstructions" UpdateSourceTrigger="PropertyChanged" 
+                                     ValidatesOnDataErrors="True" 
+                                     NotifyOnValidationError="True">
                                 <Binding.ValidationRules>
-                                    <core:NotEmptyValidationRule/>
+                                    <val:NotEmptyValidationRule/>
                                 </Binding.ValidationRules>
                             </Binding>
                         </DataGridTextColumn.Binding>
                     </DataGridTextColumn>
-                    <DataGridTextColumn Header="{markup:Localize DataGridHeaderURL}" Binding="{Binding Url}" Width="6*" ElementStyle="{StaticResource CenterTextColumnStyle}"/>
-                    <DataGridTextColumn Header="{markup:Localize DataGridHeaderDependencies}" Binding="{Binding Dependencies}" Width="2*" ElementStyle="{StaticResource CenterTextColumnStyle}"/>
-                    <DataGridTextColumn Header="{markup:Localize DataGridHeaderModRawName}" Binding="{Binding ModRawName}" Width="4*" ElementStyle="{StaticResource CenterTextColumnStyle}"/>
+                    <DataGridTextColumn Header="{markup:Localize DataGridHeaderURL}" Binding="{Binding Url}" Width="6*" 
+                                        ElementStyle="{StaticResource CenterTextColumnStyle}"/>
+                    <DataGridTextColumn Header="{markup:Localize DataGridHeaderDependencies}" Binding="{Binding Dependencies}" 
+                                        Width="2*" 
+                                        ElementStyle="{StaticResource CenterTextColumnStyle}"/>
+                    <DataGridTextColumn Header="{markup:Localize DataGridHeaderModRawName}" Binding="{Binding ModRawName}" 
+                                        Width="4*" 
+                                        ElementStyle="{StaticResource CenterTextColumnStyle}"/>
                     <DataGridTemplateColumn Header="{markup:Localize DataGridHeaderLastUpdated}" Width="2*" >
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
-                                <TextBlock Text="{Binding LastUpdated, StringFormat='dd.MM.yyyy'}" HorizontalAlignment="Center"/>
+                                <TextBlock Text="{Binding LastUpdated, StringFormat='dd.MM.yyyy'}" 
+                                           Style="{StaticResource CenterTextColumnStyle}"/>
                             </DataTemplate>
                         </DataGridTemplateColumn.CellTemplate>
                         <DataGridTemplateColumn.CellEditingTemplate>
                             <DataTemplate>
-                                <DatePicker>
+                                <DatePicker Style="{StaticResource DataGridDatePickerStyle}">
                                     <DatePicker.SelectedDate>
-                                        <Binding Path="LastUpdated" 
-                                                 Mode="TwoWay" 
-                                                 UpdateSourceTrigger="PropertyChanged" 
-                                                 ValidatesOnDataErrors="True" 
-                                                 NotifyOnValidationError="True"
+                                        <Binding Path="LastUpdated" Mode="TwoWay" UpdateSourceTrigger="PropertyChanged" 
+                                                 ValidatesOnDataErrors="True" NotifyOnValidationError="True" 
                                                  Converter="{StaticResource DateOnlyToDateTimeConverter}">
                                             <Binding.ValidationRules>
-                                                <core:NotEmptyValidationRule/>
+                                                <val:NotEmptyValidationRule/>
                                             </Binding.ValidationRules>
                                         </Binding>
                                     </DatePicker.SelectedDate>
@@ -312,29 +157,23 @@
                             </DataTemplate>
                         </DataGridTemplateColumn.CellEditingTemplate>
                     </DataGridTemplateColumn>
-                    <DataGridTextColumn Header="{markup:Localize DataGridHeaderDescription}" Width="6*" ElementStyle="{StaticResource CenterTextColumnStyle}">
+                    <DataGridTextColumn Header="{markup:Localize DataGridHeaderDescription}" Width="6*" 
+                                        ElementStyle="{StaticResource CenterTextColumnStyle}">
                         <DataGridTextColumn.Binding>
-                            <Binding Path="Description" UpdateSourceTrigger="PropertyChanged" ValidatesOnDataErrors="True" NotifyOnValidationError="True">
+                            <Binding Path="Description" UpdateSourceTrigger="PropertyChanged" ValidatesOnDataErrors="True" 
+                                     NotifyOnValidationError="True">
                                 <Binding.ValidationRules>
-                                    <core:NotEmptyValidationRule/>
+                                    <val:NotEmptyValidationRule/>
                                 </Binding.ValidationRules>
                             </Binding>
                         </DataGridTextColumn.Binding>
                     </DataGridTextColumn>
-                    <DataGridTextColumn Header="{markup:Localize DataGridHeaderPotentialIssues}" Binding="{Binding PotentialIssues}" Width="6*" ElementStyle="{StaticResource CenterTextColumnStyle}"/>
+                    <DataGridTextColumn Header="{markup:Localize DataGridHeaderPotentialIssues}" 
+                                        Binding="{Binding PotentialIssues}" Width="6*" 
+                                        ElementStyle="{StaticResource CenterTextColumnStyle}"/>
                 </DataGrid.Columns>
-                <DataGrid.Style>
-                    <Style TargetType="DataGrid">
-                        <Setter Property="Margin" Value="30 10 30 25"/>
-                        <Setter Property="Background" Value="#27253F"/>
-                        <Style.Triggers>
-                            <DataTrigger Binding="{Binding RelativeSource={RelativeSource AncestorType=Window}, Path=WindowState}" Value="Maximized">
-                                <Setter Property="Margin" Value="75 10 75 50"/>
-                            </DataTrigger>
-                        </Style.Triggers>
-                    </Style>
-                </DataGrid.Style>
             </DataGrid>
         </Grid>
     </Border>
+    
 </Window>

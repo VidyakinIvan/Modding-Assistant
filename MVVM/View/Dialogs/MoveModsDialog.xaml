@@ -3,90 +3,52 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:viewModel="clr-namespace:Modding_Assistant.MVVM.ViewModel"
-        xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
-        xmlns:conv="clr-namespace:Modding_Assistant.MVVM.View.Converters"
         xmlns:markup="clr-namespace:Modding_Assistant.MVVM.View.Markup"
+        xmlns:ap="clr-namespace:Modding_Assistant.MVVM.AttachedProperties"
         mc:Ignorable="d"
-        Title="Move after..." Height="180" Width="550"
+        Height="{StaticResource DialogHeight}" Width="{StaticResource DialogWidth}"
         WindowStartupLocation="CenterOwner"
         ResizeMode="NoResize"
-        Background="#23272E"
-        Foreground="#F3F3F3"
-        FontSize="14"
-         WindowStyle="None">
+        Background="{StaticResource DialogPrimaryBackgroundBrush}"
+        Foreground="{StaticResource DialogForegroundBrush}"
+        FontSize="{StaticResource NormalFontSize}"
+        WindowStyle="None"
+        ap:MoveModsDialogCloser.DialogResult="{Binding DialogResult, Mode=OneWay}">
+
     <Window.Resources>
-        <conv:NullableIntConverter x:Key="NullableIntConverter"/>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/Resources/Converters/MoveModsDialogConverters.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
     </Window.Resources>
-    <i:Interaction.Triggers>
-        <i:EventTrigger EventName="MouseLeftButtonDown">
-        <i:InvokeCommandAction Command="{Binding MoveWindowCommand}"
-                                       CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=Window}}"/>
-        </i:EventTrigger>
-    </i:Interaction.Triggers>
-    <Grid Margin="16">
+
+    <Grid Margin="{StaticResource DialogMargin}">
         <Grid.RowDefinitions>
-            <RowDefinition/>
+            <RowDefinition Height="Auto"/>
             <RowDefinition/>
             <RowDefinition/>
             <RowDefinition/>
         </Grid.RowDefinitions>
-        <Button Height="35" Width="35" HorizontalAlignment="Right" Command="{Binding CloseCommand}"
-                        CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=Window}}">
-            <Button.Template>
-                <ControlTemplate TargetType="Button">
-                    <Border x:Name="Bd" Background="Transparent">
-                        <Path Data="M0,0 M0.2,0.2 L 0.8,0.8 M0.2,0.8 L0.8,0.2 M1,1"
-                                Stretch="Uniform" Stroke="#DFFFFF" StrokeThickness="2"/>
-                    </Border>
-                    <ControlTemplate.Triggers>
-                        <Trigger Property="IsMouseOver" Value="True">
-                            <Setter TargetName="Bd" Property="Background" Value="Red"/>
-                        </Trigger>
-                    </ControlTemplate.Triggers>
-                </ControlTemplate>
-            </Button.Template>
-        </Button>
+        
+        <Button Style="{StaticResource CloseButtonSquaredStyle}" HorizontalAlignment="Right" Command="{Binding CloseCommand}"/>
+        
         <TextBlock Text="{markup:Localize MoveDialogInputPrompt}" Grid.Row="1"/>
-        <TextBox x:Name="ModNumberTextBox"
-                 Grid.Row="2"
-                 Height="28"
-                 VerticalContentAlignment="Center"
-                 Background="#2C313A"
-                 Foreground="#F3F3F3"
-                 BorderBrush="#3A3F4B"
-                 BorderThickness="1"
-                 Padding="6,0"
+        
+        <TextBox x:Name="ModNumberTextBox" Grid.Row="2" Height="28" VerticalContentAlignment="Center"
+                 Background="{StaticResource DialogSecondaryBackgroundBrush}" 
+                 Foreground="{StaticResource DialogForegroundBrush}"
+                 BorderBrush="{StaticResource DialogAccentBrush}" BorderThickness="1" Padding="6,0"
                  Text="{Binding ModNumber, Converter={StaticResource NullableIntConverter}, UpdateSourceTrigger=PropertyChanged}"/>
+        
         <StackPanel Grid.Row="3" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0 10 0 0">
-            <Button Content="{markup:Localize MoveDialogOkButton}"
-                    Width="80"
+            <Button Content="{markup:Localize MoveDialogOkButton}" Style="{StaticResource DialogButtonStyle}"
                     Margin="0,0,8,0"
                     IsDefault="True"
-                    Padding="6,2"
-                    Command="{Binding OKCommand}"
-                    CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=Window}}">
-                <Button.Style>
-                    <Style TargetType="Button">
-                        <Setter Property="Background" Value="#3A3F4B"/>
-                        <Setter Property="Foreground" Value="#F3F3F3"/>
-                        <Setter Property="BorderBrush" Value="#23272E"/>
-                        <Style.Triggers>
-                            <Trigger Property="IsEnabled" Value="False">
-                                <Setter Property="Opacity" Value="0.2"/>
-                            </Trigger>
-                        </Style.Triggers>
-                    </Style>
-                </Button.Style>
-            </Button>
-            <Button Content="{markup:Localize MoveDialogCancelButton}"
-                    Width="80"
+                    Command="{Binding OKCommand}"/>
+            <Button Content="{markup:Localize MoveDialogCancelButton}" Style="{StaticResource DialogButtonStyle}"
                     IsCancel="True"
-                    Background="#3A3F4B"
-                    Foreground="#F3F3F3"
-                    BorderBrush="#23272E"
-                    Padding="6,2" Command="{Binding CloseCommand}"
-                        CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=Window}}"/>
+                    Command="{Binding CloseCommand}"/>
         </StackPanel>
     </Grid>
 </Window>

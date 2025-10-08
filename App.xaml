@@ -1,9 +1,29 @@
 ﻿<Application x:Class="Modding_Assistant.App"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:local="clr-namespace:Modding_Assistant"
-             xmlns:viewModel="clr-namespace:Modding_Assistant.MVVM.ViewModel">
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
     <Application.Resources>
-        
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <!-- Base resources (no dependencies) -->
+
+                <!-- Primary color palette and brushes -->
+                <ResourceDictionary Source="/Resources/Brushes/Colors.xaml"/>
+                <!-- Window and dialog icons -->
+                <ResourceDictionary Source="/Resources/Icons/Icons.xaml"/>
+                <!-- Window and dialog text styles -->
+                <ResourceDictionary Source="/Resources/Styles/TextStyles.xaml"/>
+                <!-- Dimensions for full-size windows -->
+                <ResourceDictionary Source="/Resources/Dimensions/WindowDimensions.xaml"/>
+                <!-- Dimensions for custom dialogs -->
+                <ResourceDictionary Source="/Resources/Dimensions/DialogDimensions.xaml"/>
+
+                <!-- Dependent resources -->
+
+                <!-- Window and dialog button styles -->
+                <ResourceDictionary Source="/Resources/Styles/ButtonStyles.xaml"/>
+                <!-- Main dataGrid styles -->
+                <ResourceDictionary Source="/Resources/Styles/DataGridStyles.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
     </Application.Resources>
 </Application>

@@ -1,22 +1,26 @@
-﻿using Modding_Assistant.Core;
+﻿using Modding_Assistant.MVVM.Base;
 
 namespace Modding_Assistant.MVVM.ViewModel
 {
     public class MoveModsViewModel : ObservableObject
     {
-        private int? modNumber;
+        private int? _modNumber;
+        private bool? _dialogResult;
         public int? ModNumber
         {
-            get => modNumber;
+            get => _modNumber;
             set
             {
-                modNumber = value;
-                OnPropertyChanged();
+                SetProperty(ref _modNumber, value);
                 OKCommand.RaiseCanExecuteChanged();
             }
         }
-        public event Action? RequestOk;
-        public event Action? RequestClose;
+
+        public bool? DialogResult
+        {
+            get => _dialogResult;
+            set => SetProperty(ref _dialogResult, value);
+        }
 
         public RelayCommand OKCommand { get; }
         public RelayCommand CloseCommand { get; }
@@ -24,10 +28,11 @@ namespace Modding_Assistant.MVVM.ViewModel
         public MoveModsViewModel()
         {
             OKCommand = new RelayCommand(
-                _ => RequestOk?.Invoke(),
+                _ => DialogResult = true,
                 _ => ModNumber.HasValue && ModNumber > 0
             );
-            CloseCommand = new RelayCommand(_ => RequestClose?.Invoke());
+
+            CloseCommand = new RelayCommand(_ => DialogResult = false);
         }
     }
 }

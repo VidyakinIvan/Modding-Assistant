@@ -118,63 +118,132 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="DefaultExcelName" xml:space="preserve">
-    <value>Mods</value>
+    <value>Моды</value>
   </data>
   <data name="MoveDialogCancelButton" xml:space="preserve">
-    <value>Cancel</value>
+    <value>Отмена</value>
   </data>
   <data name="MoveDialogInputPrompt" xml:space="preserve">
-    <value>Enter the mod number before which to move the selected items:</value>
+    <value>Введите номер мода, перед которым вы хотите расположить выбранные:</value>
   </data>
   <data name="MoveDialogOkButton" xml:space="preserve">
-    <value>OK</value>
+    <value>ОК</value>
   </data>
   <data name="ContextMenuCopy" xml:space="preserve">
-    <value>Copy</value>
+    <value>Копировать</value>
   </data>
   <data name="ContextMenuSelectAll" xml:space="preserve">
-    <value>Select All</value>
-  </data>
-  <data name="ContextMenuRefresh" xml:space="preserve">
-    <value>Refresh</value>
+    <value>Выбрать всё</value>
   </data>
   <data name="ContextMenuFromFile" xml:space="preserve">
-    <value>From file...</value>
+    <value>Из файла...</value>
   </data>
   <data name="ContextMenuMove" xml:space="preserve">
-    <value>Move...</value>
+    <value>Переместить...</value>
   </data>
   <data name="ContextMenuDelete" xml:space="preserve">
-    <value>Delete</value>
+    <value>Удалить</value>
   </data>
   <data name="DataGridHeaderOrder" xml:space="preserve">
-    <value>Order</value>
+    <value>Порядок</value>
   </data>
   <data name="DataGridHeaderName" xml:space="preserve">
-    <value>Name</value>
+    <value>Имя</value>
   </data>
   <data name="DataGridHeaderVersion" xml:space="preserve">
-    <value>Version</value>
+    <value>Версия</value>
   </data>
   <data name="DataGridHeaderInstallInstructions" xml:space="preserve">
-    <value>Install Instructions</value>
+    <value>Инструкция по установке</value>
   </data>
   <data name="DataGridHeaderURL" xml:space="preserve">
     <value>URL</value>
   </data>
   <data name="DataGridHeaderDependencies" xml:space="preserve">
-    <value>Dependencies</value>
+    <value>Зависимости</value>
   </data>
   <data name="DataGridHeaderModRawName" xml:space="preserve">
-    <value>Mod File Name</value>
+    <value>Имя файла мода</value>
   </data>
   <data name="DataGridHeaderLastUpdated" xml:space="preserve">
-    <value>Last Updated</value>
+    <value>Последнее обновление</value>
   </data>
   <data name="DataGridHeaderDescription" xml:space="preserve">
-    <value>Description</value>
+    <value>Описание</value>
   </data>
   <data name="DataGridHeaderPotentialIssues" xml:space="preserve">
-    <value>Potential Issues</value>
+    <value>Потенциальные проблемы</value>
+  </data>
+  <data name="StartupError" xml:space="preserve">
+    <value>Произошла ошибка при запуске приложения. Пожалуйста, проверьте логи на наличие более подробной информации.</value>
+  </data>
+  <data name="StartupErrorHeader" xml:space="preserve">
+    <value>Ошибка запуска</value>
+  </data>
+  <data name="SelectArchivePrompt" xml:space="preserve">
+    <value>Выберите архив мода</value>
+  </data>
+  <data name="ErrorHeader" xml:space="preserve">
+    <value>Ошибка</value>
+  </data>
+  <data name="FromFileMoveError" xml:space="preserve">
+    <value>Не удалось переместить файл</value>
+  </data>
+  <data name="SelectFolderPrompt" xml:space="preserve">
+    <value>Выберите папку для модов</value>
+  </data>
+  <data name="SuccessHeader" xml:space="preserve">
+    <value>Успех</value>
+  </data>
+  <data name="ExportSuccessMessage" xml:space="preserve">
+    <value>Успешный экспорт</value>
+  </data>
+  <data name="ExportErrorMessage" xml:space="preserve">
+    <value>Не создать файл экспорта</value>
+  </data>
+  <data name="DatabaseErrorHeader" xml:space="preserve">
+    <value>Ошибка базы данных</value>
+  </data>
+  <data name="DatabaseErrorMessage" xml:space="preserve">
+    <value>Не удалось загрузить список модов</value>
+  </data>
+  <data name="AddModErrorMessage" xml:space="preserve">
+    <value>Не удалось добавить мод</value>
+  </data>
+  <data name="DeleteModErrorHeader" xml:space="preserve">
+    <value>Ошибка удаления</value>
+  </data>
+  <data name="DeleteModErrorMessage" xml:space="preserve">
+    <value>Не удалось удалить моды</value>
+  </data>
+  <data name="MoveModErrorHeader" xml:space="preserve">
+    <value>Ошибка перемещения</value>
+  </data>
+  <data name="AddModErrorHeader" xml:space="preserve">
+    <value>Ошибка добавления мода</value>
+  </data>
+  <data name="MoveModErrorMessage" xml:space="preserve">
+    <value>Не удалось переместить моды</value>
+  </data>
+  <data name="SaveChangesErrorHeader" xml:space="preserve">
+    <value>Ошибка сохранения</value>
+  </data>
+  <data name="SaveChangesDatabaseErrorMessage" xml:space="preserve">
+    <value>Не удалось сохранить изменения базы данных</value>
+  </data>
+  <data name="SaveChangesUnexpectedErrorMessage" xml:space="preserve">
+    <value>Во время сохранения произошла неизвестная ошибка</value>
+  </data>
+  <data name="ImportErrorHeader" xml:space="preserve">
+    <value>Ошибка импорта</value>
+  </data>
+  <data name="ImportErrorMessage" xml:space="preserve">
+    <value>Не удалось импортировать моды</value>
+  </data>
+  <data name="ExportWarningHeader" xml:space="preserve">
+    <value>Предупреждение экспортирования</value>
+  </data>
+  <data name="ExportWarningMessage" xml:space="preserve">
+    <value>Нет модов для экспортирования</value>
   </data>
 </root>

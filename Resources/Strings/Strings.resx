@@ -118,63 +118,132 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="DefaultExcelName" xml:space="preserve">
-    <value>Моды</value>
+    <value>Mods</value>
   </data>
   <data name="MoveDialogCancelButton" xml:space="preserve">
-    <value>Отмена</value>
+    <value>Cancel</value>
   </data>
   <data name="MoveDialogInputPrompt" xml:space="preserve">
-    <value>Введите номер мода, перед которым вы хотите расположить выбранные:</value>
+    <value>Enter the mod number before which to move the selected items:</value>
   </data>
   <data name="MoveDialogOkButton" xml:space="preserve">
-    <value>ОК</value>
+    <value>OK</value>
   </data>
   <data name="ContextMenuCopy" xml:space="preserve">
-    <value>Копировать</value>
+    <value>Copy</value>
   </data>
   <data name="ContextMenuSelectAll" xml:space="preserve">
-    <value>Выбрать всё</value>
-  </data>
-  <data name="ContextMenuRefresh" xml:space="preserve">
-    <value>Обновить</value>
+    <value>Select All</value>
   </data>
   <data name="ContextMenuFromFile" xml:space="preserve">
-    <value>Из файла...</value>
+    <value>From file...</value>
   </data>
   <data name="ContextMenuMove" xml:space="preserve">
-    <value>Переместить...</value>
+    <value>Move...</value>
   </data>
   <data name="ContextMenuDelete" xml:space="preserve">
-    <value>Удалить</value>
+    <value>Delete</value>
   </data>
   <data name="DataGridHeaderOrder" xml:space="preserve">
-    <value>Порядок</value>
+    <value>Order</value>
   </data>
   <data name="DataGridHeaderName" xml:space="preserve">
-    <value>Имя</value>
+    <value>Name</value>
   </data>
   <data name="DataGridHeaderVersion" xml:space="preserve">
-    <value>Версия</value>
+    <value>Version</value>
   </data>
   <data name="DataGridHeaderInstallInstructions" xml:space="preserve">
-    <value>Инструкция по установке</value>
+    <value>Install Instructions</value>
   </data>
   <data name="DataGridHeaderURL" xml:space="preserve">
     <value>URL</value>
   </data>
   <data name="DataGridHeaderDependencies" xml:space="preserve">
-    <value>Зависимости</value>
+    <value>Dependencies</value>
   </data>
   <data name="DataGridHeaderModRawName" xml:space="preserve">
-    <value>Имя файла мода</value>
+    <value>Mod File Name</value>
   </data>
   <data name="DataGridHeaderLastUpdated" xml:space="preserve">
-    <value>Последнее обновление</value>
+    <value>Last Updated</value>
   </data>
   <data name="DataGridHeaderDescription" xml:space="preserve">
-    <value>Описание</value>
+    <value>Description</value>
   </data>
   <data name="DataGridHeaderPotentialIssues" xml:space="preserve">
-    <value>Потенциальные проблемы</value>
+    <value>Potential Issues</value>
+  </data>
+  <data name="StartupError" xml:space="preserve">
+    <value>An error occurred during application startup. Please check the logs for more details.</value>
+  </data>
+  <data name="StartupErrorHeader" xml:space="preserve">
+    <value>Startup error</value>
+  </data>
+  <data name="SelectArchivePrompt" xml:space="preserve">
+    <value>Select mod archive</value>
+  </data>
+  <data name="ErrorHeader" xml:space="preserve">
+    <value>Error</value>
+  </data>
+  <data name="FromFileMoveError" xml:space="preserve">
+    <value>Failed to move file</value>
+  </data>
+  <data name="SelectFolderPrompt" xml:space="preserve">
+    <value>Select mods folder</value>
+  </data>
+  <data name="SuccessHeader" xml:space="preserve">
+    <value>Success</value>
+  </data>
+  <data name="ExportSuccessMessage" xml:space="preserve">
+    <value>Export successful!</value>
+  </data>
+  <data name="ExportErrorMessage" xml:space="preserve">
+    <value>Failed to create file</value>
+  </data>
+  <data name="DatabaseErrorHeader" xml:space="preserve">
+    <value>Database error</value>
+  </data>
+  <data name="DatabaseErrorMessage" xml:space="preserve">
+    <value>Failed to load mods list</value>
+  </data>
+  <data name="AddModErrorMessage" xml:space="preserve">
+    <value>Failed to add mod</value>
+  </data>
+  <data name="DeleteModErrorHeader" xml:space="preserve">
+    <value>Delete error</value>
+  </data>
+  <data name="DeleteModErrorMessage" xml:space="preserve">
+    <value>Failed to delete mods</value>
+  </data>
+  <data name="MoveModErrorHeader" xml:space="preserve">
+    <value>Move error</value>
+  </data>
+  <data name="AddModErrorHeader" xml:space="preserve">
+    <value>Add mod error</value>
+  </data>
+  <data name="MoveModErrorMessage" xml:space="preserve">
+    <value>Failed to move mods</value>
+  </data>
+  <data name="SaveChangesErrorHeader" xml:space="preserve">
+    <value>Save error</value>
+  </data>
+  <data name="SaveChangesDatabaseErrorMessage" xml:space="preserve">
+    <value>Failed to save changes to database</value>
+  </data>
+  <data name="SaveChangesUnexpectedErrorMessage" xml:space="preserve">
+    <value>Unexpected error while saving</value>
+  </data>
+  <data name="ImportErrorHeader" xml:space="preserve">
+    <value>Import error</value>
+  </data>
+  <data name="ImportErrorMessage" xml:space="preserve">
+    <value>Failed to import mod</value>
+  </data>
+  <data name="ExportWarningHeader" xml:space="preserve">
+    <value>Export warning</value>
+  </data>
+  <data name="ExportWarningMessage" xml:space="preserve">
+    <value>No mods to export</value>
   </data>
 </root>

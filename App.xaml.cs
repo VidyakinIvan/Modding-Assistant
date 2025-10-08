@@ -1,13 +1,9 @@
-﻿using System.Windows;
-using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Modding_Assistant.MVVM.Model;
-using Modding_Assistant.MVVM.Services.Implementations;
+using Microsoft.Extensions.Logging;
+using Modding_Assistant.Core.Application;
 using Modding_Assistant.MVVM.Services.Interfaces;
-using Modding_Assistant.MVVM.View.Windows;
-using Modding_Assistant.MVVM.View.Dialogs;
-using Modding_Assistant.MVVM.ViewModel;
-using Microsoft.EntityFrameworkCore;
+using System.Windows;
 
 namespace Modding_Assistant
 {
@@ -16,48 +12,90 @@ namespace Modding_Assistant
     /// </summary>
     public partial class App : Application
     {
-        public readonly IHost _host;
-        public App()
-        {
-            _host = Host.CreateDefaultBuilder()
-                .ConfigureServices((context, services) =>
-                {
-                    services.AddSingleton<MainWindow>();
-                    services.AddSingleton<MainViewModel>();
-                    services.AddTransient<MoveModsDialog>();
-                    services.AddTransient<MoveModsViewModel>();
-                    services.AddSingleton<ISettingsService, SettingsService>();
-                    services.AddSingleton<IMoveModsDialogService, MoveModsDialogService>();
-                    services.AddSingleton<IExcelExportService, ExcelExportService>();
-                    services.AddSingleton<IDialogService, DialogService>();
-                    services.AddSingleton<IMainWindowService>(provider =>
-                    {
-                        var mainWindow = provider.GetRequiredService<MainWindow>();
-                        return new MainWindowService(mainWindow);
-                    });
-                    services.AddSingleton<ILocalizationService>(provider =>
-                        new LocalizationService(Modding_Assistant.Resources.Strings.ResourceManager));
-                    services.AddDbContext<ModContext>(options => 
-                        options.UseSqlite("Data Source=modding_assistant.db"));
-                })
-                .Build();
-        }
+        private IHost? _host;
+        private ILogger<App>? _logger;
+
+        private static readonly TimeSpan StartupTimeout = TimeSpan.FromMinutes(2);
+        private static readonly TimeSpan ShutdownTimeout = TimeSpan.FromSeconds(5);
+
         protected override async void OnStartup(StartupEventArgs e)
         {
-            await _host.StartAsync();
-            var mainWindow = _host.Services.GetRequiredService<MainWindow>();
-            mainWindow.DataContext = _host.Services.GetRequiredService<MainViewModel>();
-            mainWindow.Show();
             base.OnStartup(e);
+
+            try
+            {
+                using var startupCts = new CancellationTokenSource(StartupTimeout);
+
+                await InitializeApplicationAsync(e.Args, startupCts.Token);
+            }
+            catch (Exception ex)
+            {
+                _logger?.LogCritical(ex, "Application startup failed");
+
+                StartupErrorHandler.HandleStartupException(ex, _host?.Services.GetService<ILocalizationService>(),
+                    _host?.Services.GetService<INotificationService>());
+
+                Shutdown(1);
+            }
         }
+
+        /// <summary>
+        /// Async Task for application initialization
+        /// </summary>
+        private async Task InitializeApplicationAsync(string[] args, CancellationToken cancellationToken)
+        {
+            try
+            {
+                _host = HostBuilderFactory.CreateHostBuilder(args).Build();
+                _logger = _host.Services.GetRequiredService<ILogger<App>>();
+
+                await _host.StartAsync(cancellationToken);
+
+                _logger.LogInformation("Application initialization started, opening main window");
+
+                var applicationInitializer = _host.Services.GetRequiredService<IApplicationInitializer>();
+                await applicationInitializer.InitializeAsync(cancellationToken);
+
+            }
+            catch (OperationCanceledException)
+            {
+                _logger?.LogWarning("Application initialization was cancelled");
+                throw;
+            }
+            catch (Exception ex)
+            {
+                _logger?.LogError(ex, "Error during application initialization");
+                throw;
+            }
+        }
+
         protected override async void OnExit(ExitEventArgs e)
         {
-            using (_host)
+            try
             {
-                await _host.StopAsync();
+                if (_host is not null)
+                {
+                    using var cts = new CancellationTokenSource(ShutdownTimeout);
+                    await _host.StopAsync(cts.Token);
+                }
             }
-            base.OnExit(e);
+            catch (OperationCanceledException)
+            {
+                _logger?.LogWarning("Application shutdown was cancelled");
+            }
+            catch (AggregateException ex) when (ex.InnerException is not null)
+            {
+                _logger?.LogError(ex.InnerException, "Error during application shutdown");
+            }
+            catch (Exception ex)
+            {
+                _logger?.LogError(ex, "Error during application shutdown");
+            }
+            finally
+            {
+                _host?.Dispose();
+                base.OnExit(e);
+            }
         }
     }
-
 }

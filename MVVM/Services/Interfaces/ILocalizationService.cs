@@ -1,18 +1,23 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Globalization;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Globalization;
 using System.ComponentModel;
 
 namespace Modding_Assistant.MVVM.Services.Interfaces
 {
-    public interface ILocalizationService
+    public interface ILocalizationService : INotifyPropertyChanged
     {
+        /// <summary>
+        /// Gets or sets the current culture for localization
+        /// </summary>
         CultureInfo CurrentCulture { get; set; }
+
+        /// <summary>
+        /// Gets supported cultures
+        /// </summary>
         IEnumerable<CultureInfo> SupportedCultures { get; }
-        string GetString(string key);
-        event PropertyChangedEventHandler? PropertyChanged;
+
+        /// <summary>
+        /// Gets localized string using indexer syntax by key
+        /// </summary>
+        string this[string key] { get; }
     }
 }

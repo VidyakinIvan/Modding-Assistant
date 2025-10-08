@@ -1,0 +1,59 @@
+﻿using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
+using Modding_Assistant.Core.Data.Interfaces;
+using Modding_Assistant.MVVM.Services.Interfaces;
+using Modding_Assistant.MVVM.View.Windows;
+
+namespace Modding_Assistant.Core.Application
+{
+    /// <summary>
+    /// Class for starting <see cref="ILocalizationService"/> and <see cref="IDatabaseService"/>
+    /// </summary>
+    public class ApplicationInitializer(IServiceProvider serviceProvider, ILogger<ApplicationInitializer> logger) 
+        : IApplicationInitializer
+    {
+        private static readonly TimeSpan DbStartupTimeout = TimeSpan.FromSeconds(30);
+
+        private readonly IServiceProvider _serviceProvider = serviceProvider;
+        private readonly ILogger<ApplicationInitializer> _logger = logger;
+
+        /// <inheritdoc/>
+        public async Task InitializeAsync(CancellationToken cancellationToken)
+        {
+            await InitializeDatabaseAsync(cancellationToken);
+            var localizationService = _serviceProvider.GetService<ILocalizationService>();
+            if (localizationService is not null)
+            {
+                System.Windows.Application.Current.Resources["LocalizationService"] = localizationService;
+            }
+            ShowMainWindow();
+
+        }
+        /// <summary>
+        /// Async Task for <see cref="IDatabaseService"/> initialization
+        /// </summary>
+        private async Task InitializeDatabaseAsync(CancellationToken cancellationToken = default)
+        {
+            var databaseService = _serviceProvider.GetRequiredService<IDatabaseService>();
+
+            using var linkedCts = CancellationTokenSource.CreateLinkedTokenSource(
+                cancellationToken,
+                new CancellationTokenSource(DbStartupTimeout).Token
+            );
+            await databaseService.InitializeAsync(linkedCts.Token);
+        }
+
+        /// <summary>
+        /// Opens main application window
+        /// </summary>
+        private void ShowMainWindow()
+        {
+            var mainWindow = _serviceProvider.GetRequiredService<MainWindow>();
+            var mainWindowService = _serviceProvider.GetRequiredService<IMainWindowService>();
+            mainWindowService.SetMainWindow(mainWindow);
+            mainWindow.Show();
+
+            _logger.LogInformation("Main window opened");
+        }
+    }
+}

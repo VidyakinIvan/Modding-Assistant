@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel;
 using System.Runtime.CompilerServices;
 
-namespace Modding_Assistant.Core
+namespace Modding_Assistant.MVVM.Base
 {
     public class ObservableObject : INotifyPropertyChanged
     {
