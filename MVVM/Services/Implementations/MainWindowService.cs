@@ -25,7 +25,10 @@ namespace Modding_Assistant.MVVM.Services.Implementations
             ArgumentNullException.ThrowIfNull(window);
 
             if (_window is not null)
-                throw new InvalidOperationException("Main window is already set");
+            {
+                _logger.LogWarning("Main window is already set. Ignoring the new assignment.");
+                return;
+            }
 
             _window = window;
 
@@ -40,6 +43,8 @@ namespace Modding_Assistant.MVVM.Services.Implementations
         {
             if (_window == null || _isInitialized) return;
 
+            _logger.LogInformation("Loading main window dimensions...");
+
             _window.Left = !double.IsNaN(_settingsService.MainWindowLeft)
                 ? _settingsService.MainWindowLeft
                 : (SystemParameters.WorkArea.Width - _window.Width) / 4;
@@ -52,6 +57,9 @@ namespace Modding_Assistant.MVVM.Services.Implementations
             {
                 WindowState = WindowState.Maximized;
             }
+
+            _logger.LogInformation("Main window dimensions loaded");
+
             _isInitialized = true;
         }
 
@@ -97,12 +105,17 @@ namespace Modding_Assistant.MVVM.Services.Implementations
         /// <inheritdoc/>
         public void SaveWindowSettings()
         {
-            if (_window == null) return;
+            if (_window == null) 
+                return;
+
+            _logger.LogInformation("Saving main window dimensions...");
 
             _settingsService.MainWindowLeft = _window.Left;
             _settingsService.MainWindowTop = _window.Top;
             _settingsService.MainWindowFullScreen = _window.WindowState == WindowState.Maximized;
             _settingsService.Save();
+
+            _logger.LogInformation("Main window dimensions saved");
         }
 
         /// <inheritdoc/>
@@ -183,7 +196,6 @@ namespace Modding_Assistant.MVVM.Services.Implementations
             if (_window is null) return;
 
             var newState = _window.WindowState;
-            _logger.LogDebug("Window state changed to: {State}", newState);
 
             WindowStateChanged?.Invoke(this, newState);
         }
