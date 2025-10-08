@@ -203,13 +203,13 @@ namespace Modding_Assistant.MVVM.Services.Implementations
         }
 
         /// <inheritdoc/>
-        public async Task SaveChangesAsync()
+        public async Task SaveChangesAsync(CancellationToken cancellationToken = default)
         {
             try
             {
-                var changes = await _db.SaveChangesAsync();
+                var changes = await _db.SaveChangesAsync(cancellationToken);
 
-                _logger.LogDebug("Saved {Count} changes to database", changes);
+                _logger.LogInformation("Saved {Count} changes to database", changes);
             }
             catch (DbUpdateException ex)
             {
@@ -229,20 +229,73 @@ namespace Modding_Assistant.MVVM.Services.Implementations
 
         private void OnModsCollectionChanged(object? sender, NotifyCollectionChangedEventArgs e)
         {
-            if (e.Action == NotifyCollectionChangedAction.Add)
-                UpdateModOrders(e.NewItems);
+            switch (e.Action)
+            {
+                case NotifyCollectionChangedAction.Add:
+                    _ = HandleAddedModsAsync(e.NewItems);
+                    _ = ReorderModsAsync();
+                    break;
+
+                case NotifyCollectionChangedAction.Remove:
+                    _ = HandleRemovedModsAsync(e.OldItems);
+                    _ = ReorderModsAsync();
+                    break;
+
+                case NotifyCollectionChangedAction.Replace:
+                case NotifyCollectionChangedAction.Move:
+                case NotifyCollectionChangedAction.Reset:
+                    _ = ReorderModsAsync();
+                    break;
+            }
         }
 
-        private void UpdateModOrders(System.Collections.IList? newItems)
+        private async Task HandleAddedModsAsync(System.Collections.IList? newItems)
         {
-            if (newItems == null) return;
+            if (newItems == null || !_isInitialized) 
+                return;
 
-            foreach (ModModel newMod in newItems)
+            try
             {
-                if (newMod.Order == 0)
+                var addedMods = newItems.Cast<ModModel>().ToList();
+
+                foreach (var mod in addedMods)
                 {
-                    newMod.Order = Mods.IndexOf(newMod) + 1;
+                    if (_db.Entry(mod).State == EntityState.Detached)
+                    {
+                        _db.Mods.Add(mod);
+                    }
                 }
+
+                await _db.SaveChangesAsync();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Failed to auto-save added mods");
+            }
+        }
+
+        private async Task HandleRemovedModsAsync(System.Collections.IList? oldItems)
+        {
+            if (oldItems == null || !_isInitialized) 
+                return;
+
+            try
+            {
+                var removedMods = oldItems.Cast<ModModel>().ToList();
+
+                foreach (var mod in removedMods)
+                {
+                    if (_db.Entry(mod).State != EntityState.Deleted)
+                    {
+                        _db.Mods.Remove(mod);
+                    }
+                }
+
+                await _db.SaveChangesAsync();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Failed to auto-save removed mods");
             }
         }
     }
