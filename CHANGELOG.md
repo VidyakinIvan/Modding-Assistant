@@ -13,6 +13,26 @@ and this project adheres to [Semantic Versioning].
 - Logging - implemented file logging to track application events and errors.
 - Notification windows - added pop-up notifications for important events, warnings and errors.
 
+### Changed
+
+- No features was changed in this release
+
+### Fixed
+
+- No issues were fixed in this release
+
+### Deprecated
+
+- No deprecated features in this release
+
+### Removed
+
+- No features removed in this release
+
+### Security
+
+- No security changes made in this release
+
 ## [1.2.0] - 2025-09-18
 
 ### Added
