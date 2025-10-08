@@ -13,6 +13,7 @@ A comprehensive mod management tool designed to help gamers organize, track, and
 - **Dependency Tracking**: Record mod dependencies to avoid conflicts
 - **Loading Files**: Automatically move archives to a convenient folder with the transfer of a file, a convenient name and upload date to the program.
 - **Order control**: Keep the order of mods in the program to avoid losing sorting when the main organizer loses data.
+- **Export to excel**: Export your mod list to an Excel file for easy sharing and backup
 
 ## Download
 1. Visit the [Releases page](https://github.com/VidyakinIvan/Modding-Assistant/releases)
