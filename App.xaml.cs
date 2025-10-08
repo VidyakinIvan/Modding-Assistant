@@ -30,7 +30,7 @@ namespace Modding_Assistant
             }
             catch (Exception ex)
             {
-                _logger?.LogCritical(ex, "Application startup failed");
+                _logger?.LogCritical("Application startup failed");
 
                 StartupErrorHandler.HandleStartupException(ex, _host?.Services.GetService<ILocalizationService>(),
                     _host?.Services.GetService<INotificationService>());
@@ -51,7 +51,7 @@ namespace Modding_Assistant
 
                 await _host.StartAsync(cancellationToken);
 
-                _logger.LogInformation("Application initialization started, opening main window");
+                _logger.LogInformation("Application initialization started");
 
                 var applicationInitializer = _host.Services.GetRequiredService<IApplicationInitializer>();
                 await applicationInitializer.InitializeAsync(cancellationToken);
@@ -59,7 +59,7 @@ namespace Modding_Assistant
             }
             catch (OperationCanceledException)
             {
-                _logger?.LogWarning("Application initialization was cancelled");
+                _logger?.LogError("Application initialization was cancelled");
                 throw;
             }
             catch (Exception ex)
@@ -77,6 +77,8 @@ namespace Modding_Assistant
                 {
                     using var cts = new CancellationTokenSource(ShutdownTimeout);
                     await _host.StopAsync(cts.Token);
+
+                    _logger?.LogInformation("Application shutdown started");
                 }
             }
             catch (OperationCanceledException)

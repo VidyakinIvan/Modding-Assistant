@@ -38,7 +38,7 @@ namespace Modding_Assistant.Core.Data.Services
             {
                 var isHealthy = await _context.Database.CanConnectAsync(cancellationToken);
 
-                _logger.LogDebug("Database health check: {HealthStatus}",
+                _logger.LogInformation("Database health check: {HealthStatus}",
                     isHealthy ? "Healthy" : "Unhealthy");
 
                 return isHealthy;
