@@ -45,7 +45,7 @@ namespace Modding_Assistant.MVVM.Services.Interfaces
         /// <summary>
         /// Asynchronously saves all changes made in the current context to the underlying database.
         /// </summary>
-        Task SaveChangesAsync();
+        Task SaveChangesAsync(CancellationToken cancellationToken = default);
 
         /// <summary>
         /// Reorders the list of mods asynchronously based on the current configuration or criteria.

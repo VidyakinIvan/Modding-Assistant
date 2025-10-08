@@ -16,7 +16,7 @@ namespace Modding_Assistant
         private ILogger<App>? _logger;
 
         private static readonly TimeSpan StartupTimeout = TimeSpan.FromMinutes(2);
-        private static readonly TimeSpan ShutdownTimeout = TimeSpan.FromSeconds(5);
+        private static readonly TimeSpan ShutdownTimeout = TimeSpan.FromSeconds(30);
 
         protected override async void OnStartup(StartupEventArgs e)
         {
@@ -75,7 +75,13 @@ namespace Modding_Assistant
             {
                 if (_host is not null)
                 {
+                    var _modManagerService = _host.Services.GetRequiredService<IModManagerService>();
+
                     using var cts = new CancellationTokenSource(ShutdownTimeout);
+
+                    _logger?.LogInformation("Saving changes before application shutdown");
+
+                    await _modManagerService.SaveChangesAsync(cts.Token);
                     await _host.StopAsync(cts.Token);
 
                     _logger?.LogInformation("Application shutdown started");
