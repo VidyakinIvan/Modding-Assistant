@@ -8,6 +8,10 @@ using System.Runtime.CompilerServices;
 
 namespace Modding_Assistant.MVVM.Services.Implementations
 {
+    /// <summary>
+    /// Class for managing localization, including retrieving localized strings and managing the
+    /// current culture.
+    /// </summary>
     public class LocalizationService(ResourceManager resourceManager, 
         IEnumerable<CultureInfo>? supportedCultures = null, 
         ILogger<LocalizationService>? logger = null) : ILocalizationService
