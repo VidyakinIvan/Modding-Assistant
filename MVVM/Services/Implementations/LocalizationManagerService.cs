@@ -1,23 +1,21 @@
 ﻿using Microsoft.Extensions.Logging;
 using Modding_Assistant.MVVM.Services.Interfaces;
-using System;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Modding_Assistant.MVVM.Services.Implementations
 {
+    /// <summary>
+    /// Class for managing application localization, including retrieving the current language, 
+    /// switching between available languages, and notifying when the language changes
+    /// </summary>
     public class LocalizationManagerService : ILocalizationManagerService
     {
         private readonly ILocalizationService _localizationService;
         private readonly ILogger<LocalizationManagerService> _logger;
 
+        /// <inheritdoc/>
         public string CurrentLanguage => 
             _localizationService.CurrentCulture.TwoLetterISOLanguageName;
-
-        public event PropertyChangedEventHandler? LanguageChanged;
 
         public LocalizationManagerService(ILocalizationService localizationService, 
             ILogger<LocalizationManagerService> logger)
@@ -27,6 +25,7 @@ namespace Modding_Assistant.MVVM.Services.Implementations
             _localizationService.PropertyChanged += OnLocalizationChanged;
         }
 
+        /// <inheritdoc/>
         public void SwitchToNextLanguage()
         {
             _logger.LogInformation("Switching to next language");
@@ -41,6 +40,9 @@ namespace Modding_Assistant.MVVM.Services.Implementations
             _logger.LogInformation("Switched language to {Language}", 
                 _localizationService.CurrentCulture.DisplayName);
         }
+
+        /// <inheritdoc/>
+        public event PropertyChangedEventHandler? LanguageChanged;
 
         private void OnLocalizationChanged(object? sender, PropertyChangedEventArgs e)
         {
