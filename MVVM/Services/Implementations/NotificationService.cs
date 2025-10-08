@@ -9,25 +9,25 @@ namespace Modding_Assistant.MVVM.Services.Implementations
     public class NotificationService : INotificationService
     {
         /// <inheritdoc/>
-        public void ShowError(string message, string caption)
+        public void ShowError(string caption, string message)
         {
             ShowMessageBox(message, caption, MessageBoxButton.OK, MessageBoxImage.Error);
         }
 
         /// <inheritdoc/>
-        public void ShowWarning(string message, string caption)
+        public void ShowWarning(string caption, string message)
         {
             ShowMessageBox(message, caption, MessageBoxButton.OK, MessageBoxImage.Warning);
         }
 
         /// <inheritdoc/>
-        public void ShowInformation(string message, string caption)
+        public void ShowInformation(string caption, string message)
         {
             ShowMessageBox(message, caption, MessageBoxButton.OK, MessageBoxImage.Information);
         }
 
         /// <inheritdoc/>
-        public bool ShowConfirmation(string message, string caption)
+        public bool ShowConfirmation(string caption, string message)
         {
             return ShowConfirmationBox(message, caption, MessageBoxButton.YesNo, MessageBoxImage.Question);
         }

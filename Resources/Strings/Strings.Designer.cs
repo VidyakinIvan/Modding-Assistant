@@ -61,6 +61,24 @@ namespace Modding_Assistant.Resources.Strings {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Add mod error.
+        /// </summary>
+        public static string AddModErrorHeader {
+            get {
+                return ResourceManager.GetString("AddModErrorHeader", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Failed to add mod.
+        /// </summary>
+        public static string AddModErrorMessage {
+            get {
+                return ResourceManager.GetString("AddModErrorMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Copy.
         /// </summary>
         public static string ContextMenuCopy {
@@ -102,6 +120,24 @@ namespace Modding_Assistant.Resources.Strings {
         public static string ContextMenuSelectAll {
             get {
                 return ResourceManager.GetString("ContextMenuSelectAll", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Database error.
+        /// </summary>
+        public static string DatabaseErrorHeader {
+            get {
+                return ResourceManager.GetString("DatabaseErrorHeader", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Failed to load mods list.
+        /// </summary>
+        public static string DatabaseErrorMessage {
+            get {
+                return ResourceManager.GetString("DatabaseErrorMessage", resourceCulture);
             }
         }
         
@@ -205,6 +241,96 @@ namespace Modding_Assistant.Resources.Strings {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Delete error.
+        /// </summary>
+        public static string DeleteModErrorHeader {
+            get {
+                return ResourceManager.GetString("DeleteModErrorHeader", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Failed to delete mods.
+        /// </summary>
+        public static string DeleteModErrorMessage {
+            get {
+                return ResourceManager.GetString("DeleteModErrorMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Error.
+        /// </summary>
+        public static string ErrorHeader {
+            get {
+                return ResourceManager.GetString("ErrorHeader", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Failed to create file.
+        /// </summary>
+        public static string ExportErrorMessage {
+            get {
+                return ResourceManager.GetString("ExportErrorMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Export successful!.
+        /// </summary>
+        public static string ExportSuccessMessage {
+            get {
+                return ResourceManager.GetString("ExportSuccessMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Export warning.
+        /// </summary>
+        public static string ExportWarningHeader {
+            get {
+                return ResourceManager.GetString("ExportWarningHeader", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No mods to export.
+        /// </summary>
+        public static string ExportWarningMessage {
+            get {
+                return ResourceManager.GetString("ExportWarningMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Failed to move file.
+        /// </summary>
+        public static string FromFileMoveError {
+            get {
+                return ResourceManager.GetString("FromFileMoveError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Import error.
+        /// </summary>
+        public static string ImportErrorHeader {
+            get {
+                return ResourceManager.GetString("ImportErrorHeader", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Failed to import mod.
+        /// </summary>
+        public static string ImportErrorMessage {
+            get {
+                return ResourceManager.GetString("ImportErrorMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Cancel.
         /// </summary>
         public static string MoveDialogCancelButton {
@@ -232,6 +358,69 @@ namespace Modding_Assistant.Resources.Strings {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Move error.
+        /// </summary>
+        public static string MoveModErrorHeader {
+            get {
+                return ResourceManager.GetString("MoveModErrorHeader", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Failed to move mods.
+        /// </summary>
+        public static string MoveModErrorMessage {
+            get {
+                return ResourceManager.GetString("MoveModErrorMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Failed to save changes to database.
+        /// </summary>
+        public static string SaveChangesDatabaseErrorMessage {
+            get {
+                return ResourceManager.GetString("SaveChangesDatabaseErrorMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Save error.
+        /// </summary>
+        public static string SaveChangesErrorHeader {
+            get {
+                return ResourceManager.GetString("SaveChangesErrorHeader", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Unexpected error while saving.
+        /// </summary>
+        public static string SaveChangesUnexpectedErrorMessage {
+            get {
+                return ResourceManager.GetString("SaveChangesUnexpectedErrorMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select mod archive.
+        /// </summary>
+        public static string SelectArchivePrompt {
+            get {
+                return ResourceManager.GetString("SelectArchivePrompt", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select mods folder.
+        /// </summary>
+        public static string SelectFolderPrompt {
+            get {
+                return ResourceManager.GetString("SelectFolderPrompt", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to An error occurred during application startup. Please check the logs for more details..
         /// </summary>
         public static string StartupError {
@@ -246,6 +435,15 @@ namespace Modding_Assistant.Resources.Strings {
         public static string StartupErrorHeader {
             get {
                 return ResourceManager.GetString("StartupErrorHeader", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Success.
+        /// </summary>
+        public static string SuccessHeader {
+            get {
+                return ResourceManager.GetString("SuccessHeader", resourceCulture);
             }
         }
     }

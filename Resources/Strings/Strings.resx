@@ -180,4 +180,70 @@
   <data name="StartupErrorHeader" xml:space="preserve">
     <value>Startup error</value>
   </data>
+  <data name="SelectArchivePrompt" xml:space="preserve">
+    <value>Select mod archive</value>
+  </data>
+  <data name="ErrorHeader" xml:space="preserve">
+    <value>Error</value>
+  </data>
+  <data name="FromFileMoveError" xml:space="preserve">
+    <value>Failed to move file</value>
+  </data>
+  <data name="SelectFolderPrompt" xml:space="preserve">
+    <value>Select mods folder</value>
+  </data>
+  <data name="SuccessHeader" xml:space="preserve">
+    <value>Success</value>
+  </data>
+  <data name="ExportSuccessMessage" xml:space="preserve">
+    <value>Export successful!</value>
+  </data>
+  <data name="ExportErrorMessage" xml:space="preserve">
+    <value>Failed to create file</value>
+  </data>
+  <data name="DatabaseErrorHeader" xml:space="preserve">
+    <value>Database error</value>
+  </data>
+  <data name="DatabaseErrorMessage" xml:space="preserve">
+    <value>Failed to load mods list</value>
+  </data>
+  <data name="AddModErrorMessage" xml:space="preserve">
+    <value>Failed to add mod</value>
+  </data>
+  <data name="DeleteModErrorHeader" xml:space="preserve">
+    <value>Delete error</value>
+  </data>
+  <data name="DeleteModErrorMessage" xml:space="preserve">
+    <value>Failed to delete mods</value>
+  </data>
+  <data name="MoveModErrorHeader" xml:space="preserve">
+    <value>Move error</value>
+  </data>
+  <data name="AddModErrorHeader" xml:space="preserve">
+    <value>Add mod error</value>
+  </data>
+  <data name="MoveModErrorMessage" xml:space="preserve">
+    <value>Failed to move mods</value>
+  </data>
+  <data name="SaveChangesErrorHeader" xml:space="preserve">
+    <value>Save error</value>
+  </data>
+  <data name="SaveChangesDatabaseErrorMessage" xml:space="preserve">
+    <value>Failed to save changes to database</value>
+  </data>
+  <data name="SaveChangesUnexpectedErrorMessage" xml:space="preserve">
+    <value>Unexpected error while saving</value>
+  </data>
+  <data name="ImportErrorHeader" xml:space="preserve">
+    <value>Import error</value>
+  </data>
+  <data name="ImportErrorMessage" xml:space="preserve">
+    <value>Failed to import mod</value>
+  </data>
+  <data name="ExportWarningHeader" xml:space="preserve">
+    <value>Export warning</value>
+  </data>
+  <data name="ExportWarningMessage" xml:space="preserve">
+    <value>No mods to export</value>
+  </data>
 </root>

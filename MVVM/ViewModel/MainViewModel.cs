@@ -1,328 +1,162 @@
-﻿using ClosedXML.Excel;
-using Microsoft.EntityFrameworkCore;
-using Modding_Assistant.Core.Data.Models;
-using Modding_Assistant.Core.Utilities;
-using Modding_Assistant.MVVM.Base;
+﻿using Modding_Assistant.MVVM.Base;
 using Modding_Assistant.MVVM.Model;
-using Modding_Assistant.MVVM.Services.Implementations;
 using Modding_Assistant.MVVM.Services.Interfaces;
 using System.Collections;
 using System.Collections.ObjectModel;
-using System.Collections.Specialized;
-using System.ComponentModel;
-using System.Diagnostics;
-using System.IO;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Media;
 
 namespace Modding_Assistant.MVVM.ViewModel
 {
     public class MainViewModel : ObservableObject
     {
-        private readonly ModContext _db;
         private readonly IMainWindowService _mainWindowService;
-        private readonly ISettingsService _settingsService;
-        private readonly IExcelExportService _excelExportService;
+        private readonly IModManagerService _modManagerService;
         private readonly IOpenDialogService _openDialogService;
+        private readonly IModFilesService _modFilesService;
+        private readonly ILocalizationManagerService _localizationManagerService;
         private readonly ILocalizationService _localizationService;
-        private readonly INotificationService _notificationService;
-        private RelayCommand? _loadCommand;
-        private RelayCommand? _fromFileCommand;
-        private RelayCommand? _moveBeforeCommand;
-        private RelayCommand? _deleteCommand;
-        private RelayCommand? _minimizeCommand;
-        private RelayCommand? _maximizeCommand;
-        private RelayCommand? _moveWindowCommand;
-        private RelayCommand? _settingsCommand;
-        private RelayCommand? _exportCommand;
-        private RelayCommand? _languageCommand;
-        private RelayCommand? _exitCommand;
-        public MainViewModel(ModContext db, IMainWindowService mainWindowService, ISettingsService settingsService, 
-            IExcelExportService excelExportService, IOpenDialogService openDialogService, 
-            ILocalizationService localizationService, INotificationService notificationService)
-        {
-            _db = db;
-            _mainWindowService = mainWindowService;
-            _settingsService = settingsService;
-            _excelExportService = excelExportService;
-            _openDialogService = openDialogService;
-            _localizationService = localizationService;
-            _notificationService = notificationService;
-            _db.Mods.Load();
-            ModList = db.Mods.Local.ToObservableCollection();
-            ModList.CollectionChanged += ModList_CollectionChanged;
-            var sorted = ModList.OrderBy(m => m.Order).ToList();
-            for (int i = 0; i < sorted.Count; i++)
-            {
-                if (!Equals(ModList[i], sorted[i]))
-                {
-                    int sortedIndex = ModList.IndexOf(sorted[i]);
-                    if (sortedIndex >= 0)
-                        ModList.Move(sortedIndex, i);
-                }
-            }
-            _db.SaveChanges();
-        }
-        private void ModList_CollectionChanged(object? sender, NotifyCollectionChangedEventArgs e)
-        {
-            if (e.Action == NotifyCollectionChangedAction.Add)
-            {
-                foreach (ModModel newMod in e.NewItems!)
-                {
-                    newMod.Order = ModList.IndexOf(newMod) + 1;
-                }
-            }
-            else if (e.Action == NotifyCollectionChangedAction.Remove)
-            {
-                for (int i = 0; i < ModList.Count; i++)
-                {
-                    ModList[i].Order = i + 1;
-                }
-            }
-        }
+        private readonly ISettingsService _settingsService;
+
         private WindowState _windowState;
+
         public WindowState WindowState
         {
             get => _windowState;
             set => SetProperty(ref _windowState, value);
         }
-        public string CurrentLanguage => _localizationService.CurrentCulture.TwoLetterISOLanguageName;
-        public ObservableCollection<ModModel> ModList { get; set; }
-        public RelayCommand LoadCommand
+
+        public ObservableCollection<ModModel> ModList => _modManagerService.Mods;
+
+        public string CurrentLanguage => _localizationManagerService.CurrentLanguage;
+
+        public MainViewModel(IMainWindowService mainWindowService,
+            IModManagerService modManagerService,
+            IOpenDialogService openDialogService,
+            IModFilesService modFilesService,
+            ILocalizationManagerService localizationManagerService,
+            ILocalizationService localizationService,
+            ISettingsService settingsService)
         {
-            get
-            {
-                return _loadCommand ??= new RelayCommand(_ =>
-                {
-                    _mainWindowService.Left = !double.IsNaN(_settingsService.MainWindowLeft) ? _settingsService.MainWindowLeft : (SystemParameters.WorkArea.Width - _mainWindowService.Width) / 4;
-                    _mainWindowService.Top = !double.IsNaN(_settingsService.MainWindowTop) ? _settingsService.MainWindowTop : (SystemParameters.WorkArea.Height - _mainWindowService.Height) / 2;
-                    if (_settingsService.MainWindowFullScreen)
-                        MaximizeCommand.Execute(null);
-                });
-            }
+            _mainWindowService = mainWindowService;
+            _modManagerService = modManagerService;
+            _openDialogService = openDialogService;
+            _modFilesService = modFilesService;
+            _localizationManagerService = localizationManagerService;
+            _localizationService = localizationService;
+            _settingsService = settingsService;
+
+            _mainWindowService.WindowStateChanged += (s, state) => WindowState = state;
+            _localizationManagerService.LanguageChanged += (s, e) => OnPropertyChanged(nameof(CurrentLanguage));
+
+            InitializeAsync();
         }
 
-        public RelayCommand FromFileCommand
+        private async void InitializeAsync()
         {
-            get
-            {
-                return _fromFileCommand ??= new RelayCommand(_ =>
-                {
-                    var fileName = _openDialogService.ShowOpenFileDialog(
-                        "Select Mod Archive",
-                        "Archive Files (*.zip;*.rar;*.7z)|*.zip;*.rar;*.7z|All Files (*.*)|*.*");
-                    if (string.IsNullOrEmpty(fileName))
-                        return;
-
-                    string fileNameWithoutExtension = System.IO.Path.GetFileNameWithoutExtension(fileName);
-
-                    var newMod = new ModModel { Name = ModNameHelper.GetFriendlyModName(fileNameWithoutExtension), 
-                       ModRawName = System.IO.Path.GetFileName(fileName), 
-                        LastUpdated = DateOnly.FromDateTime(DateTime.Today) };
-
-                    ModList.Add(newMod);
-                    _db.SaveChanges();
-                    string modsFolder = _settingsService.ModsFolder;
-                    if (!string.IsNullOrWhiteSpace(_settingsService.ModsFolder) && Directory.Exists(modsFolder))
-                    {
-                        string sourceFilePath = fileName;
-                        if (Directory.Exists(modsFolder))
-                        {
-                            string destFilePath = Path.Combine(modsFolder, Path.GetFileName(sourceFilePath));
-                            try
-                            {
-                                File.Move(sourceFilePath, destFilePath, overwrite: true);
-                            }
-                            catch (Exception ex)
-                            {
-                                _notificationService.ShowError("Error", $"Failed to move file:\n{ex.Message}");
-                            }
-                        }
-                    }
-                });
-            }
-        }
-        public RelayCommand MoveBeforeCommand
-        {
-            get
-            {
-                return _moveBeforeCommand ??= new RelayCommand(selectedMods =>
-                {
-                    if (selectedMods is IList mods && mods.Count > 0)
-                    {
-                        int? result = _openDialogService.ShowMoveModsDialog(_mainWindowService.GetMainWindow());
-                        if (result.HasValue)
-                        {
-                            foreach (var mod in mods)
-                            {
-                                if (mod is ModModel m && ModList.Contains(m))
-                                {
-                                    int oldIndex = ModList.IndexOf(m);
-                                    int newIndex = Math.Min(result.Value - 1, ModList.Count);
-                                    if (oldIndex < newIndex)
-                                        newIndex--;
-                                    if (oldIndex != newIndex)
-                                    {
-                                        ModList.Move(oldIndex, newIndex);
-                                    }
-                                }
-                            }
-                            var viewSource = CollectionViewSource.GetDefaultView(ModList);
-                            viewSource.SortDescriptions.Clear();
-                            viewSource.SortDescriptions.Add(new(nameof(ModModel.Order), ListSortDirection.Ascending));
-                            viewSource.Refresh();
-                            for (int i = 0; i < ModList.Count; i++)
-                            {
-                                ModList[i].Order = i + 1;
-                            }
-                            CollectionViewSource.GetDefaultView(ModList)?.Refresh();
-                            _db.SaveChanges();
-                        }
-                    }
-                });
-            }
-        }
-        public RelayCommand DeleteCommand
-        {
-            get
-            {
-                return _deleteCommand ??= new RelayCommand(selectedMods =>
-                {
-                    if (selectedMods is IList mods)
-                    {
-                        foreach (var mod in mods.OfType<ModModel>().ToList())
-                            _db.Mods.Remove(mod);
-                        _db.SaveChanges();
-                        CollectionViewSource.GetDefaultView(ModList)?.Refresh();
-                    }
-                });
-            }
-        }
-        public RelayCommand MinimizeCommand
-        {
-            get
-            {
-                return _minimizeCommand ??= new RelayCommand(_ =>
-                {
-                    _mainWindowService.Minimize();
-                });
-            }
-        }
-        public RelayCommand MaximizeCommand
-        {
-            get
-            {
-                return _maximizeCommand ??= new RelayCommand(_ =>
-                {
-                    if (_mainWindowService.WindowState == WindowState.Maximized)
-                    {   
-                        _mainWindowService.Restore();
-                        WindowState = WindowState.Normal;
-                    }
-                    else
-                    {
-                        _mainWindowService.Maximize();
-                        WindowState = WindowState.Maximized;
-                    }
-                });
-            }
-        }
-        public RelayCommand MoveWindowCommand
-        {
-            get
-            {
-                return _moveWindowCommand ??= new RelayCommand(_ =>
-                {
-                    _mainWindowService.DragMove();
-                });
-            }
-        }
-        public RelayCommand SettingsCommand
-        {
-            get
-            {
-                return _settingsCommand ??= new RelayCommand(_ =>
-                {
-                    var folderName = _openDialogService.ShowPickFolderDialog("Select Mods Folder");
-                    if (!string.IsNullOrEmpty(folderName))
-                    {
-                        _settingsService.ModsFolder = folderName;
-                    }
-                });
-            }
+            await _modManagerService.LoadModsAsync();
         }
 
-        public RelayCommand ExportCommand
-        {
-            get
-            {
-                return _exportCommand ??= new RelayCommand(async _ =>
-                {
-                    var fileName = _openDialogService.ShowSaveFileDialog(
-                        $"Export to Excel", "Excel Files (*.xlsx)|*.xlsx|All Files (*.*)|*.*");
-                    if (!string.IsNullOrEmpty(fileName))
-                    {
-                        try
-                        {
-                            var success = await _excelExportService.ExportToExcelAsync(
-                                ModList,
-                                fileName,
-                                "Mods", new CancellationTokenSource(TimeSpan.FromMinutes(2)).Token
-                            );
-                            if (success)
-                            {
-                                _notificationService.ShowInformation("Success", "Export successful!");
-                            }
-                            else
-                            {
-                                _notificationService.ShowError("Error", "Failed to create file");
-                            }
-                        }
-                        catch (Exception ex)
-                        {
-                            _notificationService.ShowError("Error", $"Failed to create file:\n{ex.Message}");
-                        }
-                    }
-                });
-            }
-        }
-        public RelayCommand LanguageCommand
-        {
-            get
-            {
-                return _languageCommand ??= new RelayCommand(_ =>
-                {
-                    var cultures = _localizationService.SupportedCultures.ToList();
-                    var current = _localizationService.CurrentCulture;
-                    int idx = cultures.FindIndex(c => c.Equals(current));
-                    int nextIdx = (idx + 1) % cultures.Count;
-                    var culture = cultures[nextIdx];
+        public RelayCommand LoadCommand =>
+            new(_ => _mainWindowService.InitializeWindow());
 
-                    if (culture != null && !_localizationService.CurrentCulture.Equals(culture))
-                    {
-                        _localizationService.CurrentCulture = culture;
-                        OnPropertyChanged(string.Empty);
-                    }
-                });
-            }
-        }
-        public RelayCommand ExitCommand
-        {
-            get
+        public RelayCommand MoveWindowCommand =>
+            new(_ => _mainWindowService.DragMove());
+
+        public RelayCommand MinimizeCommand =>
+            new(_ => _mainWindowService.Minimize());
+
+        public RelayCommand MaximizeCommand =>
+            new(_ =>
             {
-                return _exitCommand ??= new RelayCommand(_ =>
+                if (_mainWindowService.WindowState == WindowState.Maximized)
                 {
-                    _settingsService.MainWindowLeft = _mainWindowService.Left;
-                    _settingsService.MainWindowTop = _mainWindowService.Top;
-                    _settingsService.MainWindowFullScreen = _mainWindowService.WindowState == WindowState.Maximized;
-                    _mainWindowService.Hide();
-                    _settingsService.Save();
-                    _db.SaveChanges();
-                    Application.Current.Shutdown();
-                });
-            }
-        }
+                    _mainWindowService.Restore();
+                    
+                }
+                else
+                {
+                    _mainWindowService.Maximize();
+                }
+            });
+
+        public RelayCommand ExitCommand =>
+            new(_ =>
+            {
+                _mainWindowService.SaveWindowSettings();
+                _mainWindowService.Hide();
+                Application.Current.Shutdown();
+            });
+
+        public RelayCommandAsync FromFileCommandAsync =>
+            new(async _ =>
+            {
+                var fileName = _openDialogService.ShowOpenFileDialog(
+                    _localizationService["SelectArchivePrompt"],
+                    "Archive Files (*.zip;*.rar;*.7z)|*.zip;*.rar;*.7z|All Files (*.*)|*.*");
+
+                if (string.IsNullOrEmpty(fileName)) 
+                    return;
+
+                await _modFilesService.ImportModAsync(fileName);
+
+            });
+
+        public RelayCommandAsync MoveModsCommandAsync =>
+            new(async selectedMods =>
+            {
+                if (selectedMods is not IList mods || mods.Count == 0) 
+                    return;
+
+                var targetPosition = 
+                    _openDialogService.ShowMoveModsDialog(_mainWindowService.GetMainWindow());
+
+                if (!targetPosition.HasValue)
+                    return;
+
+                var modModels = mods.OfType<ModModel>();
+                await _modManagerService.MoveModsAsync(modModels, targetPosition.Value);
+            });
+
+        public RelayCommandAsync DeleteModsCommandAsync =>
+            new(async selectedMods =>
+            {
+                if (selectedMods is not IList mods) return;
+                var modModels = mods.OfType<ModModel>().ToList();
+                if (modModels.Count > 0)
+                {
+                    await _modManagerService.DeleteModsAsync(modModels);
+                }
+            });
+
+        public RelayCommand SettingsCommand =>
+            new(_ =>
+            {
+                var folderName = _openDialogService.ShowPickFolderDialog(
+                    _localizationService["SelectFolderPrompt"]);
+                if (!string.IsNullOrEmpty(folderName))
+                {
+                    _settingsService.ModsFolder = folderName;
+                }
+            });
+
+        public RelayCommandAsync ExportCommandAsync =>
+            new(async _ =>
+            {
+                var fileName = _openDialogService.ShowSaveFileDialog(
+                    $"Export to Excel", "Excel Files (*.xlsx)|*.xlsx|All Files (*.*)|*.*");
+                if (!string.IsNullOrEmpty(fileName))
+                {
+                    await _modFilesService.ExportModsAsync(
+                        ModList,
+                        fileName,
+                        "Mods", new CancellationTokenSource(TimeSpan.FromMinutes(2)).Token
+                    );
+                }
+            });
+
+        public RelayCommand LanguageCommand => new(_ =>
+        {
+            _localizationManagerService.SwitchToNextLanguage();
+        });
     }
 }

@@ -8,22 +8,22 @@
         /// <summary>
         /// Shows error message dialog
         /// </summary>
-        void ShowError(string message, string caption);
+        void ShowError(string caption, string message);
 
         /// <summary>
         /// Shows warning message dialog
         /// </summary>
-        void ShowWarning(string message, string caption);
+        void ShowWarning(string caption, string message);
 
         /// <summary>
         /// Shows information message dialog
         /// </summary>
-        void ShowInformation(string message, string caption);
+        void ShowInformation(string caption, string message);
 
         /// <summary>
         /// Shows confirmation dialog with Yes/No buttons
         /// </summary>
         /// <returns>True if user selected Yes, otherwise False</returns>
-        bool ShowConfirmation(string message, string caption);
+        bool ShowConfirmation(string caption, string message);
     }
 }
