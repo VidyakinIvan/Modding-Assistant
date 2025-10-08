@@ -3,6 +3,10 @@ using System.ComponentModel;
 
 namespace Modding_Assistant.MVVM.Services.Interfaces
 {
+    /// <summary>
+    /// Service for managing localization, including retrieving localized strings and managing the
+    /// current culture.
+    /// </summary>
     public interface ILocalizationService : INotifyPropertyChanged
     {
         /// <summary>
