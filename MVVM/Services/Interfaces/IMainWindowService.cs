@@ -62,11 +62,6 @@ namespace Modding_Assistant.MVVM.Services.Interfaces
         void Close();
 
         /// <summary>
-        /// Hides the window from view without closing
-        /// </summary>
-        void Hide();
-
-        /// <summary>
         /// Gets or sets the window's left position relative to the screen
         /// </summary>
         double Left { get; set; }

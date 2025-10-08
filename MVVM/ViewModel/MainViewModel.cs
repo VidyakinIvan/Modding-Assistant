@@ -83,8 +83,7 @@ namespace Modding_Assistant.MVVM.ViewModel
             new(_ =>
             {
                 _mainWindowService.SaveWindowSettings();
-                _mainWindowService.Hide();
-                Application.Current.Shutdown();
+                _mainWindowService.Close();
             });
 
         public RelayCommandAsync FromFileCommandAsync =>

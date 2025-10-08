@@ -125,12 +125,6 @@ namespace Modding_Assistant.MVVM.Services.Implementations
         }
 
         /// <inheritdoc/>
-        public void Hide()
-        {
-            _window?.Hide();
-        }
-
-        /// <inheritdoc/>
         public double Left
         {
             get => _window?.Left ?? 0;
