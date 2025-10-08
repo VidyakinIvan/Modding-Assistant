@@ -119,7 +119,9 @@ namespace Modding_Assistant.MVVM.ViewModel
         public RelayCommandAsync DeleteModsCommandAsync =>
             new(async selectedMods =>
             {
-                if (selectedMods is not IList mods) return;
+                if (selectedMods is not IList mods) 
+                    return;
+
                 var modModels = mods.OfType<ModModel>().ToList();
                 if (modModels.Count > 0)
                 {
@@ -143,6 +145,7 @@ namespace Modding_Assistant.MVVM.ViewModel
             {
                 var fileName = _openDialogService.ShowSaveFileDialog(
                     $"Export to Excel", "Excel Files (*.xlsx)|*.xlsx|All Files (*.*)|*.*");
+
                 if (!string.IsNullOrEmpty(fileName))
                 {
                     await _modFilesService.ExportModsAsync(
