@@ -26,6 +26,8 @@ namespace Modding_Assistant.MVVM.Services.Implementations
         {
             try
             {
+                _logger.LogInformation("Import mod {ModFilePath}", filePath);
+
                 var fileName = Path.GetFileName(filePath);
                 var fileNameWithoutExtension = Path.GetFileNameWithoutExtension(filePath);
 
@@ -40,11 +42,15 @@ namespace Modding_Assistant.MVVM.Services.Implementations
 
                 await _modManagerService.AddModAsync(newMod);
 
+                _logger.LogInformation("Moving file to specialized folder...");
+                
                 if (!string.IsNullOrWhiteSpace(modsFolder) && Directory.Exists(modsFolder))
                 {
                     var destinationPath = Path.Combine(modsFolder, fileName);
                     await Task.Run(() => File.Move(filePath, destinationPath, overwrite: true));
                 }
+
+                _logger.LogInformation("Mod imported and moved successfully");
             }
             catch (Exception ex)
             {
@@ -74,18 +80,24 @@ namespace Modding_Assistant.MVVM.Services.Implementations
 
                 if (success)
                 {
+
+                    _logger.LogInformation("Mods exported successfully to {FilePath}", filePath);
+
                     _notificationService.ShowInformation(_localizationService["SuccessHeader"], 
                         _localizationService["ExportSuccessMessage"]);
                 }
                 else
                 {
-                    _notificationService.ShowError(_localizationService["ErrorHeader"],
+                    _logger.LogWarning("Export to {FilePath} did not complete successfully", filePath);
+
+                    _notificationService.ShowWarning(_localizationService["ErrorHeader"],
                         _localizationService["ExportErrorMessage"]);
                 }
             }
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Failed to export mods to {FilePath}", filePath);
+
                 _notificationService.ShowError(_localizationService["ErrorHeader"],
                     $"{_localizationService["ExportErrorMessage"]}:\n{ex.Message}");
             }
