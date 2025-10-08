@@ -42,7 +42,8 @@ namespace Modding_Assistant.MVVM.Services.Implementations
         /// <inheritdoc/>
         public async Task LoadModsAsync()
         {
-            if (_isInitialized) return;
+            if (_isInitialized) 
+                return;
 
             try
             {
@@ -104,7 +105,11 @@ namespace Modding_Assistant.MVVM.Services.Implementations
         /// <inheritdoc/>
         public async Task DeleteModsAsync(IEnumerable<ModModel> mods)
         {
-            ArgumentNullException.ThrowIfNull(mods);
+            if (mods == null)
+            {
+                _logger.LogWarning("No mods provided to delete.");
+                return;
+            }
 
             var modList = mods.ToList();
             if (modList.Count == 0) return;
@@ -136,7 +141,11 @@ namespace Modding_Assistant.MVVM.Services.Implementations
         /// <inheritdoc/>
         public async Task MoveModsAsync(IEnumerable<ModModel> mods, int targetPosition)
         {
-            ArgumentNullException.ThrowIfNull(mods);
+            if (mods == null)
+            {
+                _logger.LogWarning("No mods provided to move.");
+                return;
+            }
 
             var modList = mods.ToList();
             if (modList.Count == 0) return;

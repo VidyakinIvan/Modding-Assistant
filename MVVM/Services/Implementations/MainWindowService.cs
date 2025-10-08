@@ -41,7 +41,8 @@ namespace Modding_Assistant.MVVM.Services.Implementations
         /// <inheritdoc/>
         public void InitializeWindow()
         {
-            if (_window == null || _isInitialized) return;
+            if (_window == null || _isInitialized) 
+                return;
 
             _logger.LogInformation("Loading main window dimensions...");
 

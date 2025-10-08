@@ -21,7 +21,7 @@ namespace Modding_Assistant.MVVM.Services.Interfaces
         /// Shows a folder picker dialog to select a directory
         /// </summary>
         /// <returns>
-        /// The full path of the selected folder, or null if the dialog was cancelled
+        /// The full path of the selected folder, or null if the dialog was cancelled or title is empty
         /// </returns>
         string? ShowPickFolderDialog(string title);
 
@@ -29,7 +29,7 @@ namespace Modding_Assistant.MVVM.Services.Interfaces
         /// Shows a save file dialog to specify a file path for saving
         /// </summary>
         /// <returns>
-        /// The full path of the selected file, or null if the dialog was cancelled
+        /// The full path of the selected file, or null if the dialog was cancelled or defaultFileName/filter is empty
         /// </returns>
         string? ShowSaveFileDialog(string defaultFileName, string filter);
 
@@ -37,7 +37,7 @@ namespace Modding_Assistant.MVVM.Services.Interfaces
         /// Shows an open file dialog to select an existing file
         /// </summary>
         /// <returns>
-        /// The full path of the selected file, or null if the dialog was cancelled
+        /// The full path of the selected file, or null if the dialog was cancelled or title/filter is empty
         /// </returns>
         string? ShowOpenFileDialog(string title, string filter);
 

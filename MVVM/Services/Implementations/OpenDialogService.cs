@@ -20,7 +20,8 @@ namespace Modding_Assistant.MVVM.Services.Implementations
         /// <inheritdoc/>
         public string? ShowPickFolderDialog(string title)
         {
-            ArgumentException.ThrowIfNullOrWhiteSpace(title);
+            if (string.IsNullOrWhiteSpace(title))
+                return null;
 
             var pickFolderDialog = new OpenFolderDialog
             {
@@ -32,8 +33,8 @@ namespace Modding_Assistant.MVVM.Services.Implementations
         /// <inheritdoc/>
         public string? ShowSaveFileDialog(string defaultFileName, string filter)
         {
-            ArgumentException.ThrowIfNullOrWhiteSpace(defaultFileName);
-            ArgumentException.ThrowIfNullOrWhiteSpace(filter);
+            if (string.IsNullOrWhiteSpace(defaultFileName) || string.IsNullOrWhiteSpace(filter))
+                return null;
 
             var saveFileDialog = new SaveFileDialog
             {
@@ -46,8 +47,8 @@ namespace Modding_Assistant.MVVM.Services.Implementations
         /// <inheritdoc/>
         public string? ShowOpenFileDialog(string title, string filter)
         {
-            ArgumentException.ThrowIfNullOrWhiteSpace(title);
-            ArgumentException.ThrowIfNullOrWhiteSpace(filter);
+            if (string.IsNullOrWhiteSpace(title) || string.IsNullOrWhiteSpace(filter))
+                return null;
 
             var openFileDialog = new OpenFileDialog
             {
