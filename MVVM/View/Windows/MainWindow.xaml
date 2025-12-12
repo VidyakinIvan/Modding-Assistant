@@ -74,6 +74,8 @@
                 <Button Style="{StaticResource MaximizeButtonStyle}" Command="{Binding MaximizeCommand}"/>
                 <Button Style="{StaticResource CloseButtonRoundedStyle}" Command="{Binding ExitCommand}"/>
             </StackPanel>
+            <ProgressBar Grid.Column="3" Grid.Row="1" Value="{Binding ImportProgress, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" 
+                         Height="20"/>
             <DataGrid Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="3" ItemsSource="{Binding ModList}" 
                       Style="{StaticResource DataGridStyle}"
                       ColumnHeaderStyle="{StaticResource DataGridColumnHeaderStyle}"  

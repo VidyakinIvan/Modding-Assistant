@@ -21,8 +21,38 @@ namespace Modding_Assistant.MVVM.Services.Implementations
         private readonly ILocalizationService _localizationService = localizationService;
         private readonly ILogger<ModFilesService> _logger = logger;
 
+        /// <summary>
+        /// Copy file with progress reporting
+        /// </summary>
+        private async Task CopyFileAsync(string sourcePath, string destinationPath, IProgress<double> progress, 
+            CancellationToken cancellationToken)
+        {
+            _logger.LogInformation("Copying file from {SourcePath} to {DestinationPath}", sourcePath, destinationPath);
+            const int bufferSize = 1024 * 1024;
+            using var sourceStream = new FileStream(sourcePath, FileMode.Open, FileAccess.Read, FileShare.Read, 
+                bufferSize, useAsync: true);
+            using var destinationStream = new FileStream(destinationPath, FileMode.Create, FileAccess.Write, FileShare.None, 
+                bufferSize, useAsync: true);
+
+            var totalBytes = sourceStream.Length;
+            var totalRead = 0L;
+            var buffer = new byte[bufferSize];
+            int bytesRead;
+
+            while ((bytesRead = await sourceStream.ReadAsync(buffer, 0, buffer.Length, cancellationToken)) > 0)
+            {
+                cancellationToken.ThrowIfCancellationRequested();
+
+                await destinationStream.WriteAsync(buffer, 0, bytesRead, cancellationToken);
+                totalRead += bytesRead;
+                progress?.Report((double)totalRead / totalBytes * 100);
+            }
+
+            await destinationStream.FlushAsync(cancellationToken);
+        }
         /// <inheritdoc/>
-        public async Task ImportModAsync(string filePath)
+        public async Task ImportModAsync(string filePath, IProgress<double> progress, 
+            CancellationToken cancellationToken = default)
         {
             try
             {
@@ -30,8 +60,26 @@ namespace Modding_Assistant.MVVM.Services.Implementations
 
                 var fileName = Path.GetFileName(filePath);
                 var fileNameWithoutExtension = Path.GetFileNameWithoutExtension(filePath);
-
                 var modsFolder = _settingsService.ModsFolder;
+
+                _logger.LogInformation("Moving file to specialized folder...");
+                
+                if (!string.IsNullOrWhiteSpace(modsFolder) && Directory.Exists(modsFolder))
+                {
+                    var destinationPath = Path.Combine(modsFolder, fileName);
+                    await CopyFileAsync(filePath, destinationPath, progress, cancellationToken);
+
+                    var sourceInfo = new FileInfo(filePath);
+                    var destInfo = new FileInfo(destinationPath);
+
+                    if (destInfo.Length != sourceInfo.Length)
+                    {
+                        throw new IOException($"File copy incomplete. Source: {sourceInfo.Length} bytes, " +
+                                              $"Destination: {destInfo.Length} bytes");
+                    }
+
+                    File.Delete(filePath);
+                }
 
                 var newMod = new ModModel
                 {
@@ -41,14 +89,6 @@ namespace Modding_Assistant.MVVM.Services.Implementations
                 };
 
                 await _modManagerService.AddModAsync(newMod);
-
-                _logger.LogInformation("Moving file to specialized folder...");
-                
-                if (!string.IsNullOrWhiteSpace(modsFolder) && Directory.Exists(modsFolder))
-                {
-                    var destinationPath = Path.Combine(modsFolder, fileName);
-                    await Task.Run(() => File.Move(filePath, destinationPath, overwrite: true));
-                }
 
                 _logger.LogInformation("Mod imported and moved successfully");
             }
