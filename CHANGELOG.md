@@ -20,7 +20,7 @@ and this project adheres to [Semantic Versioning].
 - No deprecated features in this release
 
 ### Removed
-- No features removed in this release
+- Removed number column, cause order column is enough
 
 ## [1.3.1] - 2025-10-09
 
