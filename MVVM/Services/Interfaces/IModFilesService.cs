@@ -12,7 +12,7 @@ namespace Modding_Assistant.MVVM.Services.Interfaces
         /// <summary>
         /// Imports a mod from the specified file path asynchronously.
         /// </summary>
-        Task ImportModAsync(string filePath);
+        Task ImportModAsync(string filePath, IProgress<double> progress, CancellationToken cancellationToken = default);
 
         /// <summary>
         /// Exports a collection of mods to a specified file in a tabular format.

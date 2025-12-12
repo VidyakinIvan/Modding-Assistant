@@ -4,6 +4,7 @@ using Modding_Assistant.MVVM.Services.Interfaces;
 using System.Collections;
 using System.Collections.ObjectModel;
 using System.Windows;
+using System.Windows.Input;
 
 namespace Modding_Assistant.MVVM.ViewModel
 {
@@ -21,12 +22,24 @@ namespace Modding_Assistant.MVVM.ViewModel
 
         private WindowState _windowState;
 
+        private bool _isImporting;
+        private double _importProgress;
         public WindowState WindowState
         {
             get => _windowState;
             set => SetProperty(ref _windowState, value);
         }
-
+        public bool IsImporting
+        {
+            get => _isImporting;
+            set => SetProperty(ref _isImporting, value);
+        }
+        public double ImportProgress
+        {
+            get => _importProgress;
+            set => SetProperty(ref _importProgress, value);
+        }
+        public IProgress<double> ImportProgressReporter { get; }
         public ObservableCollection<ModModel> ModList => _modManagerService.Mods;
 
         public string CurrentLanguage => _localizationManagerService.CurrentLanguage;
@@ -49,6 +62,11 @@ namespace Modding_Assistant.MVVM.ViewModel
 
             _mainWindowService.WindowStateChanged += (s, state) => WindowState = state;
             _localizationManagerService.LanguageChanged += (s, e) => OnPropertyChanged(nameof(CurrentLanguage));
+
+            ImportProgressReporter = new Progress<double>(value =>
+            {
+                ImportProgress = value;
+            });
 
             InitializeAsync();
         }
@@ -91,15 +109,29 @@ namespace Modding_Assistant.MVVM.ViewModel
         public RelayCommandAsync FromFileCommandAsync =>
             new(async _ =>
             {
-                var fileName = _openDialogService.ShowOpenFileDialog(
-                    _localizationService["SelectArchivePrompt"],
-                    "Archive Files (*.zip;*.rar;*.7z)|*.zip;*.rar;*.7z|All Files (*.*)|*.*");
-
-                if (string.IsNullOrEmpty(fileName)) 
+                if (IsImporting)
                     return;
+                IsImporting = true;
+                var progress = new Progress<double>(p =>
+                {
+                    ImportProgress = p;
+                });
+                try
+                {
+                    var fileName = _openDialogService.ShowOpenFileDialog(
+                        _localizationService["SelectArchivePrompt"],
+                        "Archive Files (*.zip;*.rar;*.7z)|*.zip;*.rar;*.7z|All Files (*.*)|*.*");
 
-                await _modFilesService.ImportModAsync(fileName);
+                    if (string.IsNullOrEmpty(fileName))
+                        return;
 
+                    await _modFilesService.ImportModAsync(fileName, progress);
+                }
+                finally
+                {
+                    IsImporting = false;
+                    ImportProgress = 0;
+                }
             });
 
         public RelayCommandAsync MoveModsCommandAsync =>
