@@ -80,15 +80,6 @@
                       CellStyle="{StaticResource DataGridCellStyle}"
                       ContextMenu="{StaticResource DataGridContextMenu}">
                 <DataGrid.Columns>
-                    <DataGridTextColumn Header="№" IsReadOnly="True" Width="*" 
-                                        ElementStyle="{StaticResource CenterTextColumnStyle}">
-                        <DataGridTextColumn.Binding>
-                            <MultiBinding Converter="{StaticResource RowIndexConverter}">
-                                <Binding RelativeSource="{RelativeSource AncestorType=DataGrid}"/>
-                                <Binding/>
-                            </MultiBinding>
-                        </DataGridTextColumn.Binding>
-                    </DataGridTextColumn>
                     <DataGridTextColumn Header="{markup:Localize DataGridHeaderOrder}" IsReadOnly="True" 
                                         Binding="{Binding Order}"  Width="*" 
                                         ElementStyle="{StaticResource CenterTextColumnStyle}"/>
