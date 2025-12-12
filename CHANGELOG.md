@@ -5,6 +5,23 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog],
 and this project adheres to [Semantic Versioning].
 
+## [1.4.0] - 2025-12-12
+
+### Added
+- Progress bar - visual representation of the loading process when importing mods from a file.
+
+### Changed
+- Mod importing while another import is in progress is now disabled to prevent data corruption.
+
+### Fixed
+- No issues were fixed in this release
+
+### Deprecated
+- No deprecated features in this release
+
+### Removed
+- No features removed in this release
+
 ## [1.3.1] - 2025-10-09
 
 ### Added
@@ -118,7 +135,8 @@ and this project adheres to [Semantic Versioning].
 [semantic versioning]: https://semver.org/spec/v2.0.0.html
 
 <!-- Versions -->
-[1.3.1]: https://github.com/VidyakinIvan/Modding-Assistant/compare/Modding-Assistant%2Fv1.3.0...HEAD
+[1.4.0]: https://github.com/VidyakinIvan/Modding-Assistant/compare/Modding-Assistant%2Fv1.3.1...HEAD
+[1.3.1]: https://github.com/VidyakinIvan/Modding-Assistant/compare/Modding-Assistant%2Fv1.3.0...Modding-Assistant%2Fv1.3.1
 [1.3.0]: https://github.com/VidyakinIvan/Modding-Assistant/compare/Modding-Assistant%2Fv1.2.0...Modding-Assistant%2Fv1.3.0
 [1.2.0]: https://github.com/VidyakinIvan/Modding-Assistant/compare/Modding-Assistant%2Fv1.1.0...Modding-Assistant%2Fv1.2.0
 [1.1.0]: https://github.com/VidyakinIvan/Modding-Assistant/compare/Modding-Assistant%2Fv1.0.0...Modding-Assistant%2Fv1.1.0
